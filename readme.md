@@ -29,6 +29,13 @@
 WWW Tools:
 - https://htmlpreview.github.io/?
 - https://wordhtml.com/
+- [沉浸式翻译 - 网页翻译插件 | PDF翻译 | 免费](https://chromewebstore.google.com/detail/%E6%B2%89%E6%B5%B8%E5%BC%8F%E7%BF%BB%E8%AF%91-%E7%BD%91%E9%A1%B5%E7%BF%BB%E8%AF%91%E6%8F%92%E4%BB%B6-pdf%E7%BF%BB%E8%AF%91-%E5%85%8D%E8%B4%B9/bpoadfkcbjbfhfodiogcnhhhpibjhbnh?hl=zh-CN)
+  - [Release 版本](https://github.com/immersive-translate/immersive-translate)
+  - [旧版的沉浸式翻译开源项目](https://github.com/immersive-translate/old-immersive-translate)
+  
+- 相关 Github 项目
+  - [free_chatgpt_api](https://github.com/popjane/free_chatgpt_api): 公益免费的ChatGPT API，Free ChatGPT API，GPT4 API，可直连，无需代理，使用标准 OpenAI APIKEY 格式访问 ChatGPT，可搭配ChatGPT-next-web、ChatGPT-Midjourney、Lobe-chat、Botgem、FastGPT、沉浸式翻译等项目使用
+  - [Traduzir-paginas-web](https://github.com/FilipePS/Traduzir-paginas-web): Translate your page in real time using Google, Bing or Yandex
 
 WWW Resources:
 - 3GPP PDF 版本协议: https://www.etsi.org/deliver/
