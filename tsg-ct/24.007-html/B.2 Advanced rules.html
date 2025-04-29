@@ -1,0 +1,3628 @@
+<h1><a name="_Toc11256820"></a><a name="_Toc36116812"></a><a name="_Toc45096869"></a><a name="_Toc51762735"></a><a name="_Toc178271001"></a>B.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Advanced rules</h1>
+<h2><a name="_Toc11256821"></a><a name="_Toc36116813"></a><a name="_Toc45096870"></a><a name="_Toc51762736"></a><a name="_Toc178271002"></a>B.2.1&nbsp;&nbsp;&nbsp; Rule A2: Exponent notation</h2>
+<p>An arithmetic expression used as exponent after a delimited string description is used to indicate repetitions.</p>
+<p>A numerical expression between parentheses indicates a fixed number of repetitions.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;octet&gt; ::= {0 | 1}<sup>(8</sup>) ;</p>
+<p>is equivalent to</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;octet&gt; ::= {0 | 1} {0 | 1} {0 | 1} {0 | 1} {0 | 1} {0 | 1} {0 | 1} {0 | 1} ;</p>
+<p>This could also be written:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;octet&gt; ::= bit(8) ;</p>
+<p>&nbsp;</p>
+<p>When the exponent is negative or equal to 0, the exponentiated construction is equivalent to the null string.<br /> An example of a common construction is the following:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;name : bit(5)&gt;</p>
+<p>&nbsp;</p>
+<p>Simple arithmetic, using numbers, terms "+", "-", "*" and "/", and parentheses are allowed in expressions.</p>
+<p>Example:</p>
+<p>&lt;octet string(40)&gt; ::= &lt;octet&gt;<sup>(8*(4+1))</sup> ;</p>
+<p>&nbsp;</p>
+<p>A star used alone between parentheses, or a double star, indicates a finite, possibly null, but indeterminate, number of repetitions. (The star used as an exponent can be understood also as meaning the union of all the sets obtained by replacing the star by zero or some positive integer).</p>
+<p>&lt;all bit strings&gt; ::= {0 |1}(*)&nbsp;;</p>
+<p>&lt;all bit strings&gt;&nbsp;::= {0 |1}**&nbsp;;</p>
+<p>&nbsp;</p>
+<p>This allows a shorter notation of recursive constructions such as:</p>
+<p>&lt;all bit strings&gt; ::= {0|1} &lt;all bit strings&gt;&nbsp;| null;</p>
+<p>&nbsp;</p>
+<p>A shorter notation is allowed when the expression has a single term, consisting of a star followed by the term:</p>
+<p>&lt;octet&gt; ::= {0 | 1}*8 ;</p>
+<p>&lt;octet string(40)&gt; ::= &lt;octet&gt;*(8*(4+1)) ;</p>
+<p>&lt;all bit strings&gt; ::= bit**;</p>
+<p>&nbsp;</p>
+<p>Application note:</p>
+<p>The indefinite exponent is usually combined with some mean to indicate to the decoder the end of the repetition. Different techniques exist, such as indicating in a previous field the number of repetitions. Another technique is one-bit tagging, an example of which follows:&nbsp;&nbsp;&nbsp; {1 &lt;item&gt;}** 0.</p>
+<p>&nbsp;</p>
+<p><a name="_Toc11256822"></a><a name="_Toc36116814"></a><a name="_Toc45096871"></a><a name="_Toc51762737"></a><a name="_Toc178271003"></a>Annex C (informative):<br /> GPRS‑Services sequence diagram</p>
+<p>Instead of providing a complete set of all scenarios, the intention of this clause is to provide some typical examples. It shall be noted, that within the figures only those parameters of the PDUs and the service primitives are shown, which are needed for a general understanding of the examples. Furthermore during the examples below (except C.17) no cell re‑selection takes place.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The standalone PDP context modification procedure should use graceful disconnection of the LLC link.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><a name="_Toc11256823"></a><a name="_Toc36116815"></a><a name="_Toc45096872"></a><a name="_Toc51762738"></a><a name="_Toc178271004"></a>Annex D (informative):<br /> Change history</p>
+<p>&nbsp;</p>
+<table>
+<thead>
+<tr>
+<td width="68">
+<p>TSG&nbsp;SA#</p>
+</td>
+<td width="76">
+<p>Spec</p>
+</td>
+<td width="39">
+<p>Version</p>
+</td>
+<td width="28">
+<p>CR</p>
+</td>
+<td width="28">
+<p>Rev</p>
+</td>
+<td width="38">
+<p>Rel</p>
+</td>
+<td width="38">
+<p>New Version</p>
+</td>
+<td width="198">
+<p>Subject</p>
+</td>
+<td width="132">
+<p>Comment</p>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width="68">
+<p>Jun 1999</p>
+</td>
+<td width="76">
+<p>GSM&nbsp;04.07</p>
+</td>
+<td width="39">
+<p>7.1.0</p>
+</td>
+<td width="28">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>&nbsp;</p>
+</td>
+<td width="38">
+<p>&nbsp;</p>
+</td>
+<td width="38">
+<p>&nbsp;</p>
+</td>
+<td width="198">
+<p>&nbsp;</p>
+</td>
+<td width="132">
+<p>Transferred to 3GPP CN</p>
+</td>
+</tr>
+<tr>
+<td width="68">
+<p>CN#04</p>
+</td>
+<td width="76">
+<p>24.007</p>
+</td>
+<td width="39">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>&nbsp;</p>
+</td>
+<td width="38">
+<p>&nbsp;</p>
+</td>
+<td width="38">
+<p>3.0.0</p>
+</td>
+<td width="198">
+<p>&nbsp;</p>
+</td>
+<td width="132">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="68">
+<p>CN#5</p>
+</td>
+<td width="76">
+<p>24.007</p>
+</td>
+<td width="39">
+<p>3.0.0</p>
+</td>
+<td width="28">
+<p>002</p>
+</td>
+<td width="28">
+<p>1</p>
+</td>
+<td width="38">
+<p>R99</p>
+</td>
+<td width="38">
+<p>3.1.0</p>
+</td>
+<td width="198">
+<p>Addition of LL-STATUS_IND</p>
+</td>
+<td width="132">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="68">
+<p>CN#6</p>
+</td>
+<td width="76">
+<p>24.007</p>
+</td>
+<td width="39">
+<p>3.0.1</p>
+</td>
+<td width="28">
+<p>004</p>
+</td>
+<td width="28">
+<p>1</p>
+</td>
+<td width="38">
+<p>R99</p>
+</td>
+<td width="38">
+<p>3.2.0</p>
+</td>
+<td width="198">
+<p>Uplink L3 Message Sequencing</p>
+</td>
+<td width="132">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="68">
+<p>CN#6</p>
+</td>
+<td width="76">
+<p>24.007</p>
+</td>
+<td width="39">
+<p>3.0.1</p>
+</td>
+<td width="28">
+<p>005</p>
+</td>
+<td width="28">
+<p>&nbsp;</p>
+</td>
+<td width="38">
+<p>R99</p>
+</td>
+<td width="38">
+<p>3.2.0</p>
+</td>
+<td width="198">
+<p>Mirror R99 LCS CR to 04.07</p>
+</td>
+<td width="132">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="68">
+<p>CN#6</p>
+</td>
+<td width="76">
+<p>24.007</p>
+</td>
+<td width="39">
+<p>3.0.1</p>
+</td>
+<td width="28">
+<p>003</p>
+</td>
+<td width="28">
+<p>5</p>
+</td>
+<td width="38">
+<p>R99</p>
+</td>
+<td width="38">
+<p>3.2.0</p>
+</td>
+<td width="198">
+<p>Using MM sublayer for PS-SMS message transfer</p>
+</td>
+<td width="132">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="68">
+<p>CN#6</p>
+</td>
+<td width="76">
+<p>24.007</p>
+</td>
+<td width="39">
+<p>3.0.1</p>
+</td>
+<td width="28">
+<p>001</p>
+</td>
+<td width="28">
+<p>5</p>
+</td>
+<td width="38">
+<p>R99</p>
+</td>
+<td width="38">
+<p>3.2.0</p>
+</td>
+<td width="198">
+<p>Transaction Identifier Extension</p>
+</td>
+<td width="132">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="68">
+<p>CN#7</p>
+</td>
+<td width="76">
+<p>24.007</p>
+</td>
+<td width="39">
+<p>3.2.0</p>
+</td>
+<td width="28">
+<p>006</p>
+</td>
+<td width="28">
+<p>1</p>
+</td>
+<td width="38">
+<p>R99</p>
+</td>
+<td width="38">
+<p>3.3.0</p>
+</td>
+<td width="198">
+<p>Updating Session Management (SM) for R99</p>
+</td>
+<td width="132">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="68">
+<p>CN#7</p>
+</td>
+<td width="76">
+<p>24.007</p>
+</td>
+<td width="39">
+<p>3.2.0</p>
+</td>
+<td width="28">
+<p>007</p>
+</td>
+<td width="28">
+<p>&nbsp;</p>
+</td>
+<td width="38">
+<p>R99</p>
+</td>
+<td width="38">
+<p>3.3.0</p>
+</td>
+<td width="198">
+<p>Removal of Anonymous Access</p>
+</td>
+<td width="132">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="68">
+<p>CN#7</p>
+</td>
+<td width="76">
+<p>24.007</p>
+</td>
+<td width="39">
+<p>3.2.0</p>
+</td>
+<td width="28">
+<p>008</p>
+</td>
+<td width="28">
+<p>&nbsp;</p>
+</td>
+<td width="38">
+<p>R99</p>
+</td>
+<td width="38">
+<p>3.3.0</p>
+</td>
+<td width="198">
+<p>PMMSMS-REL-Req deletion in MS side</p>
+</td>
+<td width="132">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="68">
+<p>CN#7</p>
+</td>
+<td width="76">
+<p>24.007</p>
+</td>
+<td width="39">
+<p>3.2.0</p>
+</td>
+<td width="28">
+<p>010</p>
+</td>
+<td width="28">
+<p>1</p>
+</td>
+<td width="38">
+<p>R99</p>
+</td>
+<td width="38">
+<p>3.3.0</p>
+</td>
+<td width="198">
+<p>Integrity checking of signalling messages for UMTS</p>
+</td>
+<td width="132">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="68">
+<p>-</p>
+</td>
+<td width="76">
+<p>24.007</p>
+</td>
+<td width="39">
+<p>3.3.0</p>
+</td>
+<td width="28">
+<p>-</p>
+</td>
+<td width="28">
+<p>-</p>
+</td>
+<td width="38">
+<p>R99</p>
+</td>
+<td width="38">
+<p>3.3.1</p>
+</td>
+<td width="198">
+<p>Editorial changes</p>
+</td>
+<td width="132">
+<p>&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="648">
+<thead>
+<tr>
+<td width="33">
+<p>TSGN</p>
+</td>
+<td width="52">
+<p>TSGN-number</p>
+</td>
+<td width="54">
+<p>WG Number</p>
+</td>
+<td width="32">
+<p>Spec</p>
+</td>
+<td width="25">
+<p>CR</p>
+</td>
+<td width="21">
+<p>Rev</p>
+</td>
+<td width="28">
+<p>Rel</p>
+</td>
+<td width="15">
+<p>Cat</p>
+</td>
+<td width="30">
+<p>Old vers</p>
+</td>
+<td width="43">
+<p>New ver</p>
+</td>
+<td width="173">
+<p>Title</p>
+</td>
+<td width="75">
+<p>WI</p>
+</td>
+<td width="63">
+<p>Notes/Date</p>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width="33">
+<p>CN#8</p>
+</td>
+<td width="52">
+<p>NP-000270</p>
+</td>
+<td width="54">
+<p>N1-000620</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>006</p>
+</td>
+<td width="21">
+<p>2</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.3.1</p>
+</td>
+<td width="43">
+<p>3.4.0</p>
+</td>
+<td width="173">
+<p>Updating SM for R99</p>
+</td>
+<td width="75">
+<p>GSM/UMTS Interworking</p>
+</td>
+<td width="63">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CN#8</p>
+</td>
+<td width="52">
+<p>NP-000270</p>
+</td>
+<td width="54">
+<p>N1-000619</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>012</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.3.1</p>
+</td>
+<td width="43">
+<p>3.4.0</p>
+</td>
+<td width="173">
+<p>Remove GRR primitive descriptions and make reference to other document</p>
+</td>
+<td width="75">
+<p>GSM/UMTS Interworking</p>
+</td>
+<td width="63">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CN#8</p>
+</td>
+<td width="52">
+<p>NP-000269</p>
+</td>
+<td width="54">
+<p>N1-000763</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>014</p>
+</td>
+<td width="21">
+<p>2</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.3.1</p>
+</td>
+<td width="43">
+<p>3.4.0</p>
+</td>
+<td width="173">
+<p>Change of the GMM Ready Timer behaviour</p>
+</td>
+<td width="75">
+<p>GPRS</p>
+</td>
+<td width="63">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CN#08</p>
+</td>
+<td width="52">
+<p>NP-000269</p>
+</td>
+<td width="54">
+<p>N1-000668</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>015</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>C</p>
+</td>
+<td width="30">
+<p>3.3.1</p>
+</td>
+<td width="43">
+<p>3.4.0</p>
+</td>
+<td width="173">
+<p>New PD for LLC for use by DTM (Dual Transfer Mode) mobiles</p>
+</td>
+<td width="75">
+<p>GPRS</p>
+</td>
+<td width="63">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CN#8</p>
+</td>
+<td width="52">
+<p>NP-000270</p>
+</td>
+<td width="54">
+<p>N1-000669</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>016</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>C</p>
+</td>
+<td width="30">
+<p>3.3.1</p>
+</td>
+<td width="43">
+<p>3.4.0</p>
+</td>
+<td width="173">
+<p>Services provided by the Radio Resource Management entity</p>
+</td>
+<td width="75">
+<p>GSM/UMTS Interworking</p>
+</td>
+<td width="63">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CN#9</p>
+</td>
+<td width="52">
+<p>NP-000443</p>
+</td>
+<td width="54">
+<p>N1-001032</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>013</p>
+</td>
+<td width="21">
+<p>3</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.4.0</p>
+</td>
+<td width="43">
+<p>3.5.0</p>
+</td>
+<td width="173">
+<p>SAPs and Service primitives for UMTS, PS mode.</p>
+</td>
+<td width="75">
+<p>GSM/UMTS Interworking</p>
+</td>
+<td width="63">
+<p>adapted to adjust the older used release of the spec</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CN#9</p>
+</td>
+<td width="52">
+<p>NP-000443</p>
+</td>
+<td width="54">
+<p>N1-000880</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>018</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.4.0</p>
+</td>
+<td width="43">
+<p>3.5.0</p>
+</td>
+<td width="173">
+<p>Protocol discriminator value for UE special conformance testing functions</p>
+</td>
+<td width="75">
+<p>GSM/UMTS Interworking</p>
+</td>
+<td width="63">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CN#9</p>
+</td>
+<td width="52">
+<p>NP-000443</p>
+</td>
+<td width="54">
+<p>N1-001015</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>019</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.4.0</p>
+</td>
+<td width="43">
+<p>3.5.0</p>
+</td>
+<td width="173">
+<p>Correction of send sequence number method applied protocols</p>
+</td>
+<td width="75">
+<p>GSM/UMTS Interworking</p>
+</td>
+<td width="63">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CN#9</p>
+</td>
+<td width="52">
+<p>NP-000443</p>
+</td>
+<td width="54">
+<p>N1-000930</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>020</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.4.0</p>
+</td>
+<td width="43">
+<p>3.5.0</p>
+</td>
+<td width="173">
+<p>Editorial corrections!!</p>
+</td>
+<td width="75">
+<p>GSM/UMTS Interworking</p>
+</td>
+<td width="63">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CN#9</p>
+</td>
+<td width="52">
+<p>NP-000441</p>
+</td>
+<td width="54">
+<p>N1-000969</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>021</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.4.0</p>
+</td>
+<td width="43">
+<p>3.5.0</p>
+</td>
+<td width="173">
+<p>Protocol Discriminator for DTM (simple class A)</p>
+</td>
+<td width="75">
+<p>GPRS</p>
+</td>
+<td width="63">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-10</p>
+</td>
+<td width="52">
+<p>NP-000673</p>
+</td>
+<td width="54">
+<p>N1-001188</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>024</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.5.0</p>
+</td>
+<td width="43">
+<p>3.6.0</p>
+</td>
+<td width="173">
+<p>Removal of Flow Id from RR-SAP</p>
+</td>
+<td width="75">
+<p>TEI</p>
+</td>
+<td width="63">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-10</p>
+</td>
+<td width="52">
+<p>NP-000670</p>
+</td>
+<td width="54">
+<p>N1-001367</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>025</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.5.0</p>
+</td>
+<td width="43">
+<p>3.6.0</p>
+</td>
+<td width="173">
+<p>RABMAS-SAP and RABMSM-SAP adaptation for Handling of unsynchronized PDP contexts</p>
+</td>
+<td width="75">
+<p>GPRS</p>
+</td>
+<td width="63">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-10</p>
+</td>
+<td width="52">
+<p>NP-000671</p>
+</td>
+<td width="54">
+<p>N1-001246</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>027</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.5.0</p>
+</td>
+<td width="43">
+<p>3.6.0</p>
+</td>
+<td width="173">
+<p>Updating CS/PS protocol architecture figure with RABM</p>
+</td>
+<td width="75">
+<p>GSM/UMTS Interworking</p>
+</td>
+<td width="63">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-10</p>
+</td>
+<td width="52">
+<p>NP-000671</p>
+</td>
+<td width="54">
+<p>N1-001256</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>028</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.5.0</p>
+</td>
+<td width="43">
+<p>3.6.0</p>
+</td>
+<td width="173">
+<p>Alignment of 24.007 to other specs</p>
+</td>
+<td width="75">
+<p>GSM/UMTS Interworking</p>
+</td>
+<td width="63">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-11</p>
+</td>
+<td width="52">
+<p>NP-010123</p>
+</td>
+<td width="54">
+<p>N1-010101</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>025</p>
+</td>
+<td width="21">
+<p>2</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.6.0</p>
+</td>
+<td width="43">
+<p>3.7.0</p>
+</td>
+<td width="173">
+<p>Addition of Stream Identifier and NAS Synchronization Indicator to the primitives</p>
+</td>
+<td width="75">
+<p>GSM/UMTS interworking</p>
+</td>
+<td width="63">
+<p>03-2001</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-11</p>
+</td>
+<td width="52">
+<p>NP-010123</p>
+</td>
+<td width="54">
+<p>N1-010083</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>032</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.6.0</p>
+</td>
+<td width="43">
+<p>3.7.0</p>
+</td>
+<td width="173">
+<p>Change MMAS-SAP to RR-SAP in fig. 5.6</p>
+</td>
+<td width="75">
+<p>GSM/UMTS interworking</p>
+</td>
+<td width="63">
+<p>03-2001</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-11</p>
+</td>
+<td width="52">
+<p>NP-010207</p>
+</td>
+<td width="54">
+<p>N1-010486</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>034</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.6.0</p>
+</td>
+<td width="43">
+<p>3.7.0</p>
+</td>
+<td width="173">
+<p>Transfer of the N(SD) duplication avoidance protocol from GSM 04.18</p>
+</td>
+<td width="75">
+<p>GSM/UMTS interworking</p>
+</td>
+<td width="63">
+<p>03-2001</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-11</p>
+</td>
+<td width="52">
+<p>NP-010205</p>
+</td>
+<td width="54">
+<p>N1-010447</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>035</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>R99</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>3.6.0</p>
+</td>
+<td width="43">
+<p>3.7.0</p>
+</td>
+<td width="173">
+<p>Deletion of cause 'unsynchronousPDP' in RABMAS-SAP</p>
+</td>
+<td width="75">
+<p>TEI</p>
+</td>
+<td width="63">
+<p>03-2001</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-11</p>
+</td>
+<td width="52">
+<p>NP-010206</p>
+</td>
+<td width="54">
+<p>N1-010444</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>031</p>
+</td>
+<td width="21">
+<p>3</p>
+</td>
+<td width="28">
+<p>Rel-4</p>
+</td>
+<td width="15">
+<p>B</p>
+</td>
+<td width="30">
+<p>3.7.0</p>
+</td>
+<td width="43">
+<p>4.0.0</p>
+</td>
+<td width="173">
+<p>Adaptation of SS protocol to PS domain</p>
+</td>
+<td width="75">
+<p>TEI</p>
+</td>
+<td width="63">
+<p>03-2001</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-14</p>
+</td>
+<td width="52">
+<p>NP-010682</p>
+</td>
+<td width="54">
+<p>N1-011811</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>043</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>Rel-4</p>
+</td>
+<td width="15">
+<p>A</p>
+</td>
+<td width="30">
+<p>4.0.0</p>
+</td>
+<td width="43">
+<p>4.1.0</p>
+</td>
+<td width="173">
+<p>Clarification of the send sequence number mechanism</p>
+</td>
+<td width="75">
+<p>GSM/UMTS interworking</p>
+</td>
+<td width="63">
+<p>12-2001</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-16</p>
+</td>
+<td width="52">
+<p>NP-020218</p>
+</td>
+<td width="54">
+<p>N1-021341</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>047</p>
+</td>
+<td width="21">
+<p>2</p>
+</td>
+<td width="28">
+<p>Rel-4</p>
+</td>
+<td width="15">
+<p>A</p>
+</td>
+<td width="30">
+<p>4.1.0</p>
+</td>
+<td width="43">
+<p>4.2.0</p>
+</td>
+<td width="173">
+<p>RR protocol message type octet</p>
+</td>
+<td width="75">
+<p>GSM/UMTS interworking</p>
+</td>
+<td width="63">
+<p>06-2002</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-16</p>
+</td>
+<td width="52">
+<p>NP-020222</p>
+</td>
+<td width="54">
+<p>N1-020893</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>049</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>Rel-4</p>
+</td>
+<td width="15">
+<p>A</p>
+</td>
+<td width="30">
+<p>4.1.0</p>
+</td>
+<td width="43">
+<p>4.2.0</p>
+</td>
+<td width="173">
+<p>Clarification of the extension mechanism for type 4 IEs</p>
+</td>
+<td width="75">
+<p>TEI</p>
+</td>
+<td width="63">
+<p>06-2002</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-16</p>
+</td>
+<td width="52">
+<p>NP-020224</p>
+</td>
+<td width="54">
+<p>N1-021367</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>053</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>Rel-4</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>4.1.0</p>
+</td>
+<td width="43">
+<p>4.2.0</p>
+</td>
+<td width="173">
+<p>Various clean-up of wrong references, eg towards 44.018 and 23.271</p>
+</td>
+<td width="75">
+<p>TEI4</p>
+</td>
+<td width="63">
+<p>06-2002</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-16</p>
+</td>
+<td width="52">
+<p>&nbsp;</p>
+</td>
+<td width="54">
+<p>&nbsp;</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>&nbsp;</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>Rel-5</p>
+</td>
+<td width="15">
+<p>&nbsp;</p>
+</td>
+<td width="30">
+<p>4.2.0</p>
+</td>
+<td width="43">
+<p>5.0.0</p>
+</td>
+<td width="173">
+<p>Plenary decision to make this TS also for Rel-5.</p>
+</td>
+<td width="75">
+<p>&nbsp;</p>
+</td>
+<td width="63">
+<p>06-2002</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-17</p>
+</td>
+<td width="52">
+<p>NP-020383</p>
+</td>
+<td width="54">
+<p>N1-021836</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>057</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>Rel-5</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>5.0.0</p>
+</td>
+<td width="43">
+<p>5.1.0</p>
+</td>
+<td width="173">
+<p>Clarification of the CN release indicators</p>
+</td>
+<td width="75">
+<p>TEI5</p>
+</td>
+<td width="63">
+<p>09-2002</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-22</p>
+</td>
+<td width="52">
+<p>NP-030485</p>
+</td>
+<td width="54">
+<p>N1-031653</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>059</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>Rel-6</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>5.1.0</p>
+</td>
+<td width="43">
+<p>6.0.0</p>
+</td>
+<td width="173">
+<p>Don't use SAPI to differentiate between messages of the same message type.</p>
+</td>
+<td width="75">
+<p>TEI6</p>
+</td>
+<td width="63">
+<p>12-2003</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-24</p>
+</td>
+<td width="52">
+<p>NP-040185</p>
+</td>
+<td width="54">
+<p>N1-040967</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>063</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>Rel-6</p>
+</td>
+<td width="15">
+<p>A</p>
+</td>
+<td width="30">
+<p>6.0.0</p>
+</td>
+<td width="43">
+<p>6.1.0</p>
+</td>
+<td width="173">
+<p>Corrections concerning the use of the LCS protocol</p>
+</td>
+<td width="75">
+<p>LCS</p>
+</td>
+<td width="63">
+<p>06-2004</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-25</p>
+</td>
+<td width="52">
+<p>NP-040377</p>
+</td>
+<td width="54">
+<p>N1-041625</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>064</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>Rel-6</p>
+</td>
+<td width="15">
+<p>B</p>
+</td>
+<td width="30">
+<p>6.1.0</p>
+</td>
+<td width="43">
+<p>6.2.0</p>
+</td>
+<td width="173">
+<p>Update of the Session Management services - MBMS</p>
+</td>
+<td width="75">
+<p>MBMS</p>
+</td>
+<td width="63">
+<p>09-2004</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-25</p>
+</td>
+<td width="52">
+<p>NP-040375</p>
+</td>
+<td width="54">
+<p>N1-041645</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>067</p>
+</td>
+<td width="21">
+<p>4</p>
+</td>
+<td width="28">
+<p>Rel-6</p>
+</td>
+<td width="15">
+<p>B</p>
+</td>
+<td width="30">
+<p>6.1.0</p>
+</td>
+<td width="43">
+<p>6.2.0</p>
+</td>
+<td width="173">
+<p>Sequence number handling during redirection in MOCN sharing scenario</p>
+</td>
+<td width="75">
+<p>NTShar</p>
+</td>
+<td width="63">
+<p>09-2004</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-26</p>
+</td>
+<td width="52">
+<p>NP-040501</p>
+</td>
+<td width="54">
+<p>N1-04844</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>070</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>&nbsp;</p>
+</td>
+<td width="15">
+<p>A</p>
+</td>
+<td width="30">
+<p>6.2.0</p>
+</td>
+<td width="43">
+<p>6.3.0</p>
+</td>
+<td width="173">
+<p>Sequence numbering for SS via PS</p>
+</td>
+<td width="75">
+<p>TEI4</p>
+</td>
+<td width="63">
+<p>12-2004</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>NP-27</p>
+</td>
+<td width="52">
+<p>NP-050068</p>
+</td>
+<td width="54">
+<p>N1-050045</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>072</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>Rel-6</p>
+</td>
+<td width="15">
+<p>A</p>
+</td>
+<td width="30">
+<p>6.3.0</p>
+</td>
+<td width="43">
+<p>6.4.0</p>
+</td>
+<td width="173">
+<p>Addition of maximum data rate to RR_SYNC_IND and MMCC_SYNC_IND</p>
+</td>
+<td width="75">
+<p>SCUDIF</p>
+</td>
+<td width="63">
+<p>03-2005</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-29</p>
+</td>
+<td width="52">
+<p>CP-050361</p>
+</td>
+<td width="54">
+<p>C1-050966</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>074</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>Rel-6</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>6.4.0</p>
+</td>
+<td width="43">
+<p>6.5.0</p>
+</td>
+<td width="173">
+<p>Use of short header format on SDCCH / FACCH</p>
+</td>
+<td width="75">
+<p>TEI6</p>
+</td>
+<td width="63">
+<p>09-2005</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-29</p>
+</td>
+<td width="52">
+<p>CP-050366</p>
+</td>
+<td width="54">
+<p>C1-051030</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>075</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>Rel-7</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>6.5.0</p>
+</td>
+<td width="43">
+<p>7.0.0</p>
+</td>
+<td width="173">
+<p>Handling of the L2 Pseudo Length</p>
+</td>
+<td width="75">
+<p>TEI7</p>
+</td>
+<td width="63">
+<p>09-2005</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-42</p>
+</td>
+<td width="52">
+<p>CP-080866</p>
+</td>
+<td width="54">
+<p>C1-085163</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>0078</p>
+</td>
+<td width="21">
+<p>2</p>
+</td>
+<td width="28">
+<p>Rel-8</p>
+</td>
+<td width="15">
+<p>B</p>
+</td>
+<td width="30">
+<p>7.0.0</p>
+</td>
+<td width="43">
+<p>8.0.0</p>
+</td>
+<td width="173">
+<p>Support of EPS NAS protocols</p>
+</td>
+<td width="75">
+<p>SAES</p>
+</td>
+<td width="63">
+<p>12-2008</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-43</p>
+</td>
+<td width="52">
+<p>CP-090125</p>
+</td>
+<td width="54">
+<p>C1-091296</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>0082</p>
+</td>
+<td width="21">
+<p>2</p>
+</td>
+<td width="28">
+<p>Rel-8</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>8.0.0</p>
+</td>
+<td width="43">
+<p>8.1.0</p>
+</td>
+<td width="173">
+<p>UE side architecture figure without CSFB</p>
+</td>
+<td width="75">
+<p>SAES</p>
+</td>
+<td width="63">
+<p>03-2009</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-43</p>
+</td>
+<td width="52">
+<p>CP-090153</p>
+</td>
+<td width="54">
+<p>C1-091320</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>0083</p>
+</td>
+<td width="21">
+<p>2</p>
+</td>
+<td width="28">
+<p>Rel-8</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>8.0.0</p>
+</td>
+<td width="43">
+<p>8.1.0</p>
+</td>
+<td width="173">
+<p>Architecture figure for EPS UE + CSFB</p>
+</td>
+<td width="75">
+<p>SAES-CSFB</p>
+</td>
+<td width="63">
+<p>03-2009</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-43</p>
+</td>
+<td width="52">
+<p>CP-090130</p>
+</td>
+<td width="54">
+<p>C1-091182</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>0085</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>Rel-8</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>8.0.0</p>
+</td>
+<td width="43">
+<p>8.1.0</p>
+</td>
+<td width="173">
+<p>Message duplication in S1 mode</p>
+</td>
+<td width="75">
+<p>SAES</p>
+</td>
+<td width="63">
+<p>03-2009</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-43</p>
+</td>
+<td width="52">
+<p>CP-090125</p>
+</td>
+<td width="54">
+<p>C1-091106</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>0086</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>Rel-8</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>8.0.0</p>
+</td>
+<td width="43">
+<p>8.1.0</p>
+</td>
+<td width="173">
+<p>Add reference of LTE test control specification</p>
+</td>
+<td width="75">
+<p>SAES</p>
+</td>
+<td width="63">
+<p>03-2009</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-43</p>
+</td>
+<td width="52">
+<p>CP-090126</p>
+</td>
+<td width="54">
+<p>C1-091350</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>0087</p>
+</td>
+<td width="21">
+<p>2</p>
+</td>
+<td width="28">
+<p>Rel-8</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>8.0.0</p>
+</td>
+<td width="43">
+<p>8.1.0</p>
+</td>
+<td width="173">
+<p>Clarification of format of LV-E/TLV-E Length Indicator format</p>
+</td>
+<td width="75">
+<p>SAES</p>
+</td>
+<td width="63">
+<p>03-2009</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-43</p>
+</td>
+<td width="52">
+<p>&nbsp;</p>
+</td>
+<td width="54">
+<p>&nbsp;</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>&nbsp;</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>Rel-8</p>
+</td>
+<td width="15">
+<p>&nbsp;</p>
+</td>
+<td width="30">
+<p>8.0.0</p>
+</td>
+<td width="43">
+<p>8.1.0</p>
+</td>
+<td width="173">
+<p>Editorial cleanup by MCC</p>
+</td>
+<td width="75">
+<p>&nbsp;</p>
+</td>
+<td width="63">
+<p>03-2009</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-44</p>
+</td>
+<td width="52">
+<p>CP-090422</p>
+</td>
+<td width="54">
+<p>C1-092120</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>0090</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>Rel-8</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>8.1.0</p>
+</td>
+<td width="43">
+<p>8.2.0</p>
+</td>
+<td width="173">
+<p>Handling of sequence numbers</p>
+</td>
+<td width="75">
+<p>SAES-SRVCC</p>
+</td>
+<td width="63">
+<p>06-2009</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-46</p>
+</td>
+<td width="52">
+<p>&nbsp;</p>
+</td>
+<td width="54">
+<p>&nbsp;</p>
+</td>
+<td width="32">
+<p>&nbsp;</p>
+</td>
+<td width="25">
+<p>&nbsp;</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>Rel-9</p>
+</td>
+<td width="15">
+<p>&nbsp;</p>
+</td>
+<td width="30">
+<p>8.2.0</p>
+</td>
+<td width="43">
+<p>9.0.0</p>
+</td>
+<td width="173">
+<p>Upgrade to Rel-9 by MCC</p>
+</td>
+<td width="75">
+<p>&nbsp;</p>
+</td>
+<td width="63">
+<p>12-2009</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-51</p>
+</td>
+<td width="52">
+<p>&nbsp;</p>
+</td>
+<td width="54">
+<p>&nbsp;</p>
+</td>
+<td width="32">
+<p>&nbsp;</p>
+</td>
+<td width="25">
+<p>&nbsp;</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>Rel-10</p>
+</td>
+<td width="15">
+<p>&nbsp;</p>
+</td>
+<td width="30">
+<p>9.0.0</p>
+</td>
+<td width="43">
+<p>10.0.0</p>
+</td>
+<td width="173">
+<p>Upgrade to Rel-10 by MCC</p>
+</td>
+<td width="75">
+<p>&nbsp;</p>
+</td>
+<td width="63">
+<p>03-2011</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-56</p>
+</td>
+<td width="52">
+<p>CP-120309</p>
+</td>
+<td width="54">
+<p>C1-121630</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>0094</p>
+</td>
+<td width="21">
+<p>2</p>
+</td>
+<td width="28">
+<p>Rel-11</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>10.0.0</p>
+</td>
+<td width="43">
+<p>11.0.0</p>
+</td>
+<td width="173">
+<p>Clarify maintenance concept for this specification</p>
+</td>
+<td width="75">
+<p>TEI11</p>
+</td>
+<td width="63">
+<p>06-2012</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-60</p>
+</td>
+<td width="52">
+<p>CP-130264</p>
+</td>
+<td width="54">
+<p>C1-131596</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>0095</p>
+</td>
+<td width="21">
+<p>1</p>
+</td>
+<td width="28">
+<p>Rel-12</p>
+</td>
+<td width="15">
+<p>F</p>
+</td>
+<td width="30">
+<p>11.0.0</p>
+</td>
+<td width="43">
+<p>12.0.0</p>
+</td>
+<td width="173">
+<p>CM sublayer of EPS services</p>
+</td>
+<td width="75">
+<p>TEI12</p>
+</td>
+<td width="63">
+<p>06-2012</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-60</p>
+</td>
+<td width="52">
+<p>CP-130264</p>
+</td>
+<td width="54">
+<p>C1-131744</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>0096</p>
+</td>
+<td width="21">
+<p>2</p>
+</td>
+<td width="28">
+<p>Rel-12</p>
+</td>
+<td width="15">
+<p>&nbsp;</p>
+</td>
+<td width="30">
+<p>11.0.0</p>
+</td>
+<td width="43">
+<p>12.0.0</p>
+</td>
+<td width="173">
+<p>Clarify on specification maintenance</p>
+</td>
+<td width="75">
+<p>TEI12</p>
+</td>
+<td width="63">
+<p>06-2012</p>
+</td>
+</tr>
+<tr>
+<td width="33">
+<p>CP-70</p>
+</td>
+<td width="52">
+<p>&nbsp;</p>
+</td>
+<td width="54">
+<p>&nbsp;</p>
+</td>
+<td width="32">
+<p>24.007</p>
+</td>
+<td width="25">
+<p>&nbsp;</p>
+</td>
+<td width="21">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>Rel-13</p>
+</td>
+<td width="15">
+<p>&nbsp;</p>
+</td>
+<td width="30">
+<p>12.0.0</p>
+</td>
+<td width="43">
+<p>13.0.0</p>
+</td>
+<td width="173">
+<p>Upgrade to Rel-13 by MCC</p>
+</td>
+<td width="75">
+<p>&nbsp;</p>
+</td>
+<td width="63">
+<p>12-2015</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table width="699">
+<tbody>
+<tr>
+<td colspan="8" width="699">
+<p><strong>Change history</strong></p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p><strong>Date</strong></p>
+</td>
+<td width="53">
+<p><strong>Meeting</strong></p>
+</td>
+<td width="72">
+<p><strong>TDoc</strong></p>
+</td>
+<td width="35">
+<p><strong>CR</strong></p>
+</td>
+<td width="31">
+<p><strong>Rev</strong></p>
+</td>
+<td width="28">
+<p><strong>Cat</strong></p>
+</td>
+<td width="370">
+<p><strong>Subject/Comment</strong></p>
+</td>
+<td width="57">
+<p><strong>New version</strong></p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2017-03</p>
+</td>
+<td width="53">
+<p>CP-75</p>
+</td>
+<td width="72">
+<p>CP-170129</p>
+</td>
+<td width="35">
+<p>0099</p>
+</td>
+<td width="31">
+<p>2</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>Addition of ePCO for GPRS</p>
+</td>
+<td width="57">
+<p>14.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-03</p>
+</td>
+<td width="53">
+<p>CP-79</p>
+</td>
+<td width="72">
+<p>CP-180075</p>
+</td>
+<td width="35">
+<p>0100</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>Extended protocol discriminator</p>
+</td>
+<td width="57">
+<p>15.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-03</p>
+</td>
+<td width="53">
+<p>CP-79</p>
+</td>
+<td width="72">
+<p>CP-180075</p>
+</td>
+<td width="35">
+<p>0101</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>Update of protocol discriminator values for test procedures for 5GS</p>
+</td>
+<td width="57">
+<p>15.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-03</p>
+</td>
+<td width="53">
+<p>CP-79</p>
+</td>
+<td width="72">
+<p>CP-180075</p>
+</td>
+<td width="35">
+<p>0103</p>
+</td>
+<td width="31">
+<p>2</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>For 5GS - UE protocol architecture</p>
+</td>
+<td width="57">
+<p>15.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-03</p>
+</td>
+<td width="53">
+<p>CP-79</p>
+</td>
+<td width="72">
+<p>CP-180075</p>
+</td>
+<td width="35">
+<p>0104</p>
+</td>
+<td width="31">
+<p>2</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>For 5GS &ndash; message and security headers and PDU session identities</p>
+</td>
+<td width="57">
+<p>15.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-03</p>
+</td>
+<td width="53">
+<p>CP-79</p>
+</td>
+<td width="72">
+<p>CP-180075</p>
+</td>
+<td width="35">
+<p>0107</p>
+</td>
+<td width="31">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>Format of standard IE for 5GS</p>
+</td>
+<td width="57">
+<p>15.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-03</p>
+</td>
+<td width="53">
+<p>CP-79</p>
+</td>
+<td width="72">
+<p>CP-180075</p>
+</td>
+<td width="35">
+<p>0108</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>Scope update for 5GS</p>
+</td>
+<td width="57">
+<p>15.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-03</p>
+</td>
+<td width="53">
+<p>CP-79</p>
+</td>
+<td width="72">
+<p>CP-180075</p>
+</td>
+<td width="35">
+<p>0110</p>
+</td>
+<td width="31">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>Definition of 5GS NAS message type for 5GS</p>
+</td>
+<td width="57">
+<p>15.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-06</p>
+</td>
+<td width="53">
+<p>CP-80</p>
+</td>
+<td width="72">
+<p>CP-181057</p>
+</td>
+<td width="35">
+<p>0111</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>Specification of security protected 5GS NAS message header</p>
+</td>
+<td width="57">
+<p>15.1.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-06</p>
+</td>
+<td width="53">
+<p>CP-80</p>
+</td>
+<td width="72">
+<p>CP-181069</p>
+</td>
+<td width="35">
+<p>0112</p>
+</td>
+<td width="31">
+<p>2</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>EPS bearer identity in NAS message header</p>
+</td>
+<td width="57">
+<p>15.1.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-06</p>
+</td>
+<td width="53">
+<p>CP-80</p>
+</td>
+<td width="72">
+<p>CP-181057</p>
+</td>
+<td width="35">
+<p>0113</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>Include TS 24.501 and TS 24.502 among the layer 3 related Technical Specification</p>
+<p>&nbsp;</p>
+</td>
+<td width="57">
+<p>15.1.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-06</p>
+</td>
+<td width="53">
+<p>CP-80</p>
+</td>
+<td width="72">
+<p>CP-181058</p>
+</td>
+<td width="35">
+<p>0114</p>
+</td>
+<td width="31">
+<p>2</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>PDU session identity</p>
+</td>
+<td width="57">
+<p>15.1.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-09</p>
+</td>
+<td width="53">
+<p>CP-81</p>
+</td>
+<td width="72">
+<p>CP-182128</p>
+</td>
+<td width="35">
+<p>0116</p>
+</td>
+<td width="31">
+<p>2</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Interaction when uplink user data packet is to be sent via a PDU session with suspended user-plane resources</p>
+</td>
+<td width="57">
+<p>15.2.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-09</p>
+</td>
+<td width="53">
+<p>CP-81</p>
+</td>
+<td width="72">
+<p>CP-182128</p>
+</td>
+<td width="35">
+<p>0117</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Correction on PTI definition</p>
+</td>
+<td width="57">
+<p>15.2.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-09</p>
+</td>
+<td width="53">
+<p>CP-81</p>
+</td>
+<td width="72">
+<p>CP-182128</p>
+</td>
+<td width="35">
+<p>0118</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Multiple access technologies in NG-RAN carrying 5GS NAS</p>
+</td>
+<td width="57">
+<p>15.2.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-12</p>
+</td>
+<td width="53">
+<p>CP-82</p>
+</td>
+<td width="72">
+<p>CP-183030</p>
+</td>
+<td width="35">
+<p>0121</p>
+</td>
+<td width="31">
+<p>2</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Value range of IEs for 5GMM and 5GSM protocols</p>
+</td>
+<td width="57">
+<p>15.3.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2018-12</p>
+</td>
+<td width="53">
+<p>CP-82</p>
+</td>
+<td width="72">
+<p>CP-183030</p>
+</td>
+<td width="35">
+<p>0122</p>
+</td>
+<td width="31">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Correction to scope</p>
+</td>
+<td width="57">
+<p>15.3.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2019-03</p>
+</td>
+<td width="53">
+<p>CP-83</p>
+</td>
+<td width="72">
+<p>CP-190105</p>
+</td>
+<td width="35">
+<p>0123</p>
+</td>
+<td width="31">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>EPS bearers not released when moving to EMM-IDLE</p>
+</td>
+<td width="57">
+<p>16.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2019-06</p>
+</td>
+<td width="53">
+<p>CP-84</p>
+</td>
+<td width="72">
+<p>CP-191145</p>
+</td>
+<td width="35">
+<p>0124</p>
+</td>
+<td width="31">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>EPS bearers not released when moving to EMM-IDLE</p>
+</td>
+<td width="57">
+<p>16.1.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2020-03</p>
+</td>
+<td width="53">
+<p>CP-87e</p>
+</td>
+<td width="72">
+<p>CP-200128</p>
+</td>
+<td width="35">
+<p>0128</p>
+</td>
+<td width="31">
+<p>3</p>
+</td>
+<td width="28">
+<p>D</p>
+</td>
+<td width="370">
+<p>Correcting reference</p>
+</td>
+<td width="57">
+<p>16.2.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2020-06</p>
+</td>
+<td width="53">
+<p>CP-88e</p>
+</td>
+<td width="72">
+<p>CP-201131</p>
+</td>
+<td width="35">
+<p>0129</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Type 3 IE is not recommended to be used as an optional IE</p>
+</td>
+<td width="57">
+<p>16.3.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2020-09</p>
+</td>
+<td width="53">
+<p>CP-89e</p>
+</td>
+<td width="72">
+<p>CP-202170</p>
+</td>
+<td width="35">
+<p>0130</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>IEI assignment rule between TSN AF and TSN translator</p>
+</td>
+<td width="57">
+<p>16.4.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2020-12</p>
+</td>
+<td width="53">
+<p>CP-90e</p>
+</td>
+<td width="72">
+<p>CP-203188</p>
+</td>
+<td width="35">
+<p>0132</p>
+</td>
+<td width="31">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Updates due to eV2XARC</p>
+</td>
+<td width="57">
+<p>16.5.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2020-12</p>
+</td>
+<td width="53">
+<p>CP-90e</p>
+</td>
+<td width="72">
+<p>CP-203218</p>
+</td>
+<td width="35">
+<p>0133</p>
+</td>
+<td width="31">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Include TS 24.519 among the layer 3 related Technical Specifications</p>
+</td>
+<td width="57">
+<p>16.5.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2020-12</p>
+</td>
+<td width="53">
+<p>CP-90e</p>
+</td>
+<td width="72">
+<p>CP-203179</p>
+</td>
+<td width="35">
+<p>0134</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Updates due to ATSSS</p>
+</td>
+<td width="57">
+<p>16.5.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2020-12</p>
+</td>
+<td width="53">
+<p>CP-90e</p>
+</td>
+<td width="72">
+<p>CP-203213</p>
+</td>
+<td width="35">
+<p>0138</p>
+</td>
+<td width="31">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Updates due to ProSe signalling messages sent over the PC3 or PC5 interfaces</p>
+</td>
+<td width="57">
+<p>16.5.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2020-12</p>
+</td>
+<td width="53">
+<p>CP-90e</p>
+</td>
+<td width="72">
+<p>CP-203214</p>
+</td>
+<td width="35">
+<p>0131</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Recommendation about the use of type 2 IEs</p>
+</td>
+<td width="57">
+<p>17.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2020-12</p>
+</td>
+<td width="53">
+<p>CP-90e</p>
+</td>
+<td width="72">
+<p>CP-203168</p>
+</td>
+<td width="35">
+<p>0135</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>PDU session IDs exclusive for the 5G core network</p>
+</td>
+<td width="57">
+<p>17.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2020-12</p>
+</td>
+<td width="53">
+<p>CP-90e</p>
+</td>
+<td width="72">
+<p>CP-203168</p>
+</td>
+<td width="35">
+<p>0136</p>
+</td>
+<td width="31">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>IEI assignment from UE policy delivery service</p>
+</td>
+<td width="57">
+<p>17.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2020-12</p>
+</td>
+<td width="53">
+<p>CP-90e</p>
+</td>
+<td width="72">
+<p>CP-203214</p>
+</td>
+<td width="35">
+<p>0139</p>
+</td>
+<td width="31">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Coding of successive half-octet IEs</p>
+</td>
+<td width="57">
+<p>17.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2021-03</p>
+</td>
+<td width="53">
+<p>CP-91e</p>
+</td>
+<td width="72">
+<p>CP-210116</p>
+</td>
+<td width="35">
+<p>0140</p>
+</td>
+<td width="31">
+<p>&nbsp;</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>UE policy delivery service missing</p>
+</td>
+<td width="57">
+<p>17.1.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2021-06</p>
+</td>
+<td width="53">
+<p>CP-92e</p>
+</td>
+<td width="72">
+<p>CP-211150</p>
+</td>
+<td width="35">
+<p>0141</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>&nbsp;</p>
+</td>
+<td width="370">
+<p>Corrections to L3 Messages description</p>
+</td>
+<td width="57">
+<p>17.2.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2022-03</p>
+</td>
+<td width="53">
+<p>CP-95e</p>
+</td>
+<td width="72">
+<p>CP-220268</p>
+</td>
+<td width="35">
+<p>0142</p>
+</td>
+<td width="31">
+<p>-</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>Add new TS 24.554</p>
+</td>
+<td width="57">
+<p>17.3.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2022-06</p>
+</td>
+<td width="53">
+<p>CP-96</p>
+</td>
+<td width="72">
+<p>CP-221111</p>
+</td>
+<td width="35">
+<p>0144</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>Include TS 24.538 among the layer 3 related technical specifications</p>
+</td>
+<td width="57">
+<p>17.4.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2022-09</p>
+</td>
+<td width="53">
+<p>CP-97</p>
+</td>
+<td width="72">
+<p>CP-222158</p>
+</td>
+<td width="35">
+<p>0146</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>C</p>
+</td>
+<td width="370">
+<p>Correction of the comprehension required criterion</p>
+</td>
+<td width="57">
+<p>17.5.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2023-09</p>
+</td>
+<td width="53">
+<p>CP-101</p>
+</td>
+<td width="72">
+<p>CP-232201</p>
+</td>
+<td width="35">
+<p>0148</p>
+</td>
+<td width="31">
+<p>3</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>Addition of Location Services user plane protocol</p>
+</td>
+<td width="57">
+<p>18.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2023-12</p>
+</td>
+<td width="53">
+<p>CP-102</p>
+</td>
+<td width="72">
+<p>CP-233190</p>
+</td>
+<td width="35">
+<p>0149</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Correction to the applicability of TS 24.587</p>
+</td>
+<td width="57">
+<p>18.1.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2023-12</p>
+</td>
+<td width="53">
+<p>CP-102</p>
+</td>
+<td width="72">
+<p>CP-233128</p>
+</td>
+<td width="35">
+<p>0150</p>
+</td>
+<td width="31">
+<p>-</p>
+</td>
+<td width="28">
+<p>B</p>
+</td>
+<td width="370">
+<p>Addition of Location Services user plane protocol</p>
+</td>
+<td width="57">
+<p>18.1.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2024-06</p>
+</td>
+<td width="53">
+<p>CP-104</p>
+</td>
+<td width="72">
+<p>CP-241153</p>
+</td>
+<td width="35">
+<p>0154</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Include TS 24.572 among the layer 3 related Technical Specifications</p>
+</td>
+<td width="57">
+<p>18.2.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2024-06</p>
+</td>
+<td width="53">
+<p>CP-104</p>
+</td>
+<td width="72">
+<p>CP-241192</p>
+</td>
+<td width="35">
+<p>0153</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Update to support rangingsl</p>
+</td>
+<td width="57">
+<p>18.2.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2024-06</p>
+</td>
+<td width="53">
+<p>CP-104</p>
+</td>
+<td width="72">
+<p>CP-241202</p>
+</td>
+<td width="35">
+<p>0156</p>
+</td>
+<td width="31">
+<p>2</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Include TS 24.577 among the layer 3 related Technical Specifications</p>
+</td>
+<td width="57">
+<p>18.2.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2024-09</p>
+</td>
+<td width="53">
+<p>CP-105</p>
+</td>
+<td width="72">
+<p>CP-242193</p>
+</td>
+<td width="35">
+<p>0157</p>
+</td>
+<td width="31">
+<p>2</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Aligning the extended PC5 signalling protocol for ranging and sidelink positioning usage across the specs</p>
+</td>
+<td width="57">
+<p>18.3.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2024-09</p>
+</td>
+<td width="53">
+<p>CP-105</p>
+</td>
+<td width="72">
+<p>CP-242201</p>
+</td>
+<td width="35">
+<p>0158</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Correction to use of type 6 IEs</p>
+</td>
+<td width="57">
+<p>19.0.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2024-12</p>
+</td>
+<td width="53">
+<p>CP-106</p>
+</td>
+<td width="72">
+<p>CP-243200</p>
+</td>
+<td width="35">
+<p>0159</p>
+</td>
+<td width="31">
+<p>1</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Adding a reference to Type 6 IE container IE</p>
+</td>
+<td width="57">
+<p>19.1.0</p>
+</td>
+</tr>
+<tr>
+<td width="53">
+<p>2024-12</p>
+</td>
+<td width="53">
+<p>CP-106</p>
+</td>
+<td width="72">
+<p>CP-243196</p>
+</td>
+<td width="35">
+<p>0161</p>
+</td>
+<td width="31">
+<p>-</p>
+</td>
+<td width="28">
+<p>F</p>
+</td>
+<td width="370">
+<p>Correction of EPD for 5GS message routing</p>
+</td>
+<td width="57">
+<p>19.1.0</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>

@@ -1,0 +1,28 @@
+<h1><a name="_Toc11256560"></a><a name="_Toc36116552"></a><a name="_Toc45096609"></a><a name="_Toc51762475"></a><a name="_Toc178270748"></a>8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Services assumed from signalling layers 1 and 2</h1>
+<p>The services provided by layer 2 are defined in detail in 3GPP&nbsp;TS&nbsp;44.005&nbsp;[4]. A short summary is given below.</p>
+<p>In addition, layer 1 communicates directly with layer 3 for information transfer related to channel management and to measurement control. See clause&nbsp;8.5 below.</p>
+<h2><a name="_Toc11256561"></a><a name="_Toc36116553"></a><a name="_Toc45096610"></a><a name="_Toc51762476"></a><a name="_Toc178270749"></a>8.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Priority</h2>
+<p>Messages from layer 3 can be sent with:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; no priority;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i.e. the messages are sent in first‑in‑first‑out order;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; priority;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i.e. a message with this indication is sent as early as possible by layer 2.</p>
+<h2><a name="_Toc11256562"></a><a name="_Toc36116554"></a><a name="_Toc45096611"></a><a name="_Toc51762477"></a><a name="_Toc178270750"></a>8.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unacknowledged information transfer</h2>
+<p>Transfer of unacknowledged information using the primitives DL_UNIT_DATA_ REQUEST/INDICATION.</p>
+<h2><a name="_Toc11256563"></a><a name="_Toc36116555"></a><a name="_Toc45096612"></a><a name="_Toc51762478"></a><a name="_Toc178270751"></a>8.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Acknowledged information transfer</h2>
+<p>Transfer of information in multiframe acknowledged mode including:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; establishment of data link connection between L3 entities;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; transfer of information in acknowledged mode;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; release of the data link connection.</p>
+<p>The primitives associated with acknowledged information transfer are:</p>
+<p>- DL_ESTABLISH_REQUEST/INDICATION/CONFIRM for establishment of acknowledged mode;</p>
+<p>- DL_DATA_REQUEST/INDICATION for requesting the transmission of a message unit and for indicating the reception of a message unit;</p>
+<p>- DL_SUSPEND_REQUEST/DL_RELEASE_CONFIRM for requesting and confirming the suspension of the acknowledged information transfer in the MS upon channel change;</p>
+<p>- DL_RESUME_REQUEST/DL_ESTABLISH_CONFIRM for requesting and confirming the resumption of the acknowledged information transfer in the MS after suspension at channel change;</p>
+<p>- DL_RELEASE_REQUEST/INDICATION/CONFIRM for the termination of acknowledged mode operation;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; DL_RECONNECT_REQUEST for requesting the re-establishment of acknowledged information transfer in the MS on the old channel after channel change failure.</p>
+<h2><a name="_Toc11256564"></a><a name="_Toc36116556"></a><a name="_Toc45096613"></a><a name="_Toc51762479"></a><a name="_Toc178270752"></a>8.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Random access</h2>
+<p>The transmission/reception of a random access burst is controlled by the primitives DL_RANDOM_ACCESS_REQUEST/INDICATION/CONFIRM.</p>
+<h2><a name="_Toc11256565"></a><a name="_Toc36116557"></a><a name="_Toc45096614"></a><a name="_Toc51762480"></a><a name="_Toc178270753"></a>8.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Channel management and measurements</h2>
+<p>The management of channels, i.e. their activation, deactivation, configuration, deconfiguration, through‑connection and disconnection is controlled by the RR sublayer in layer 3. The measurements performed by the physical layer are also controlled by the RR sublayer of layer 3 and they are reported to layer 3.</p>
+<p>These functions use the primitives MPH_INFORMATION_REQUEST/INDICATION/CONFIRMATION.</p>

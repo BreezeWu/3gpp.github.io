@@ -1,0 +1,1605 @@
+<h1><a name="_Toc11256338"></a><a name="_Toc36116330"></a><a name="_Toc45096387"></a><a name="_Toc51762253"></a><a name="_Toc178270526"></a>6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Services provided by signalling layer 3 at the MS side</h1>
+<p>The different classes of services provided by signalling layer 3 at the MS side are accessible at the following service access points:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; registration services at the MMREG-SAP or GMMREG-SAP;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Call Control services for normal and emergency calls including call related Supplementary Services Support services at the MNCC-SAP;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Short Message Services Support services at the MNSMS-SAP;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Call independent Supplementary Services Support services at the MNSS-SAP;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Location Services Support services at the MNLCS-SAP;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; other services corresponding to further functional blocks of the CM sublayer at the appropriate service access points. These services are not further described in this clause;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Session Management services at the SMREG-SAP and at the SNSM-SAP;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Logical Link Control services at the QoS1-SAP, QoS2-SAP, QoS3-SAP and QoS4-SAP.</p>
+<h2><a name="_Toc11256339"></a><a name="_Toc36116331"></a><a name="_Toc45096388"></a><a name="_Toc51762254"></a><a name="_Toc178270527"></a>6.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Registration services</h2>
+<p>The registration services (location updating, IMSI attach/detach) are provided at the service access point MMREG‑SAP. As opposed to all other MN‑Services, these services are provided by and can be directly accessed at the Mobility Management sublayer.</p>
+<h3><a name="_Toc11256340"></a><a name="_Toc36116332"></a><a name="_Toc45096389"></a><a name="_Toc51762255"></a><a name="_Toc178270528"></a>6.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service state diagram for MS not supporting GPRS service</h3>
+<p>The registration services provided at the service access point MMREG‑SAP are illustrated in the state of figure&nbsp;6.1 below.</p>
+<p>Figure&nbsp;6.1: Registration services provided at MMREG‑SAP ‑ MS side</p>
+<h3><a name="_Toc11256341"></a><a name="_Toc36116333"></a><a name="_Toc45096390"></a><a name="_Toc51762256"></a><a name="_Toc178270529"></a>6.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives</h3>
+<p>Table&nbsp;6.1: Primitives and Parameters at the MMREG‑SAP ‑ MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="164">
+<p>PRIMITIVE</p>
+</td>
+<td width="164">
+<p>PARAMETER</p>
+</td>
+<td width="164">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="164">
+<p>MMR_REG_REQ</p>
+</td>
+<td width="164">
+<p>IMSI</p>
+</td>
+<td width="164">
+<p>6.1.2.1</p>
+</td>
+</tr>
+<tr>
+<td width="164">
+<p>MMR_REG_CNF</p>
+</td>
+<td width="164">
+<p>‑</p>
+</td>
+<td width="164">
+<p>6.1.2.2</p>
+</td>
+</tr>
+<tr>
+<td width="164">
+<p>MMR_NREG_REQ</p>
+</td>
+<td width="164">
+<p>‑</p>
+</td>
+<td width="164">
+<p>6.1.2.4</p>
+</td>
+</tr>
+<tr>
+<td width="164">
+<p>MMR_NREG_IND</p>
+</td>
+<td width="164">
+<p>cause</p>
+</td>
+<td width="164">
+<p>6.1.2.5</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256342"></a><a name="_Toc36116334"></a><a name="_Toc45096391"></a><a name="_Toc51762257"></a><a name="_Toc178270530"></a>6.1.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMR_REG_REQ</h4>
+<p>Registration request, triggered by activation of the IMSI, e.g., by activation of the MS with inserted SIM, insertion of the SIM into the activated MS, pressing of a reset button.</p>
+<h4><a name="_Toc11256343"></a><a name="_Toc36116335"></a><a name="_Toc45096392"></a><a name="_Toc51762258"></a><a name="_Toc178270531"></a>6.1.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMR_REG_CNF</h4>
+<p>Registration confirmation. Indicates to the user that the MS is ready to start a transaction.</p>
+<h4><a name="_Toc11256344"></a><a name="_Toc36116336"></a><a name="_Toc45096393"></a><a name="_Toc51762259"></a><a name="_Toc178270532"></a>6.1.2.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h4>
+<h4><a name="_Toc11256345"></a><a name="_Toc36116337"></a><a name="_Toc45096394"></a><a name="_Toc51762260"></a><a name="_Toc178270533"></a>6.1.2.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMR_NREG_REQ</h4>
+<p>Request to cancel the registration, stimulated either by removing the SIM or automatically in the power off phase.</p>
+<h4><a name="_Toc11256346"></a><a name="_Toc36116338"></a><a name="_Toc45096395"></a><a name="_Toc51762261"></a><a name="_Toc178270534"></a>6.1.2.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMR_NREG_IND</h4>
+<p>Indication that registration has been cancelled or that registration was not possible. Only emergency services are available to the user.</p>
+<h3><a name="_Toc11256347"></a><a name="_Toc36116339"></a><a name="_Toc45096396"></a><a name="_Toc51762262"></a><a name="_Toc178270535"></a>6.1.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Registration Services for CTS-Services</h3>
+<p>The registration services (attach/detach, enrolment/de-enrolment) are provided for CTS services at the service access point MMREG‑SAP.</p>
+<p>Table&nbsp;6.1.3: Primitives and Parameters at the MMREG‑SAP ‑ MS side for CTS</p>
+<table>
+<tbody>
+<tr>
+<td width="164">
+<p>PRIMITIVE</p>
+</td>
+<td width="164">
+<p>PARAMETER</p>
+</td>
+<td width="164">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="164">
+<p>MMR_CTS_ATTACH_REQ</p>
+</td>
+<td width="164">
+<p>IMSI</p>
+</td>
+<td width="164">
+<p>6.1.3.1</p>
+</td>
+</tr>
+<tr>
+<td width="164">
+<p>MMR_CTS_ATTACH_CNF</p>
+</td>
+<td width="164">
+<p>‑</p>
+</td>
+<td width="164">
+<p>6.1.3.2</p>
+</td>
+</tr>
+<tr>
+<td width="164">
+<p>MMR_CTS_ATTACH_REJ</p>
+</td>
+<td width="164">
+<p>IFPSI, cause</p>
+</td>
+<td width="164">
+<p>6.1.3.3</p>
+</td>
+</tr>
+<tr>
+<td width="164">
+<p>MMR_CTS_DETACH_IND</p>
+</td>
+<td width="164">
+<p>‑</p>
+</td>
+<td width="164">
+<p>6.1.3.4</p>
+</td>
+</tr>
+<tr>
+<td width="164">
+<p>MMR_CTS_ENROLL_REQ</p>
+</td>
+<td width="164">
+<p>IMSI</p>
+</td>
+<td width="164">
+<p>6.1.3.5</p>
+</td>
+</tr>
+<tr>
+<td width="164">
+<p>MMR_CTS_ENROLL_CNF</p>
+</td>
+<td width="164">
+<p>‑</p>
+</td>
+<td width="164">
+<p>6.1.3.6</p>
+</td>
+</tr>
+<tr>
+<td width="164">
+<p>MMR_CTS_ENROLL_REJ</p>
+</td>
+<td width="164">
+<p>IFPSI, cause</p>
+</td>
+<td width="164">
+<p>6.1.3.7</p>
+</td>
+</tr>
+<tr>
+<td width="164">
+<p>MMR_CTS_</p>
+<p>DE_ENROLL_IND</p>
+</td>
+<td width="164">
+<p>‑</p>
+</td>
+<td width="164">
+<p>6.1.3.8</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256348"></a><a name="_Toc36116340"></a><a name="_Toc45096397"></a><a name="_Toc51762263"></a><a name="_Toc178270536"></a>6.1.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMR_CTS _ATTACH_REQ</h4>
+<p>MS initiates the CTS attach. CTS‑MM is requested to send a CTS ATTACH REQUEST message to the fixed part.</p>
+<h4><a name="_Toc11256349"></a><a name="_Toc36116341"></a><a name="_Toc45096398"></a><a name="_Toc51762264"></a><a name="_Toc178270537"></a>6.1.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMR_CTS _ATTACH_CNF</h4>
+<p>The CTS attach was successful. The fixed part confirmed the attach, i.e. the CTS ATTACH ACCEPT message was received by the MS.</p>
+<h4><a name="_Toc11256350"></a><a name="_Toc36116342"></a><a name="_Toc45096399"></a><a name="_Toc51762265"></a><a name="_Toc178270538"></a>6.1.3.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMR_CTS _ATTACH_REJ</h4>
+<p>The CTS attach has failed. The fixed part rejected the attach attempt, i.e. the CTS ATTACH REJECT message was received by the MS.</p>
+<h4><a name="_Toc11256351"></a><a name="_Toc36116343"></a><a name="_Toc45096400"></a><a name="_Toc51762266"></a><a name="_Toc178270539"></a>6.1.3.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMR_CTS _DETACH_IND</h4>
+<p>MS initiates CTS detach. CTS‑MM is requested to send a CTS DETACH INDICATION message. The detach procedure is initiated.</p>
+<h4><a name="_Toc11256352"></a><a name="_Toc36116344"></a><a name="_Toc45096401"></a><a name="_Toc51762267"></a><a name="_Toc178270540"></a>6.1.3.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMR_CTS _ENROLL_REQ</h4>
+<p>MS initiates the CTS enrolment. CTS‑MM is requested to send a CTS ENROLMENT REQUEST message to the fixed part.</p>
+<h4><a name="_Toc11256353"></a><a name="_Toc36116345"></a><a name="_Toc45096402"></a><a name="_Toc51762268"></a><a name="_Toc178270541"></a>6.1.3.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMR_CTS _ENROLL_CNF</h4>
+<p>The CTS enrolment was successful. The fixed part confirmed the enrolment, i.e. the CTS ENROLMENT ACCEPT message was received by the MS.</p>
+<h4><a name="_Toc11256354"></a><a name="_Toc36116346"></a><a name="_Toc45096403"></a><a name="_Toc51762269"></a><a name="_Toc178270542"></a>6.1.3.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMR_CTS _ENROLL_REJ</h4>
+<p>The CTS enrolment has failed. The fixed part rejected the enrolment attempt, i.e. the CTS ENROLMENT REJECT message was received by the MS.</p>
+<h4><a name="_Toc11256355"></a><a name="_Toc36116347"></a><a name="_Toc45096404"></a><a name="_Toc51762270"></a><a name="_Toc178270543"></a>6.1.3.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMR_CTS _DE_ENROLL_IND</h4>
+<p>FP initiates CTS de-enrolment. CTS‑MM is requested to send a CTS DE-ENROLMENT INDICATION message. The de-enrolment procedure is initiated.</p>
+<h2><a name="_Toc11256356"></a><a name="_Toc36116348"></a><a name="_Toc45096405"></a><a name="_Toc51762271"></a><a name="_Toc178270544"></a>6.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call Control services</h2>
+<p>The Call Control services are provided by multiple CC entities at the service access point MNCC‑SAP.</p>
+<p>The Call Control service class consists of the following services:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Mobile originated and Mobile terminated call establishment for normal calls;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Mobile originated call establishment for emergency calls;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; call maintaining;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; call termination;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; call related Supplementary Services Support.</p>
+<h3><a name="_Toc11256357"></a><a name="_Toc36116349"></a><a name="_Toc45096406"></a><a name="_Toc51762272"></a><a name="_Toc178270545"></a>6.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service state diagram</h3>
+<p>The Call Control services provided at the service access point MNCC‑SAP are illustrated in the state diagram of figure&nbsp;6.2.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Figure&nbsp;6.2: Service graph of Call Control entity ‑ MS side (page 1 of 2)</p>
+<p>&nbsp;</p>
+<p>Figure&nbsp;6.2: Service graph of Call Control entity ‑ MS side Active state (page 2 of 2)</p>
+<h3><a name="_Toc11256358"></a><a name="_Toc36116350"></a><a name="_Toc45096407"></a><a name="_Toc51762273"></a><a name="_Toc178270546"></a>6.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives</h3>
+<p>Table&nbsp;6.2: Primitives and parameters at MNCC‑SAP ‑ MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="235">
+<p>PRIMITIVE</p>
+</td>
+<td width="293">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="93">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_SETUP_REQ</p>
+</td>
+<td width="293">
+<p>SETUP or EMERGENCY SETUP</p>
+</td>
+<td width="93">
+<p>6.2.2.1</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_SETUP_IND</p>
+</td>
+<td width="293">
+<p>SETUP</p>
+</td>
+<td width="93">
+<p>6.2.2.2</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_SETUP_RSP</p>
+</td>
+<td width="293">
+<p>CONNECT</p>
+</td>
+<td width="93">
+<p>6.2.2.3</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_SETUP_CNF</p>
+</td>
+<td width="293">
+<p>CONNECT</p>
+</td>
+<td width="93">
+<p>6.2.2.4</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_SETUP_COMPLETE_REQ</p>
+</td>
+<td width="293">
+<p>‑</p>
+</td>
+<td width="93">
+<p>6.2.2.5</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_SETUP_COMPLETE_IND</p>
+</td>
+<td width="293">
+<p>‑</p>
+</td>
+<td width="93">
+<p>6.2.2.6</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_REJ_REQ</p>
+</td>
+<td width="293">
+<p>RELEASE COMPLETE</p>
+</td>
+<td width="93">
+<p>6.2.2.7</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_REJ_IND</p>
+</td>
+<td width="293">
+<p>cause</p>
+</td>
+<td width="93">
+<p>6.2.2.8</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_CALL_CONF_REQ</p>
+</td>
+<td width="293">
+<p>CALL CONFIRMED</p>
+</td>
+<td width="93">
+<p>6.2.2.9</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_CALL PROC_IND</p>
+</td>
+<td width="293">
+<p>CALL PROCEEDING</p>
+</td>
+<td width="93">
+<p>6.2.2.10</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_PROGRESS_IND</p>
+</td>
+<td width="293">
+<p>PROGRESS</p>
+</td>
+<td width="93">
+<p>6.2.2.11</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_ALERT_REQ</p>
+</td>
+<td width="293">
+<p>ALERTING</p>
+</td>
+<td width="93">
+<p>6.2.2.12</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_ALERT_IND</p>
+</td>
+<td width="293">
+<p>ALERTING</p>
+</td>
+<td width="93">
+<p>6.2.2.13</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_NOTIFY_REQ</p>
+</td>
+<td width="293">
+<p>NOTIFY</p>
+</td>
+<td width="93">
+<p>6.2.2.14</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_NOTIFY_IND</p>
+</td>
+<td width="293">
+<p>NOTIFY</p>
+</td>
+<td width="93">
+<p>6.2.2.15</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_DISC_REQ</p>
+</td>
+<td width="293">
+<p>DISCONNECT</p>
+</td>
+<td width="93">
+<p>6.2.2.16</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_DISC_IND</p>
+</td>
+<td width="293">
+<p>DISCONNECT</p>
+</td>
+<td width="93">
+<p>6.2.2.17</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_REL_REQ</p>
+</td>
+<td width="293">
+<p>RELEASE</p>
+</td>
+<td width="93">
+<p>6.2.2.18</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_REL_IND</p>
+</td>
+<td width="293">
+<p>RELEASE</p>
+</td>
+<td width="93">
+<p>6.2.2.19</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_REL_CNF</p>
+</td>
+<td width="293">
+<p>RELEASE or RELEASE COMPLETE</p>
+</td>
+<td width="93">
+<p>6.2.2.20</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_FACILITY_REQ</p>
+</td>
+<td width="293">
+<p>facility</p>
+</td>
+<td width="93">
+<p>6.2.2.21</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_FACILITY_IND</p>
+</td>
+<td width="293">
+<p>facility</p>
+</td>
+<td width="93">
+<p>6.2.2.22</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_START_DTMF_REQ</p>
+</td>
+<td width="293">
+<p>START DTMF</p>
+</td>
+<td width="93">
+<p>6.2.2.23</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_START_DTMF_CNF</p>
+</td>
+<td width="293">
+<p>START DTMF ACK or START DTMF REJ</p>
+</td>
+<td width="93">
+<p>6.2.2.24</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_STOP_DTMF_REQ</p>
+</td>
+<td width="293">
+<p>STOP DTMF</p>
+</td>
+<td width="93">
+<p>6.2.2.25</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_STOP_DTMF_CNF</p>
+</td>
+<td width="293">
+<p>STOP DTMF ACK</p>
+</td>
+<td width="93">
+<p>6.2.2.26</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_MODIFY_REQ</p>
+</td>
+<td width="293">
+<p>MODIFY</p>
+</td>
+<td width="93">
+<p>6.2.2.27</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_MODIFY_IND</p>
+</td>
+<td width="293">
+<p>MODIFY</p>
+</td>
+<td width="93">
+<p>6.2.2.28</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_MODIFY_RES</p>
+</td>
+<td width="293">
+<p>MODIFY COMPLETE</p>
+</td>
+<td width="93">
+<p>6.2.2.29</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_MODIFY_CNF</p>
+</td>
+<td width="293">
+<p>MODIFY COMPLETE</p>
+</td>
+<td width="93">
+<p>6.2.2.30</p>
+</td>
+</tr>
+<tr>
+<td width="235">
+<p>MNCC_SYNC_IND</p>
+</td>
+<td width="293">
+<p>cause (res. ass., channel mode modify)</p>
+</td>
+<td width="93">
+<p>6.2.2.31</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256359"></a><a name="_Toc36116351"></a><a name="_Toc45096408"></a><a name="_Toc51762274"></a><a name="_Toc178270547"></a>6.2.2.1 MNCC_SETUP_REQ</h4>
+<p>Request to send a SETUP or EMERGENCY SETUP message to initiate Mobile originating establishment of either a normal or an emergency call.</p>
+<h4><a name="_Toc11256360"></a><a name="_Toc36116352"></a><a name="_Toc45096409"></a><a name="_Toc51762275"></a><a name="_Toc178270548"></a>6.2.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_SETUP_IND</h4>
+<p>Receipt of a SETUP message, the Mobile terminated call establishment has been initiated.</p>
+<h4><a name="_Toc11256361"></a><a name="_Toc36116353"></a><a name="_Toc45096410"></a><a name="_Toc51762276"></a><a name="_Toc178270549"></a>6.2.2.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_SETUP_RES</h4>
+<p>Response to send a CONNECT message to indicate call acceptance by the Mobile terminated user; call control is requested to attach the user connection (if it is not yet attached).</p>
+<h4><a name="_Toc11256362"></a><a name="_Toc36116354"></a><a name="_Toc45096411"></a><a name="_Toc51762277"></a><a name="_Toc178270550"></a>6.2.2.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_SETUP_CNF</h4>
+<p>Receipt of a CONNECT message, the Mobile originated call has been accepted by the remote called user.</p>
+<h4><a name="_Toc11256363"></a><a name="_Toc36116355"></a><a name="_Toc45096412"></a><a name="_Toc51762278"></a><a name="_Toc178270551"></a>6.2.2.5 MNCC_SETUP_COMPL_REQ</h4>
+<p>Request to send a CONNECT ACKNOWLEDGE message, the mobile originating call has been accepted.</p>
+<h4><a name="_Toc11256364"></a><a name="_Toc36116356"></a><a name="_Toc45096413"></a><a name="_Toc51762279"></a><a name="_Toc178270552"></a>6.2.2.6 MNCC_SETUP_COMPL_IND</h4>
+<p>Receipt of a CONNECT ACKNOWLEDGE message, the Mobile terminated call establishment has been completed; for a data call, the user is informed that the user connection is attached.</p>
+<h4><a name="_Toc11256365"></a><a name="_Toc36116357"></a><a name="_Toc45096414"></a><a name="_Toc51762280"></a><a name="_Toc178270553"></a>6.2.2.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_REJ_REQ</h4>
+<p>Request to reject a Mobile terminated call if the call is refused or if the call cannot be accepted, e.g., because of missing compatibility.</p>
+<h4><a name="_Toc11256366"></a><a name="_Toc36116358"></a><a name="_Toc45096415"></a><a name="_Toc51762281"></a><a name="_Toc178270554"></a>6.2.2.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_REJ_IND</h4>
+<p>Indication that the Mobile originated call has been rejected, e.g. if the MM connection cannot be provided or if the call establishment initiation has been rejected by the network.</p>
+<h4><a name="_Toc11256367"></a><a name="_Toc36116359"></a><a name="_Toc45096416"></a><a name="_Toc51762282"></a><a name="_Toc178270555"></a>6.2.2.9 MNCC_CALL_CONF_REQ</h4>
+<p>Request to confirm a Mobile terminated call by sending a CALL CONFIRMED message. A bearer capability different from that given in MNCC_SETUP_IND may be offered to the remote calling user.</p>
+<h4><a name="_Toc11256368"></a><a name="_Toc36116360"></a><a name="_Toc45096417"></a><a name="_Toc51762283"></a><a name="_Toc178270556"></a>6.2.2.10 MNCC_CALL_PROC_IND</h4>
+<p>Indication to the Mobile originating user that call establishment has been initiated in the Network and no more call establishment information will be accepted by the Network.</p>
+<h4><a name="_Toc11256369"></a><a name="_Toc36116361"></a><a name="_Toc45096418"></a><a name="_Toc51762284"></a><a name="_Toc178270557"></a>6.2.2.11 MNCC_PROGRESS_IND</h4>
+<p>Indication to the Mobile user that a PROGRESS message or a message containing a <em>progress</em> IE has been received, e.g., because the call is progressing in the PLMN/ISDN environment, or because the call has left the PLMN/ISDN environment, or because in‑band tones/announcement are available.</p>
+<h4><a name="_Toc11256370"></a><a name="_Toc36116362"></a><a name="_Toc45096419"></a><a name="_Toc51762285"></a><a name="_Toc178270558"></a>6.2.2.12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_ALERT_REQ</h4>
+<p>Request to send an ALERTING message from the called Mobile user to the remote calling user to indicate that user alerting has been initiated.</p>
+<h4><a name="_Toc11256371"></a><a name="_Toc36116363"></a><a name="_Toc45096420"></a><a name="_Toc51762286"></a><a name="_Toc178270559"></a>6.2.2.13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_ALERT_IND</h4>
+<p>Indication of the receipt of an ALERTING message, alerting to the remote called user has been initiated.</p>
+<h4><a name="_Toc11256372"></a><a name="_Toc36116364"></a><a name="_Toc45096421"></a><a name="_Toc51762287"></a><a name="_Toc178270560"></a>6.2.2.14 MNCC_NOTIFY_REQ</h4>
+<p>Request to send information pertaining to a call, such as user suspended, to the Network by the Mobile user.</p>
+<h4><a name="_Toc11256373"></a><a name="_Toc36116365"></a><a name="_Toc45096422"></a><a name="_Toc51762288"></a><a name="_Toc178270561"></a>6.2.2.15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_NOTIFY_IND</h4>
+<p>Indication to the Mobile user that information pertaining to a call, such as remote user suspended, has been received from the Network.</p>
+<h4><a name="_Toc11256374"></a><a name="_Toc36116366"></a><a name="_Toc45096423"></a><a name="_Toc51762289"></a><a name="_Toc178270562"></a>6.2.2.16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_DISC_REQ</h4>
+<p>Request to send a DISCONNECT message to the Network in order to clear the end‑to‑end connection.</p>
+<h4><a name="_Toc11256375"></a><a name="_Toc36116367"></a><a name="_Toc45096424"></a><a name="_Toc51762290"></a><a name="_Toc178270563"></a>6.2.2.17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_DISC_IND</h4>
+<p>Indication of reception of a DISCONNECT message, by which the Network indicates that the end‑to‑end connection is cleared.</p>
+<h4><a name="_Toc11256376"></a><a name="_Toc36116368"></a><a name="_Toc45096425"></a><a name="_Toc51762291"></a><a name="_Toc178270564"></a>6.2.2.18&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_REL_REQ</h4>
+<p>Request of the Mobile user to send a RELEASE message to inform the Network that the user intends to release the call reference and the corresponding MM connection so that the Network can release its MM connection and the correspondent call reference.</p>
+<h4><a name="_Toc11256377"></a><a name="_Toc36116369"></a><a name="_Toc45096426"></a><a name="_Toc51762292"></a><a name="_Toc178270565"></a>6.2.2.19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_REL_IND</h4>
+<p>Indication to the Mobile originating or terminated user that a RELEASE message has been received and the Network intends to release its MM connection. The Mobile user is requested to release the call reference and the corresponding MM connection.</p>
+<h4><a name="_Toc11256378"></a><a name="_Toc36116370"></a><a name="_Toc45096427"></a><a name="_Toc51762293"></a><a name="_Toc178270566"></a>6.2.2.20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_REL_CNF</h4>
+<p>Confirmation of the Mobile user's request to release the MM connection and call reference in the Network. The Mobile user may release the call reference and the corresponding MM connection.</p>
+<h4><a name="_Toc11256379"></a><a name="_Toc36116371"></a><a name="_Toc45096428"></a><a name="_Toc51762294"></a><a name="_Toc178270567"></a>6.2.2.21 MNCC_FACILITY_REQ</h4>
+<p>Request to transport a <em>facility</em> IE for a call related supplementary service invocation.</p>
+<h4><a name="_Toc11256380"></a><a name="_Toc36116372"></a><a name="_Toc45096429"></a><a name="_Toc51762295"></a><a name="_Toc178270568"></a>6.2.2.22 MNCC_FACILITY_IND</h4>
+<p>Indication that a <em>facility</em> IE for a call related supplementary service invocation has been received.</p>
+<h4><a name="_Toc11256381"></a><a name="_Toc36116373"></a><a name="_Toc45096430"></a><a name="_Toc51762296"></a><a name="_Toc178270569"></a>6.2.2.23 MNCC_START_DTMF_REQ</h4>
+<p>Request to send a START DTMF message in order to start a DTMF control operation.</p>
+<h4><a name="_Toc11256382"></a><a name="_Toc36116374"></a><a name="_Toc45096431"></a><a name="_Toc51762297"></a><a name="_Toc178270570"></a>6.2.2.24 MNCC_START_DTMF_CNF</h4>
+<p>Confirmation of the receipt of a START DTMF ACKNOWLEDGE or START DTMF REJECT message that the start of a DTMF control operation has been acknowledged or rejected.</p>
+<h4><a name="_Toc11256383"></a><a name="_Toc36116375"></a><a name="_Toc45096432"></a><a name="_Toc51762298"></a><a name="_Toc178270571"></a>6.2.2.25 MNCC_STOP_DTMF_REQ</h4>
+<p>Request to send a STOP DTMF message in order to stop a DTMF control operation.</p>
+<h4><a name="_Toc11256384"></a><a name="_Toc36116376"></a><a name="_Toc45096433"></a><a name="_Toc51762299"></a><a name="_Toc178270572"></a>6.2.2.26 MNCC_STOP_DTMF_CNF</h4>
+<p>Confirmation of the receipt of STOP DTMF ACKNOWLEDGE message, the DTMF control operation has been stopped.</p>
+<h4><a name="_Toc11256385"></a><a name="_Toc36116377"></a><a name="_Toc45096434"></a><a name="_Toc51762300"></a><a name="_Toc178270573"></a>6.2.2.27 MNCC_MODIFY_REQ</h4>
+<p>Request to start Mobile originating in‑call modification by sending a MODIFY message.</p>
+<h4><a name="_Toc11256386"></a><a name="_Toc36116378"></a><a name="_Toc45096435"></a><a name="_Toc51762301"></a><a name="_Toc178270574"></a>6.2.2.28 MNCC_MODIFY_IND</h4>
+<p>RECEIPT OF A MODIFY message, a Mobile terminating in‑call modification has been initiated.</p>
+<h4><a name="_Toc11256387"></a><a name="_Toc36116379"></a><a name="_Toc45096436"></a><a name="_Toc51762302"></a><a name="_Toc178270575"></a>6.2.2.29 MNCC_MODIFY_RES</h4>
+<p>Response to send a MODIFY COMPLETE message to indicate Mobile terminating in‑call modification completion by the Mobile user.</p>
+<h4><a name="_Toc11256388"></a><a name="_Toc36116380"></a><a name="_Toc45096437"></a><a name="_Toc51762303"></a><a name="_Toc178270576"></a>6.2.2.30 MNCC_MODIFY_CNF</h4>
+<p>Receipt of a MODIFY COMPLETE message, the Mobile originating in‑call modification has been completed.</p>
+<h4><a name="_Toc11256389"></a><a name="_Toc36116381"></a><a name="_Toc45096438"></a><a name="_Toc51762304"></a><a name="_Toc178270577"></a>6.2.2.31&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNCC_SYNC_IND</h4>
+<p>Indication that a dedicated channel assignment has been performed (res. ass.&nbsp;=&nbsp;"resource assigned") and/or the channel mode has been changed.</p>
+<h2><a name="_Toc11256390"></a><a name="_Toc36116382"></a><a name="_Toc45096439"></a><a name="_Toc51762305"></a><a name="_Toc178270578"></a>6.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call independent Supplementary Services Support</h2>
+<h3><a name="_Toc11256391"></a><a name="_Toc36116383"></a><a name="_Toc45096440"></a><a name="_Toc51762306"></a><a name="_Toc178270579"></a>6.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service state diagram</h3>
+<p>The primitives provided by the call independent Supplementary Services Support entity and the transitions between permitted states are shown in figure&nbsp;6.3.</p>
+<p>STATES:</p>
+<p>IDLE ‑ No SS signalling transaction pending.</p>
+<p>CONN ‑ SS signalling transaction established.</p>
+<p>&nbsp;</p>
+<p>Figure&nbsp;6.3: Service graph of the call independent Supplementary Services Support entity ‑ MS side</p>
+<h3><a name="_Toc11256392"></a><a name="_Toc36116384"></a><a name="_Toc45096441"></a><a name="_Toc51762307"></a><a name="_Toc178270580"></a>6.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives</h3>
+<p>Table&nbsp;6.3: Primitives and Parameters at MNSS‑SAP ‑ MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="269">
+<p>PRIMITIVES</p>
+</td>
+<td width="250">
+<p>PARAMETERS<br /> (Info elements of message)</p>
+</td>
+<td width="120">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MNSS_BEGIN_REQ</p>
+</td>
+<td width="250">
+<p>REGISTER</p>
+</td>
+<td width="120">
+<p>6.3.2.1</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MNSS_BEGIN_IND</p>
+</td>
+<td width="250">
+<p>REGISTER</p>
+</td>
+<td width="120">
+<p>6.3.2.2</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MNSS_FACILITY_REQ</p>
+</td>
+<td width="250">
+<p>FACILITY</p>
+</td>
+<td width="120">
+<p>6.3.2.3</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MNSS_FACILITY_IND</p>
+</td>
+<td width="250">
+<p>FACILITY</p>
+</td>
+<td width="120">
+<p>6.3.2.4</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MNSS_END_REQ</p>
+</td>
+<td width="250">
+<p>REL COMPLETE</p>
+</td>
+<td width="120">
+<p>6.3.2.5</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MNSS_END_IND</p>
+</td>
+<td width="250">
+<p>REL COMPLETE</p>
+</td>
+<td width="120">
+<p>6.3.2.6</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256393"></a><a name="_Toc36116385"></a><a name="_Toc45096442"></a><a name="_Toc51762308"></a><a name="_Toc178270581"></a>6.3.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNSS_BEGIN_REQ</h4>
+<p>Request to send a REGISTER message in order to establish a signalling transaction for the provision of call independent supplementary services. The request for a call independent supplementary service invocation may be included.</p>
+<h4><a name="_Toc11256394"></a><a name="_Toc36116386"></a><a name="_Toc45096443"></a><a name="_Toc51762309"></a><a name="_Toc178270582"></a>6.3.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNSS_BEGIN_IND</h4>
+<p>Receipt of a REGISTER message, a signalling transaction is established for the provision of call independent supplementary services after receipt of a REGISTER message. The indication of a supplementary service invocation may be included.</p>
+<h4><a name="_Toc11256395"></a><a name="_Toc36116387"></a><a name="_Toc45096444"></a><a name="_Toc51762310"></a><a name="_Toc178270583"></a>6.3.2.3 MNSS_FACILITY_REQ</h4>
+<p>Request to send a FACILITY message for the provision of a call independent supplementary service invocation.</p>
+<h4><a name="_Toc11256396"></a><a name="_Toc36116388"></a><a name="_Toc45096445"></a><a name="_Toc51762311"></a><a name="_Toc178270584"></a>6.3.2.4 MNSS_FACILITY_IND</h4>
+<p>Receipt of a FACILITY message for a call independent supplementary service invocation.</p>
+<h4><a name="_Toc11256397"></a><a name="_Toc36116389"></a><a name="_Toc45096446"></a><a name="_Toc51762312"></a><a name="_Toc178270585"></a>6.3.2.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNSS_END_REQ</h4>
+<p>Request to send a RELEASE COMPLETE message in order to release the signalling transaction. The request for transfer of a supplementary service facility may be included.</p>
+<h4><a name="_Toc11256398"></a><a name="_Toc36116390"></a><a name="_Toc45096447"></a><a name="_Toc51762313"></a><a name="_Toc178270586"></a>6.3.2.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNSS_END_IND</h4>
+<p>Receipt of a RELEASE COMPLETE message, the signalling transaction has been released. The indication of a supplementary service facility may be included.</p>
+<h2><a name="_Toc11256399"></a><a name="_Toc36116391"></a><a name="_Toc45096448"></a><a name="_Toc51762314"></a><a name="_Toc178270587"></a>6.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Short Message Services Support</h2>
+<p>The service provided by the CM sublayer to support the short message service are defined in <br /> 3GPP&nbsp;TS&nbsp;24.011&nbsp;[8].</p>
+<h2><a name="_Toc11256400"></a><a name="_Toc36116392"></a><a name="_Toc45096449"></a><a name="_Toc51762315"></a><a name="_Toc178270588"></a>6.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session Management Services for GPRS-Services</h2>
+<p>Session Management services are provided at the SMREG-SAP and the SNSM-SAP. The procedures for GPRS Session Management (i.e. PDP context activation, PDP context deactivation and PDP context modification) and MBMS Session Management (i.e. MBMS context activation and MBMS context deactivation) are available at the SMREG-SAP.</p>
+<p>Before any user data transfer is initiated (eg.via SNDCP in GSM case), the PDP context activation procedure must be performed. In case of MBMS, the MS must also perform the procedures needed in order to activate a multicast service.</p>
+<h3><a name="_Toc11256401"></a><a name="_Toc36116393"></a><a name="_Toc45096450"></a><a name="_Toc51762316"></a><a name="_Toc178270589"></a>6.5.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session Management Services for SMREG-SAP</h3>
+<p>Table 6.5.1: Primitives and Parameters at SMREG-SAP - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="225">
+<p>PRIMITIVE</p>
+</td>
+<td width="302">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="104">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-ACTIVATE-REQ</p>
+</td>
+<td width="302">
+<p>PDP address, QoS, NSAPI, APN, Protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.1</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-ACTIVATE-CNF</p>
+</td>
+<td width="302">
+<p>PDP address, QoS, NSAPI, Protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.2</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-ACTIVATE-REJ</p>
+</td>
+<td width="302">
+<p>Cause, NSAPI, Protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.3</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-ACTIVATE-IND</p>
+</td>
+<td width="302">
+<p>PDP address, APN, protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.4</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-ACTIVATE-REJ-RSP</p>
+</td>
+<td width="302">
+<p>Cause, PDP address, APN, protocol configuration options, MBMS protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.14</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-DEACTIVATE-REQ</p>
+</td>
+<td width="302">
+<p>NSAPI(s) tear down indicator, cause, protocol configuration options, MBMS protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.5</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-DEACTIVATE-CNF</p>
+</td>
+<td width="302">
+<p>NSAPI(s), protocol configuration options, MBMS protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.6</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-DEACTIVATE-IND</p>
+</td>
+<td width="302">
+<p>NSAPI(s) (s), tear down indicator, cause, protocol configuration options, MBMS protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.7</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-MODIFY-IND</p>
+</td>
+<td width="302">
+<p>QoS, NSAPI, protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.8</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-MODIFY-REQ</p>
+</td>
+<td width="302">
+<p>QoS, NSAPI, TFT, protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.18</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-MODIFY-CNF</p>
+</td>
+<td width="302">
+<p>QoS, NSAPI, protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.19</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-MODIFY-REJ</p>
+</td>
+<td width="302">
+<p>Cause, NSAPI, protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.20</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-ACTIVATE-SEC-REQ</p>
+</td>
+<td width="302">
+<p>QoS, NSAPI, TFT, Primary NSAPI, protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.15</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-ACTIVATE-SEC-CNF</p>
+</td>
+<td width="302">
+<p>QoS, NSAPI, protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.16</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-PDP-ACTIVATE-SEC-REJ</p>
+</td>
+<td width="302">
+<p>Cause, NSAPI, protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.17</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-MBMS-ACTIVATE-REQ</p>
+</td>
+<td width="302">
+<p>Multicast address, supported MBMS bearer capabilities, NSAPI, APN, MBMS protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.21</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-MBMS-ACTIVATE-CNF</p>
+</td>
+<td width="302">
+<p>Multicast address, NSAPI, MBMS protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.22</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-MBMS-ACTIVATE-REJ</p>
+</td>
+<td width="302">
+<p>Cause, NSAPI, MBMS protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.23</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>SMREG-MBMS-ACTIVATE-IND</p>
+</td>
+<td width="302">
+<p>Multicast address, APN, MBMS protocol configuration options</p>
+</td>
+<td width="104">
+<p>6.5.1.24</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256402"></a><a name="_Toc36116394"></a><a name="_Toc45096451"></a><a name="_Toc51762317"></a><a name="_Toc178270590"></a>6.5.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-ACTIVATE-REQ</h4>
+<p>The MS initiates a primary PDP context activation. SM is requested to send the ACTIVATE PDP CONTEXT REQUEST message to the network. The PDP context is pending activation.</p>
+<h4><a name="_Toc11256403"></a><a name="_Toc36116395"></a><a name="_Toc45096452"></a><a name="_Toc51762318"></a><a name="_Toc178270591"></a>6.5.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-ACTIVATE-CNF</h4>
+<p>The MS initiated primary PDP context activation succeeded. The network confirmed the PDP context activation, i.e. the ACTIVATE PDP CONTEXT ACCEPT message was received from the network. In GSM, this implies that SM has ordered SNDCP to establish the needed LLC link. In the UMTS case, this implies that the RLC link towards the RNC has been established and that the SM has been informed about this from the RABM service entity in the MS. (RABM- RAB Management service entity is FFS and could lead to update of the protocol architecture in figure 5.2 and 5.3) The PDP context is active.</p>
+<h4><a name="_Toc11256404"></a><a name="_Toc36116396"></a><a name="_Toc45096453"></a><a name="_Toc51762319"></a><a name="_Toc178270592"></a>6.5.1.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-ACTIVATE-REJ</h4>
+<p>The PDP primary context activation failed, the PDP context is not activated. One reason for failure is that the network rejected the activation attempt, which means the ACTIVATE PDP CONTEXT REJECT message was received. Another reason is e.g. that it was not possible to establish the needed LLC link in the GSM case.</p>
+<h4><a name="_Toc11256405"></a><a name="_Toc36116397"></a><a name="_Toc45096454"></a><a name="_Toc51762320"></a><a name="_Toc178270593"></a>6.5.1.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-ACTIVATE-IND</h4>
+<p>The network asked for a PDP context activation. The REQUEST PDP CONTEXT ACTIVATION message was received from the network. The MS reacts either by initiating a new primary PDP context activation or by rejecting the network's request.</p>
+<h4><a name="_Toc11256406"></a><a name="_Toc36116398"></a><a name="_Toc45096455"></a><a name="_Toc51762321"></a><a name="_Toc178270594"></a>6.5.1.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-DEACTIVATE-REQ</h4>
+<p>The MS initiates a PDP context deactivation: SM is requested to send a DEACTIVATE PDP CONTEXT REQUEST message to the network. The PDP context is pending deactivation. Presence of the teardown indicator will lead to deactivation of all PDP contexts coupled to the identified PDP address. NSAPI(s) to be deallocated from the SNDCP entity via the SNSM-SAP for the GSM case, are included in the primitive.</p>
+<h4><a name="_Toc11256407"></a><a name="_Toc36116399"></a><a name="_Toc45096456"></a><a name="_Toc51762322"></a><a name="_Toc178270595"></a>6.5.1.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-DEACTIVATE-CNF</h4>
+<p>The MS initiated PDP context deactivation has been done. The network confirmed the PDP context deactivation, i.e. the DEACTIVATE PDP CONTEXT ACCEPT message was received from the network. For GSM SM has ordered SNDCP to locally release not further needed LLC links. In the UMTS case, the release of the RLC link towards the RNC takes place as a result of a RAB release trigger from the network side. SM has been informed about this from the RABM service entity in the MS. (RABM- RAB Management service entity is FFS and could lead to update of the protocol architecture in figure&nbsp;5.2 and&nbsp;5.3.) The PDP context has been deactivated.</p>
+<h4><a name="_Toc11256408"></a><a name="_Toc36116400"></a><a name="_Toc45096457"></a><a name="_Toc51762323"></a><a name="_Toc178270596"></a>6.5.1.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-DEACTIVATE-IND</h4>
+<p>A network initiated PDP context deactivation has been performed. The DEACTIVATE PDP CONTEXT REQUEST message has been received from the network. The MS has acknowledged with the DEACTIVATE PDP CONTEXT ACCEPT message. The PDP context has been deactivated, the related LLC links in GSM or RLC links in UMTS were locally released. Presence of the teardown indicator will lead to deactivation of all PDP contexts coupled to the identified PDP address. NSAPI is included in the primitive to allow identification of the PDP context(s) needing deactivation.</p>
+<h4><a name="_Toc11256409"></a><a name="_Toc36116401"></a><a name="_Toc45096458"></a><a name="_Toc51762324"></a><a name="_Toc178270597"></a>6.5.1.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-MODIFY-IND</h4>
+<p>A network initiated PDP context modification has been performed. The MODIFY PDP CONTEXT REQUEST message has been received from the network. The modification has been acknowledged by sending the MODIFY PDP CONTEXT ACCEPT message. One PDP context has been modified. LLC links is adjusted.</p>
+<h4><a name="_Toc11256410"></a><a name="_Toc36116402"></a><a name="_Toc45096459"></a><a name="_Toc51762325"></a><a name="_Toc178270598"></a>6.5.1.9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h4>
+<h4><a name="_Toc11256411"></a><a name="_Toc36116403"></a><a name="_Toc45096460"></a><a name="_Toc51762326"></a><a name="_Toc178270599"></a>6.5.1.10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h4>
+<h4><a name="_Toc11256412"></a><a name="_Toc36116404"></a><a name="_Toc45096461"></a><a name="_Toc51762327"></a><a name="_Toc178270600"></a>6.5.1.11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h4>
+<h4><a name="_Toc11256413"></a><a name="_Toc36116405"></a><a name="_Toc45096462"></a><a name="_Toc51762328"></a><a name="_Toc178270601"></a>6.5.1.12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h4>
+<h4><a name="_Toc11256414"></a><a name="_Toc36116406"></a><a name="_Toc45096463"></a><a name="_Toc51762329"></a><a name="_Toc178270602"></a>6.5.1.13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h4>
+<h4><a name="_Toc11256415"></a><a name="_Toc36116407"></a><a name="_Toc45096464"></a><a name="_Toc51762330"></a><a name="_Toc178270603"></a>6.5.1.14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-ACTIVATE-REJ-RSP</h4>
+<p>The network requested PDP context activation failed.</p>
+<h4><a name="_Toc11256416"></a><a name="_Toc36116408"></a><a name="_Toc45096465"></a><a name="_Toc51762331"></a><a name="_Toc178270604"></a>6.5.1.15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-ACTIVATE-SEC-REQ</h4>
+<p>The MS initiates a secondary PDP context activation. SM is requested to send the ACTIVATE SECONDARY PDP CONTEXT REQUEST message to the network. The PDP context is pending activation.</p>
+<h4><a name="_Toc11256417"></a><a name="_Toc36116409"></a><a name="_Toc45096466"></a><a name="_Toc51762332"></a><a name="_Toc178270605"></a>6.5.1.16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-ACTIVATE-SEC-CNF</h4>
+<p>The MS initiated secondary PDP context activation succeeded. The network confirmed the PDP context activation, i.e. the ACTIVATE SECONDARY PDP CONTEXT ACCEPT message was received from the network. In GSM, this implies that SM has ordered SNDCP to establish the needed LLC link. In the UMTS case, this implies that the RLC link towards the RNC has been established and that the SM has been informed about this from the RABM service entity in the MS. (RABM- RAB Management service entity is FFS and could lead to update of the protocol architecture in figure&nbsp;5.2 and&nbsp;5.3) The PDP context connected to the same PDP address as the PDP context identified by the primary NSAPI parameter in SMREG-PDP-ACTIVATE-SEC-REQ is active. ('Primary NSAPI' will point to any one of the other established PDP contexts for a given PDP address).</p>
+<h4><a name="_Toc11256418"></a><a name="_Toc36116410"></a><a name="_Toc45096467"></a><a name="_Toc51762333"></a><a name="_Toc178270606"></a>6.5.1.17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-ACTIVATE-SEC-REJ</h4>
+<p>The secondary PDP context activation failed, the PDP context is not activated. One reason for failure is that the network rejected the activation attempt, which means the ACTIVATE SECONDARY PDP CONTEXT REJECT message was received. Another reason is e.g. that it was not possible to establish the needed LLC link in the GSM case.</p>
+<h4><a name="_Toc11256419"></a><a name="_Toc36116411"></a><a name="_Toc45096468"></a><a name="_Toc51762334"></a><a name="_Toc178270607"></a>6.5.1.18&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-MODIFY-REQ</h4>
+<p>An MS initiated PDP context modification is requested. The MODIFY PDP CONTEXT REQUEST message is sent to the network and pending acceptance. Affected PDP context is identified via the NSAPI value included in the primitive.</p>
+<h4><a name="_Toc11256420"></a><a name="_Toc36116412"></a><a name="_Toc45096469"></a><a name="_Toc51762335"></a><a name="_Toc178270608"></a>6.5.1.19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-MODIFY-CNF</h4>
+<p>An MS initiated PDP context modification has been accepted by the network. The modification is acknowledged from the network via the MODIFY PDP CONTEXT ACCEPT message. The addressed PDP context has been modified. LLC or RLC link is adjusted according to the QoS returned from the network.</p>
+<h4><a name="_Toc11256421"></a><a name="_Toc36116413"></a><a name="_Toc45096470"></a><a name="_Toc51762336"></a><a name="_Toc178270609"></a>6.5.1.20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-PDP-MODIFY-REJ</h4>
+<p>An MS initiated PDP context modification has been rejected by the network. The rejection is signalled from the network via the MODIFY PDP CONTEXT REJECT message with the cause code. The PDP context remains active without change of QoS.</p>
+<h4><a name="_Toc11256422"></a><a name="_Toc36116414"></a><a name="_Toc45096471"></a><a name="_Toc51762337"></a><a name="_Toc178270610"></a>6.5.1.21&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-MBMS-ACTIVATE-REQ</h4>
+<p>The MS initiates an MBMS context activation as requested by the network. SM is requested to send the ACTIVATE MBMS CONTEXT REQUEST message to the network. The MBMS context is pending activation waiting for the network confirmation.</p>
+<h4><a name="_Toc11256423"></a><a name="_Toc36116415"></a><a name="_Toc45096472"></a><a name="_Toc51762338"></a><a name="_Toc178270611"></a>6.5.1.22&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-MBMS-ACTIVATE-CNF</h4>
+<p>The MBMS context activation succeeded. The network confirmed the MBMS context activation, i.e. the ACTIVATE MBMS CONTEXT ACCEPT message was received from the network. The MBMS context is active.</p>
+<h4><a name="_Toc11256424"></a><a name="_Toc36116416"></a><a name="_Toc45096473"></a><a name="_Toc51762339"></a><a name="_Toc178270612"></a>6.5.1.23&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-MBMS-ACTIVATE-REJ</h4>
+<p>The MBMS context activation failed, the MBMS context is not activated.</p>
+<h4><a name="_Toc11256425"></a><a name="_Toc36116417"></a><a name="_Toc45096474"></a><a name="_Toc51762340"></a><a name="_Toc178270613"></a>6.5.1.24&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-MBMS-ACTIVATE-REJ-RSP</h4>
+<p>The network requested MBMS context activation failed. SM is requested to send the REQUEST MBMS CONTEXT ACTIVATION REJECT message to the network.</p>
+<h4><a name="_Toc11256426"></a><a name="_Toc36116418"></a><a name="_Toc45096475"></a><a name="_Toc51762341"></a><a name="_Toc178270614"></a>6.5.1.25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMREG-MBMS-ACTIVATE-IND</h4>
+<p>The network asked for an MBMS context activation. The REQUEST MBMS CONTEXT ACTIVATION message was received from the network. The MS reacts either by initiating the activation of the MBMS context or by rejecting the request from the network.</p>
+<p>The Session Management services provided at the service access point SMREG-SAP are illustrated in the state machines of figures&nbsp;6.4 and&nbsp;6.5 below. Note, that each state machine describes only one PDP/MBMS context within the SM entity.</p>
+<p>Figure 6.4: Session Management service states at the SMREG-SAP for GPRS PDP context handling&nbsp;‑&nbsp;MS side</p>
+<p>&nbsp;</p>
+<p>Figure 6.5: Session Management service states at the SMREG-SAP for MBMS context handling&nbsp;‑&nbsp;MS side</p>
+<h3><a name="_Toc11256427"></a><a name="_Toc36116419"></a><a name="_Toc45096476"></a><a name="_Toc51762342"></a><a name="_Toc178270615"></a>6.5.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session Management Services for SNSM-SAP (GSM only)</h3>
+<p>The SNSM-SAP service primitives are defined in 3GPP&nbsp;TS&nbsp;44.065&nbsp;[12a].</p>
+<h3><a name="_Toc11256428"></a><a name="_Toc36116420"></a><a name="_Toc45096477"></a><a name="_Toc51762343"></a><a name="_Toc178270616"></a>6.5.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session Management Services for RABMSM-SAP (UMTS only)</h3>
+<p>Table 6.5.3: Service primitives and parameters at RABMSM-SAP - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="197">
+<p>PRIMITIVE</p>
+</td>
+<td width="242">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="88">
+<p>Reference</p>
+</td>
+</tr>
+<tr>
+<td width="197">
+<p>RABMSM-ACTIVATE-IND</p>
+</td>
+<td width="242">
+<p>NSAPI, QoS</p>
+</td>
+<td width="88">
+<p>6.5.3.1</p>
+</td>
+</tr>
+<tr>
+<td width="197">
+<p>RABMSM-ACTIVATE-RSP</p>
+</td>
+<td width="242">
+<p>NSAPI</p>
+</td>
+<td width="88">
+<p>6.5.3.2</p>
+</td>
+</tr>
+<tr>
+<td width="197">
+<p>RABMSM-DEACTIVATE-IND</p>
+</td>
+<td width="242">
+<p>NSAPIs</p>
+</td>
+<td width="88">
+<p>6.5.3.3</p>
+</td>
+</tr>
+<tr>
+<td width="197">
+<p>RABMSM-DEACTIVATE-RSP</p>
+</td>
+<td width="242">
+<p>NSAPIs</p>
+</td>
+<td width="88">
+<p>6.5.3.4</p>
+</td>
+</tr>
+<tr>
+<td width="197">
+<p>RABMSM-DEACTIVATE-REQ</p>
+</td>
+<td width="242">
+<p>NSAPI</p>
+</td>
+<td width="88">
+<p>6.5.3.5</p>
+</td>
+</tr>
+<tr>
+<td width="197">
+<p>RABMSM-MODIFY-IND</p>
+</td>
+<td width="242">
+<p>NSAPI, QoS</p>
+</td>
+<td width="88">
+<p>6.5.3.6</p>
+</td>
+</tr>
+<tr>
+<td width="197">
+<p>RABMSM-MODIFY-RSP</p>
+</td>
+<td width="242">
+<p>-</p>
+</td>
+<td width="88">
+<p>6.5.3.7</p>
+</td>
+</tr>
+<tr>
+<td width="197">
+<p>RABMSM-STATUS-REQ</p>
+</td>
+<td width="242">
+<p>- Cause</p>
+</td>
+<td width="88">
+<p>6.5.3.8</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256429"></a><a name="_Toc36116421"></a><a name="_Toc45096478"></a><a name="_Toc51762344"></a><a name="_Toc178270617"></a>6.5.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMSM-ACTIVATE-IND</h4>
+<p>Indication used by the SM entity to inform the RABM entity that an NSAPI has been activated for data transfer (e.g. an activate PDP Context request has been sent to the network). It also informs the RABM entity about the requested QoS profile for this NSAPI. The indication is sent by SM towards RABM during an ongoing PDP context activation procedure.</p>
+<h4><a name="_Toc11256430"></a><a name="_Toc36116422"></a><a name="_Toc45096479"></a><a name="_Toc51762345"></a><a name="_Toc178270618"></a>6.5.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMSM-ACTIVATE-RSP</h4>
+<p>Response used by the RABM entity to inform the SM entity that the indicated NSAPI is now in use and that a RAB for the indicated NSAPI is established.</p>
+<h4><a name="_Toc11256431"></a><a name="_Toc36116423"></a><a name="_Toc45096480"></a><a name="_Toc51762346"></a><a name="_Toc178270619"></a>6.5.3.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMSM-DEACTIVATE-IND</h4>
+<p>Indication used by the SM entity to inform the RABM entity that an NSAPIs has been de-allocated and cannot be used by the RABM entity anymore. The request is sent by SM towards RABM during an ongoing MS initiated as well as network initiated PDP context de-activation procedure or during local de-activation of a PDP context.</p>
+<h4><a name="_Toc11256432"></a><a name="_Toc36116424"></a><a name="_Toc45096481"></a><a name="_Toc51762347"></a><a name="_Toc178270620"></a>6.5.3.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMSM-DEACTIVATE-RSP</h4>
+<p>This message is the response to RABMSM-DEACTIVATE-IND used by the RABM entity to inform the SM entity that the NSAPI indicated is no longer in use. It is either sent immediately when there is no corresponding bearer active or it is sent after reception and processing of RABMAS-RAB-RELEASE-IND from access stratum.</p>
+<h4><a name="_Toc11256433"></a><a name="_Toc36116425"></a><a name="_Toc45096482"></a><a name="_Toc51762348"></a><a name="_Toc178270621"></a>6.5.3.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMSM-DEACTIVATE-REQ</h4>
+<p>This primitive is used by the RABM entity to inform the SM entity that the RAB for an NSAPI has been released. This primitive is only sent for bearer with a RT-QoS classes.</p>
+<h4><a name="_Toc11256434"></a><a name="_Toc36116426"></a><a name="_Toc45096483"></a><a name="_Toc51762349"></a><a name="_Toc178270622"></a>6.5.3.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMSM-MODIFY-IND</h4>
+<p>Indication used by the SM entity to indicate the change of the QoS for an NSAPI. The indication is sent by SM towards RABM during an ongoing PDP context modification procedure.</p>
+<h4><a name="_Toc11256435"></a><a name="_Toc36116427"></a><a name="_Toc45096484"></a><a name="_Toc51762350"></a><a name="_Toc178270623"></a>6.5.3.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMSM-MODIFY-RSP</h4>
+<p>Response used by the RABM entity to inform the SM entity that the indicated NSAPI and QoS profile are now in use and the RAB for the NSAPI is established and/or released, if necessary.</p>
+<h4><a name="_Toc11256436"></a><a name="_Toc36116428"></a><a name="_Toc45096485"></a><a name="_Toc51762351"></a><a name="_Toc178270624"></a>6.5.3.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMSM-STATUS-REQ</h4>
+<p>This primitive is used by the RABM entity to inform the SM entity that RABM cannot continue its operation due to errors at the lower layer (i.e. Access Stratum) or at the RABM layer. The Cause parameter indicates the cause of the error.</p>
+<h2><a name="_Toc11256437"></a><a name="_Toc36116429"></a><a name="_Toc45096486"></a><a name="_Toc51762352"></a><a name="_Toc178270625"></a>6.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Registration Services for GPRS-Services</h2>
+<p>The attach/detach procedures comprise the registration services which are provided at the GMMREG-SAP.</p>
+<p>It shall be noted, that the registration services for mobiles of class A or B may depend on the service states for GPRS and non-GPRS services. Therefore the internal access points MMCOORD and the GMMCOORD (see figure&nbsp;5.3) are used by GMM and MM to inform each other about the relevant conditions. No service primitives between the entities within the same sublayer, i.e. the MM sublayer, are defined in the present document. The Mobility Management for class A and B mobiles is further specified in 3GPP&nbsp;TS&nbsp;24.008&nbsp;[6].</p>
+<h3><a name="_Toc11256438"></a><a name="_Toc36116430"></a><a name="_Toc45096487"></a><a name="_Toc51762353"></a><a name="_Toc178270626"></a>6.6.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Registration Services for GMMREG-SAP</h3>
+<p>Table 6.6.1: Service primitives and parameters at GMMREG-SAP - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="225">
+<p>PRIMITIVE</p>
+</td>
+<td width="302">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="104">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMREG-ATTACH-REQ</p>
+</td>
+<td width="302">
+<p>attach-type, READY-timer, STANDBY-timer</p>
+</td>
+<td width="104">
+<p>6.6.1.1</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMREG-ATTACH-CNF</p>
+</td>
+<td width="302">
+<p>PLMNs MT-caps, attach-type.</p>
+</td>
+<td width="104">
+<p>6.6.1.2</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMREG-ATTACH-REJ</p>
+</td>
+<td width="302">
+<p>cause</p>
+</td>
+<td width="104">
+<p>6.6.1.3</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMREG-DETACH-REQ</p>
+</td>
+<td width="302">
+<p>detach-type, power-off/normal-detach</p>
+</td>
+<td width="104">
+<p>6.6.1.4</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMREG-DETACH-CNF</p>
+</td>
+<td width="302">
+<p>detach-type</p>
+</td>
+<td width="104">
+<p>6.6.1.5</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMREG-DETACH-IND</p>
+</td>
+<td width="302">
+<p>detach-type</p>
+</td>
+<td width="104">
+<p>6.6.1.6</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256439"></a><a name="_Toc36116431"></a><a name="_Toc45096488"></a><a name="_Toc51762354"></a><a name="_Toc178270627"></a>6.6.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMREG-ATTACH-REQ</h4>
+<p>MS initiates the GPRS and/or IMSI attach. GMM is requested to send an ATTACH REQUEST message to the network. The attachment is registration pending in the MS.</p>
+<h4><a name="_Toc11256440"></a><a name="_Toc36116432"></a><a name="_Toc45096489"></a><a name="_Toc51762355"></a><a name="_Toc178270628"></a>6.6.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMREG-ATTACH-CNF</h4>
+<p>The attach (either GPRS-attach or IMSI-attach or both) was successful. The network confirmed the attach, i.e. the ATTACH ACCEPT message was received by the MS. The LLC and RR sublayer will be informed by GMM about the TLLI to be used.</p>
+<h4><a name="_Toc11256441"></a><a name="_Toc36116433"></a><a name="_Toc45096490"></a><a name="_Toc51762356"></a><a name="_Toc178270629"></a>6.6.1.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMREG-ATTACH-REJ</h4>
+<p>The attach (either GPRS-attach or IMSI-attach or both) has failed. The network rejected the attach attempt, i.e. the message ATTACH REJECT was received from the network.</p>
+<h4><a name="_Toc11256442"></a><a name="_Toc36116434"></a><a name="_Toc45096491"></a><a name="_Toc51762357"></a><a name="_Toc178270630"></a>6.6.1.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMREG-DETACH-REQ</h4>
+<p>MS initiates GPRS and/or IMSI detach: GMM is requested to send a DETACH REQUEST message, the detach procedure is initiated. In case of MS initiated detach at power-off, the procedure is terminated in the MS after sending the DETACH REQUEST message.</p>
+<h4><a name="_Toc11256443"></a><a name="_Toc36116435"></a><a name="_Toc45096492"></a><a name="_Toc51762358"></a><a name="_Toc178270631"></a>6.6.1.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMREG-DETACH-CNF</h4>
+<p>The MS initiated detach (either GPRS-attach or IMSI-attach or both) has been completed.<br /> The network confirmed the detach, i.e. the message DETACH ACCEPT was received from the network. This finalizes the detach procedure (normal, not at power off). Any PDP context possibly activated before is deactivated.</p>
+<h4><a name="_Toc11256444"></a><a name="_Toc36116436"></a><a name="_Toc45096493"></a><a name="_Toc51762359"></a><a name="_Toc178270632"></a>6.6.1.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMREG-DETACH-IND</h4>
+<p>A network initiated detach has been performed. Or the detach has been performed locally due to expiration of the standby timer or a failed routing area update. In the first case the DETACH REQUEST message was from the network. Any PDP context possibly activated before is deactivated.</p>
+<p>The registration services provided at the service access point GMMREG-SAP are illustrated in the state machine of figure&nbsp;6.6 below. Note, that in state registered the MS may be suspended from GPRS mobility management due to an ongoing CS connection. The registration procedure Routing Area Updating, which is not provided at the GMMREG-SAP, is not visible within the diagram.</p>
+<p>Figure 6.6: Registration services states at GMMREG-SAP for GPRS attach and detach - MS side</p>
+<h2><a name="_Toc11256445"></a><a name="_Toc36116437"></a><a name="_Toc45096494"></a><a name="_Toc51762360"></a><a name="_Toc178270633"></a>6.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Services provided to SNDCP entities by GPRS Logical Link Control services</h2>
+<p>This clause is informative, the service primitives are defined in 3GPP&nbsp;TS&nbsp;44.064&nbsp;[11a]. They are included here to provide a complete overview of the radio interface protocol architecture.</p>
+<p>Logical Link Control services are provided at the QoS1-SAP - QoS4 SAP towards the SNDCP and at the LLSMS-SAP towards SMS.</p>
+<h3><a name="_Toc11256446"></a><a name="_Toc36116438"></a><a name="_Toc45096495"></a><a name="_Toc51762361"></a><a name="_Toc178270634"></a>6.7.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service state diagram for QoS1-SAP, QoS2-SAP, QoS3-SAP and QoS4-SAP</h3>
+<p>Figure 6.7: States to establish and release ABM mode operation</p>
+<h3><a name="_Toc11256447"></a><a name="_Toc36116439"></a><a name="_Toc45096496"></a><a name="_Toc51762362"></a><a name="_Toc178270635"></a>6.7.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives for QoS1-SAP, QoS2-SAP, QoS3-SAP and QoS4-SAP</h3>
+<p>Table 6.7.2: Service primitives and parameters at QoS1 to QoS4 - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="225">
+<p>PRIMITIVE</p>
+</td>
+<td width="302">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="104">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-ESTABLISH-REQ</p>
+</td>
+<td width="302">
+<p>TLLI, SNDCP requested parameters (XID)</p>
+</td>
+<td width="104">
+<p>6.7.2.1</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-ESTABLISH-CNF</p>
+</td>
+<td width="302">
+<p>TLLI, SNDCP negotiated parameters (XID)</p>
+</td>
+<td width="104">
+<p>6.7.2.2</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-ESTABLISH-IND</p>
+</td>
+<td width="302">
+<p>TLLI, SNDCP requested parameters (XID), N201</p>
+</td>
+<td width="104">
+<p>6.7.2.3</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-ESTABLISH-RSP</p>
+</td>
+<td width="302">
+<p>TLLI, SNDCP negotiated parameters (XID)</p>
+</td>
+<td width="104">
+<p>6.7.2.4</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-RELEASE-REQ</p>
+</td>
+<td width="302">
+<p>TLLI</p>
+</td>
+<td width="104">
+<p>6.7.2.5</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-RELEASE-CFN</p>
+</td>
+<td width="302">
+<p>TLLI</p>
+</td>
+<td width="104">
+<p>6.7.2.6</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-RELEASE-IND</p>
+</td>
+<td width="302">
+<p>TLLI</p>
+</td>
+<td width="104">
+<p>6.7.2.7</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-XID-REQ</p>
+</td>
+<td width="302">
+<p>TLLI, SNDCP requested parameters (XID)</p>
+</td>
+<td width="104">
+<p>6.7.2.8</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-XID-IND</p>
+</td>
+<td width="302">
+<p>TLLI, SNDCP requested parameters (XID), N201</p>
+</td>
+<td width="104">
+<p>6.7.2.9</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-XID-RSP</p>
+</td>
+<td width="302">
+<p>TLLI, SNDCP negotiated parameters (XID)</p>
+</td>
+<td width="104">
+<p>6.7.2.10</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-XID-CNF</p>
+</td>
+<td width="302">
+<p>TLLI, SNDCP negotiated parameters (XID), N201</p>
+</td>
+<td width="104">
+<p>6.7.2.11</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-DATA-REQ</p>
+</td>
+<td width="302">
+<p>TLLI, N-PDU, local reference</p>
+</td>
+<td width="104">
+<p>6.7.2.12</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-DATA-CNF</p>
+</td>
+<td width="302">
+<p>TLLI, local reference</p>
+</td>
+<td width="104">
+<p>6.7.2.13</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-DATA-IND</p>
+</td>
+<td width="302">
+<p>TLLI, N-PDU</p>
+</td>
+<td width="104">
+<p>6.7.2.14</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-UNITDATA-REQ</p>
+</td>
+<td width="302">
+<p>TLLI, N-PDU, protect, cipher</p>
+</td>
+<td width="104">
+<p>6.7.2.15</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-UNITDATA-IND</p>
+</td>
+<td width="302">
+<p>TLLI, N-PDU</p>
+</td>
+<td width="104">
+<p>6.7.2.16</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-STATUS-IND</p>
+</td>
+<td width="302">
+<p>TLLI, cause</p>
+</td>
+<td width="104">
+<p>6.7.2.17</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256448"></a><a name="_Toc36116440"></a><a name="_Toc45096497"></a><a name="_Toc51762363"></a><a name="_Toc178270636"></a>6.7.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-ESTABLISH-REQ</h4>
+<p>A LLC SABM frame will be sent to establish the LLC ABM mode.</p>
+<h4><a name="_Toc11256449"></a><a name="_Toc36116441"></a><a name="_Toc45096498"></a><a name="_Toc51762364"></a><a name="_Toc178270637"></a>6.7.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-ESTABLISH-CNF</h4>
+<p>A LLC UA frame is received, the LLC ABM mode has been established.</p>
+<h4><a name="_Toc11256450"></a><a name="_Toc36116442"></a><a name="_Toc45096499"></a><a name="_Toc51762365"></a><a name="_Toc178270638"></a>6.7.2.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-ESTABLISH-IND</h4>
+<p>A LLC SABM frame is received.</p>
+<h4><a name="_Toc11256451"></a><a name="_Toc36116443"></a><a name="_Toc45096500"></a><a name="_Toc51762366"></a><a name="_Toc178270639"></a>6.7.2.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-ESTABLISH-RSP</h4>
+<p>A LLC UA frame will be sent, the ABM mode is established.</p>
+<h4><a name="_Toc11256452"></a><a name="_Toc36116444"></a><a name="_Toc45096501"></a><a name="_Toc51762367"></a><a name="_Toc178270640"></a>6.7.2.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-RELEASE-REQ</h4>
+<p>A LLC DISC frame will be sent to change to LLC ADM mode.</p>
+<h4><a name="_Toc11256453"></a><a name="_Toc36116445"></a><a name="_Toc45096502"></a><a name="_Toc51762368"></a><a name="_Toc178270641"></a>6.7.2.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-RELEASE-CNF</h4>
+<p>The LLC link has been disconnected, LLC is in ADM mode.</p>
+<h4><a name="_Toc11256454"></a><a name="_Toc36116446"></a><a name="_Toc45096503"></a><a name="_Toc51762369"></a><a name="_Toc178270642"></a>6.7.2.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-RELEASE-IND</h4>
+<p>LLC is in idle mode.</p>
+<h4><a name="_Toc11256455"></a><a name="_Toc36116447"></a><a name="_Toc45096504"></a><a name="_Toc51762370"></a><a name="_Toc178270643"></a>6.7.2.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-XID-REQ</h4>
+<p>An LLC XID frame will be sent.</p>
+<h4><a name="_Toc11256456"></a><a name="_Toc36116448"></a><a name="_Toc45096505"></a><a name="_Toc51762371"></a><a name="_Toc178270644"></a>6.7.2.9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-XID-IND</h4>
+<p>An LLC XID frame has been received.</p>
+<h4><a name="_Toc11256457"></a><a name="_Toc36116449"></a><a name="_Toc45096506"></a><a name="_Toc51762372"></a><a name="_Toc178270645"></a>6.7.2.10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-XID-RSP</h4>
+<p>An LLC XID frame will be sent as a response to a received XID frame.</p>
+<h4><a name="_Toc11256458"></a><a name="_Toc36116450"></a><a name="_Toc45096507"></a><a name="_Toc51762373"></a><a name="_Toc178270646"></a>6.7.2.11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-XID-CNF</h4>
+<p>An LLC XID frame has been received as a response to a sent XID frame.</p>
+<h4><a name="_Toc11256459"></a><a name="_Toc36116451"></a><a name="_Toc45096508"></a><a name="_Toc51762374"></a><a name="_Toc178270647"></a>6.7.2.12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-DATA-REQ</h4>
+<p>An LLC I frame will be sent to the peer entity.</p>
+<h4><a name="_Toc11256460"></a><a name="_Toc36116452"></a><a name="_Toc45096509"></a><a name="_Toc51762375"></a><a name="_Toc178270648"></a>6.7.2.13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-DATA-CNF</h4>
+<p>Successful reception of an LLC I frame has been acknowledged by the peer entity.</p>
+<h4><a name="_Toc11256461"></a><a name="_Toc36116453"></a><a name="_Toc45096510"></a><a name="_Toc51762376"></a><a name="_Toc178270649"></a>6.7.2.14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-DATA-IND</h4>
+<p>An LLC I frame has been received from the peer entity.</p>
+<h4><a name="_Toc11256462"></a><a name="_Toc36116454"></a><a name="_Toc45096511"></a><a name="_Toc51762377"></a><a name="_Toc178270650"></a>6.7.2.15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-UNITDATA-REQ</h4>
+<p>An LLC UI frame will be sent to the peer entity.</p>
+<h4><a name="_Toc11256463"></a><a name="_Toc36116455"></a><a name="_Toc45096512"></a><a name="_Toc51762378"></a><a name="_Toc178270651"></a>6.7.2.16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-UNITDATA-IND</h4>
+<p>An LLC UI frame has been received from the peer entity.</p>
+<h4><a name="_Toc11256464"></a><a name="_Toc36116456"></a><a name="_Toc45096513"></a><a name="_Toc51762379"></a><a name="_Toc178270652"></a>6.7.2.17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-STATUS-IND</h4>
+<p>Indication used by LLC to transfer LLC failures to the SNDCP sublayer. The failure may also be caused due to errors at the RLC/MAC layer.</p>
+<h2><a name="_Toc11256465"></a><a name="_Toc36116457"></a><a name="_Toc45096514"></a><a name="_Toc51762380"></a><a name="_Toc178270653"></a>6.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Location services at the type A LMU side</h2>
+<p>The location services (e.g. transfer of timing related measurement information by a type A LMU) are provided at the service access point MNLCS-SAP. The service provided by the CM sublayer to support the location services is defined in 3GPP&nbsp;TS&nbsp;44.071&nbsp;[8a].</p>
+<h3><a name="_Toc11256466"></a><a name="_Toc36116458"></a><a name="_Toc45096515"></a><a name="_Toc51762381"></a><a name="_Toc178270654"></a>6.8.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service state diagram</h3>
+<p>The positioning services provided at the service access point MNLCS‑SAP are illustrated in the state diagram of figure&nbsp;6.8.</p>
+<p>STATES:</p>
+<p>IDLE ‑ No LCS signalling transaction pending.</p>
+<p>CONN ‑ LCS signalling transaction established.</p>
+<p>&nbsp;</p>
+<p>Figure&nbsp;6.8: Service graph of the Location Services Support entity ‑ type A LMU side</p>
+<h3><a name="_Toc11256467"></a><a name="_Toc36116459"></a><a name="_Toc45096516"></a><a name="_Toc51762382"></a><a name="_Toc178270655"></a>6.8.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives</h3>
+<p>Table&nbsp;6.8: Primitives and Parameters at MNLCS‑SAP ‑ type A LMU side</p>
+<table>
+<tbody>
+<tr>
+<td width="268">
+<p>PRIMITIVES</p>
+</td>
+<td width="246">
+<p>PARAMETERS<br /> (Info elements of message)</p>
+</td>
+<td width="123">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="268">
+<p>MNLCS_BEGIN_REQ</p>
+</td>
+<td width="246">
+<p>REGISTER</p>
+</td>
+<td width="123">
+<p>6.8.2.1</p>
+</td>
+</tr>
+<tr>
+<td width="268">
+<p>MNLCS_BEGIN_IND</p>
+</td>
+<td width="246">
+<p>REGISTER</p>
+</td>
+<td width="123">
+<p>6.8.2.2</p>
+</td>
+</tr>
+<tr>
+<td width="268">
+<p>MNLCS_FACILITY_REQ</p>
+</td>
+<td width="246">
+<p>FACILITY</p>
+</td>
+<td width="123">
+<p>6.8.2.3</p>
+</td>
+</tr>
+<tr>
+<td width="268">
+<p>MNLCS_FACILITY_IND</p>
+</td>
+<td width="246">
+<p>FACILITY</p>
+</td>
+<td width="123">
+<p>6.8.2.4</p>
+</td>
+</tr>
+<tr>
+<td width="268">
+<p>MNLCS_END_REQ</p>
+</td>
+<td width="246">
+<p>RELEASE COMPLETE</p>
+</td>
+<td width="123">
+<p>6.8.2.5</p>
+</td>
+</tr>
+<tr>
+<td width="268">
+<p>MNLCS_END_IND</p>
+</td>
+<td width="246">
+<p>RELEASE COMPLETE</p>
+</td>
+<td width="123">
+<p>6.8.2.6</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256468"></a><a name="_Toc36116460"></a><a name="_Toc45096517"></a><a name="_Toc51762383"></a><a name="_Toc178270656"></a>6.8.2.1 MNLCS_BEGIN_REQ</h4>
+<p>Request to send a REGISTER message in order to establish a signalling transaction for the provision of location services. The request for transfer of a location service facility may be included.</p>
+<h4><a name="_Toc11256469"></a><a name="_Toc36116461"></a><a name="_Toc45096518"></a><a name="_Toc51762384"></a><a name="_Toc178270657"></a>6.8.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNLCS_BEGIN_IND</h4>
+<p>Receipt of a REGISTER message, a signalling transaction is established for the provision of location services after receipt of a REGISTER message. The indication of a location service facility may be included.</p>
+<h4><a name="_Toc11256470"></a><a name="_Toc36116462"></a><a name="_Toc45096519"></a><a name="_Toc51762385"></a><a name="_Toc178270658"></a>6.8.2.3 MNLCS_FACILITY_REQ</h4>
+<p>Request to send a FACILITY message for the provision of a location service invocation. The request for transfer of a location service facility may be included.</p>
+<h4><a name="_Toc11256471"></a><a name="_Toc36116463"></a><a name="_Toc45096520"></a><a name="_Toc51762386"></a><a name="_Toc178270659"></a>6.8.2.4 MNLCS_FACILITY_IND</h4>
+<p>Receipt of a FACILITY message, a location service facility has been requested.</p>
+<h4><a name="_Toc11256472"></a><a name="_Toc36116464"></a><a name="_Toc45096521"></a><a name="_Toc51762387"></a><a name="_Toc178270660"></a>6.8.2.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNLCS_END_REQ</h4>
+<p>Request to send a RELEASE COMPLETE message in order to release the signalling transaction. The request for transfer of a location service facility may be included.</p>
+<h4><a name="_Toc11256473"></a><a name="_Toc36116465"></a><a name="_Toc45096522"></a><a name="_Toc51762388"></a><a name="_Toc178270661"></a>6.8.2.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MNLCS_END_IND</h4>
+<p>Receipt of a RELEASE COMPLETE message, the signalling transaction has been released. The indication of a location service facility may be included.</p>

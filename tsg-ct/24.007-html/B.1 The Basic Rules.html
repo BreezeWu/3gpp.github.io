@@ -1,0 +1,118 @@
+<h1><a name="_Toc11256804"></a><a name="_Toc36116796"></a><a name="_Toc45096853"></a><a name="_Toc51762719"></a><a name="_Toc178270985"></a>B.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The Basic Rules</h1>
+<p>The following rules (B1 to B6) form the core part of the notation, more or less directly inherited from BNF. Rules B7 to B8 add what is needed in addition to encode the rest octet parts of fixed length messages as defined in 3GPP&nbsp;TS&nbsp;24.008&nbsp;[6].</p>
+<p>Rule A1 is not needed to describe sets of strings at this stage. It is the one allowing to label parts of messages.</p>
+<h2><a name="_Toc11256805"></a><a name="_Toc36116797"></a><a name="_Toc45096854"></a><a name="_Toc51762720"></a><a name="_Toc178270986"></a>B.1.1&nbsp;&nbsp;&nbsp; Core Rules</h2>
+<h3><a name="_Toc11256806"></a><a name="_Toc36116798"></a><a name="_Toc45096855"></a><a name="_Toc51762721"></a><a name="_Toc178270987"></a>B.1.1.1&nbsp;&nbsp; Rule B1: Bits</h3>
+<p>A "bit string" is an ordered sequence of symbols, each belonging to a two-value set.</p>
+<p>The character "0" and "1" are used to indicate one bit, respectively of one or the other value.</p>
+<p>Formally, the notations &laquo;&nbsp;0&nbsp;&raquo; and &laquo;&nbsp;1&nbsp;&raquo; denote each a set composed of a single bit string of a single bit, of different values.</p>
+<p>In addition the word "bit" denotes the set of the two 1-bit long strings, namely 0 and 1.</p>
+<h3><a name="_Toc11256807"></a><a name="_Toc36116799"></a><a name="_Toc45096856"></a><a name="_Toc51762722"></a><a name="_Toc178270988"></a>B.1.1.2&nbsp;&nbsp; Rule B2: Null String</h3>
+<p>Where needed, the word "null" call be used to indicate the null string, i.e., the string of no symbols.</p>
+<p>Formally, the notation &laquo;&nbsp;null&nbsp;&raquo; denote the set composed of a single bit string, the empty string.</p>
+<h3><a name="_Toc11256808"></a><a name="_Toc36116800"></a><a name="_Toc45096857"></a><a name="_Toc51762723"></a><a name="_Toc178270989"></a>B.1.1.3&nbsp;&nbsp; Rule B3: Concatenation</h3>
+<p>A succession of two string descriptions describe the concatenation of the strings.</p>
+<p>More formally: a succession of two string descriptions describes the strings obtained by concatenation of one string taken in the subset described by the first string description and then one string taken in the subset described by the second string description. The rule extends to any number of string descriptions.</p>
+<p>For instance:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 00</p>
+<p>This denotes the set composed of the single bit string of length 2 composed of two zeros.</p>
+<h3><a name="_Toc11256809"></a><a name="_Toc36116801"></a><a name="_Toc45096858"></a><a name="_Toc51762724"></a><a name="_Toc178270990"></a>B.1.1.4&nbsp;&nbsp; Rule B4: Choice</h3>
+<p>A list of choices is noted using as separator the character "|". An alternative notation uses instead the word "or" (this is not used in the present document).</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; An idea is to allow not to used strange characters, by giving in each case a verbose equivalent. This is not done systematically yet in the present document.</p>
+<p>Formally: the notation A | B, where A and B are string set descriptions, describes the set of the strings which are in the set described by A or in the set described by B, that is the union of sets described by A and B.</p>
+<p>The concatenation has a higher precedence than the choice.</p>
+<p>Examples:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 00 | 01</p>
+<p>This indicates that bit strings 00 and 01 are part of the set (10 and 11 are not).</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 | 1</p>
+<p>Denotes the same set as "bit".</p>
+<p>The characters "{" and "}" are used for delimiting a string set description from what follows and/or precedes.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 {0|1}</p>
+<p>This indicates the same set of bit strings as in the previous case.</p>
+<p>Precedence example:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10 | 11</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 0|1</p>
+<p>Because of the priority rule, the two descriptions are not equivalent, the second noting the set (10, 1).</p>
+<p>It is allowed that the different sets in a choice have non null intersections. To allow message decoding, a rule must then be given to choose the branch. The rule is that any matching set can be chosen (the concatenation is a true set union).</p>
+<p>In practice, it is preferable to have non intersecting choice sets. Moreover, the ability to select the branch to take rapidly is important for obtaining simple message decoders. Except for strong reasons, a design should only include choice construction that can be rewritten using only constructions matching the pattern {<em>a</em>1 <em>s</em>1 |<em>a</em>2 <em>s</em>2} where <em>a</em>1 and <em>a</em>2 are non‑intersecting sets of strings of the same non-null length. A tolerable derogation is to use intersecting <em>a</em>n.</p>
+<p>Examples:</p>
+<p>{100 xx | 001 zz} is acceptable.</p>
+<p>{00 xx | 010 yy | 011 zz} is acceptable, since it can be rewritten {00 xx | 01 {0 yy | 1 zz}}}.</p>
+<p>{{00|01|10} xx | {00|11} yy} is not recommended (the start 00 is ambiguous).</p>
+<p>In practice this covers fixed length tagging (like tagging by an IEI, or 1-bit tagging in rest octets), and also non-intersecting variable length tagging as used for instance in the frequency list IE (tag list such as 0, 100, 101, 110, 11100, 11101, 11110, 11111, where no tag is the start of another one).</p>
+<h3><a name="_Toc11256810"></a><a name="_Toc36116802"></a><a name="_Toc45096859"></a><a name="_Toc51762725"></a><a name="_Toc178270991"></a>B.1.1.5&nbsp;&nbsp; Rule B5: Naming</h3>
+<p>The characters "&lt;" and "&gt;" are used to delimit a <em>reference</em> to the description of a string set. This can be used inside a string set description, to refer to a string set described elsewhere.</p>
+<p>For compilability, the name must be used somewhere else to define the corresponding string set. For a simple description, the description of the reference could be done by normal text.</p>
+<p>The name, that is the part sequence of characters between "&lt;" and "&gt;" must not be empty, and is constituted freely of characters, with the exception of "&lt;" and "&gt;". Case is not significant, nor are heading or tailing spaces. Any succession of space characters is treated as a single character. To avoid difficulties with more advanced rules, the use of the characters ":", "=", "(" and ")" should be avoided. More generally, it is not recommended to use many other characters, such as "&lt;" for instance. The space character can (and should!) be used, to allow a good legibility for human beings.</p>
+<p>Example:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit pair&gt;</p>
+<h3><a name="_Toc11256811"></a><a name="_Toc36116803"></a><a name="_Toc45096860"></a><a name="_Toc51762726"></a><a name="_Toc178270992"></a>B.1.1.6&nbsp;&nbsp; Rule B6: Definition</h3>
+<p>A reference followed by the character sequence "::=" followed by a string set description is used to associate the description with the reference, terminated when needed to separate it from a following definition and when compilability is looked for, by a semi-colon '&nbsp;;.</p>
+<p>Recursive definition is allowed, e.g., the reference can appears on the right hand side of the "::=". To avoid too much difficulties for would-be-compilers, only tail recursivity should be used, i.e., a recursive term should appear only as the last term of a definition.</p>
+<p>Examples:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit pair&gt; ::= 00 | 01 | 10 | 11&nbsp;;</p>
+<p>This could have been noted as well:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit pair&gt; ::= {00 | 01 | 10 | 11}&nbsp;;</p>
+<p>or</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit pair&gt; ::= {0|1} {0|1}&nbsp;;</p>
+<p>Recursive example:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;all bit strings&gt; ::= null | { {0 | 1} &lt;all bit strings&gt;}&nbsp;;</p>
+<p>Another recursive, but not tail-recursive (and then not recommended) example:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;all bit strings&gt; ::= null |&nbsp; {&lt;all bit strings&gt; {0 | 1}}&nbsp;;</p>
+<h2><a name="_Toc11256812"></a><a name="_Toc36116804"></a><a name="_Toc45096861"></a><a name="_Toc51762727"></a><a name="_Toc178270993"></a>B.1.2&nbsp;&nbsp;&nbsp; Spare parts</h2>
+<p>For the purpose of message description it is in many cases needed to specify differently the set of bit strings that are acceptable when received and the corresponding set of bit strings which may be sent. The second set is included in the first. A first example are the spare parts.</p>
+<p>Notations related to spare parts are different in nature from the bit string set description seen so far. They define two sets as the same time, the sent set and the received set. A construction rule of general application will be defined in advanced rules. For the moment, only two ad-hoc constructions are described.</p>
+<h3><a name="_Toc11256813"></a><a name="_Toc36116805"></a><a name="_Toc45096862"></a><a name="_Toc51762728"></a><a name="_Toc178270994"></a>B.1.2.1&nbsp;&nbsp; Rule B7: Spare bits</h3>
+<p>The following construction:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;spare bit&gt;</p>
+<p>describes a 0 when emitted and a bit (0 or 1) in reception.</p>
+<h3><a name="_Toc11256814"></a><a name="_Toc36116806"></a><a name="_Toc45096863"></a><a name="_Toc51762729"></a><a name="_Toc178270995"></a>B.1.2.2&nbsp;&nbsp; Rule B8: Padding bits</h3>
+<p>An issue specific to the GSM radio interface protocols is that in some cases the messages cannot take arbitrary lengths. Padding is then necessary to fill up the message up to the desired length. Moreover, the padding uses a particular sequence of bits, of fixed position, i.e., the value of a padding bit depends on its position relative to the start of the message. The padding sequence is protocol-specific. In most cases it is constituted of all 0 values, in which case the following notation is of no use. In the case of GSM 04.08, the padding sequence is the repetition of octet 00101011, starting on an octet boundary.</p>
+<p>The special notations "L" and "H" are used to denote the respectively the bit value corresponding to the padding spare bit for that position, and the other value.</p>
+<p>The notations "0", "1", "null", "L" and "H" are the only terminals in CSN.1.</p>
+<p>Padding spare bits are bits which are set to the indicated value in emission whereas in reception any bit string is acceptable. The following notation:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;spare L&gt;</p>
+<p>describes a bit which has a logical value L in emission, and is a bit (0 or 1) in reception.</p>
+<p>The term &lt;spare padding&gt; denotes the required padding spare bits needed to fill up the message. The construction can be developed only partially from the rules described so far, because the length limitation does not appear in the following description:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt; spare padding&gt; ::= &lt;spare L&gt; {null | &lt; spare padding&gt;};</p>
+<h2><a name="_Toc11256815"></a><a name="_Toc36116807"></a><a name="_Toc45096864"></a><a name="_Toc51762730"></a><a name="_Toc178270996"></a>B.1.3&nbsp;&nbsp;&nbsp; Predefined sets</h2>
+<p>The notation allows a modular description of the messages. This means in particular the possibility to build a library of bit string set definitions to be used wherever needed. The following is an example of an elementary library, which could be specified once and can be used in other specifications without being redefined.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit&gt; ::= 0|1 ;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit (1)&gt; ::= &lt;bit&gt;;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit (2)&gt; ::= &lt;bit&gt; &lt;bit&gt;;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit (3)&gt; ::= &lt;bit (2)&gt; &lt;bit&gt;;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit (4)&gt; ::= &lt;bit (3)&gt; &lt;bit&gt;;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit (5)&gt; ::= &lt;bit (4)&gt; &lt;bit&gt;;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit (6)&gt; ::= &lt;bit (5)&gt; &lt;bit&gt;;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit (7)&gt; ::= &lt;bit (6)&gt; &lt;bit&gt;;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;octet&gt; ::= &lt;bit (7)&gt; &lt;bit&gt;;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;half octet&gt; ::= &lt;bit (4)&gt;;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;spare half octet&gt; ::= &lt;spare bit&gt;&lt;spare bit&gt;&lt;spare bit&gt;&lt;spare bit&gt;;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;spare padding&gt; ::= &lt;spare L&gt; {null | &lt;spare padding&gt;};</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;octet string(i)&gt;&nbsp;::= &lt;octet&gt;<sup>(i)&nbsp;</sup>; -- for any positive or null integer i</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit(i)&gt; ::= &lt;bit&gt;(i); -- for any positive or null integer I</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;bit string&gt; ::= bit**;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;octet string&gt; ::= &lt;octet&gt;**;</p>
+<p>&nbsp;</p>
+<p>NOTE 1:&nbsp;&nbsp; The definition of generic constructions such as &lt;bit string(i)&gt; is somewhat cumbersome with only the basic rules. More advanced rules would allow a much more compact notation.</p>
+<p>NOTE 2:&nbsp;&nbsp; The use of the characters "(" and ")" within a reference is done consistently with potential advanced rules.</p>
+<p>NOTE 3:&nbsp;&nbsp; This basic library is not exhaustive and can be extended when the needs arise.</p>
+<h2><a name="_Toc11256816"></a><a name="_Toc36116808"></a><a name="_Toc45096865"></a><a name="_Toc51762731"></a><a name="_Toc178270997"></a>B.1.4&nbsp;&nbsp;&nbsp; Labelling Parts</h2>
+<h3><a name="_Toc11256817"></a><a name="_Toc36116809"></a><a name="_Toc45096866"></a><a name="_Toc51762732"></a><a name="_Toc178270998"></a>B.1.4.1&nbsp;&nbsp; Rule A1: Labels</h3>
+<p>Delimited names as defined by Rule B6 identify sets of sub strings. In many cases this can be used within the context of a message to refer to the specific part of the message. However, this is not of general application, since it may happen that two parts of a message follow the same structure, and economy of notation requires that the structure is described but once.</p>
+<p>The general syntax that follows allows to refer to a part&nbsp;inside a description:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;<em>name1</em> : <em>string description&gt;</em></p>
+<p>&nbsp;</p>
+<p>For the definition of string sets, this is equivalent to the string description being used alone.</p>
+<p>The name used as a label can be built according to the rules applicable to parenthesed references.</p>
+<p>Examples:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Tag : 000 &gt;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Field : &lt;Field type&gt;&gt;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Field : octet&gt;</p>
+<p>&nbsp;</p>
+<p>The third example shows the use of a non parentheses reference to obtain a more elegant expression than, for instance, the second example. At this stage, labels has no use for describing message syntax, but can be used to refer to the corresponding part of the string, e.g., in the description of the message specifying the relationship between the syntactical content and the semantical contents of the message, or to associate properties with effective sub-strings in effective messages (rather than with sets of sub strings). Syntactical use of the semantical identifier are presented in more advanced rules.</p>
+<p>The same name may appear in several places. Designers have to be careful to use non ambiguous names if non‑ambiguous reference is desired.</p>
+<h2><a name="_Toc11256818"></a><a name="_Toc36116810"></a><a name="_Toc45096867"></a><a name="_Toc51762733"></a><a name="_Toc178270999"></a>B.1.5&nbsp;&nbsp;&nbsp; Goodies</h2>
+<h3><a name="_Toc11256819"></a><a name="_Toc36116811"></a><a name="_Toc45096868"></a><a name="_Toc51762734"></a><a name="_Toc178271000"></a>B.1.5.1&nbsp;&nbsp; Rule G1: Comments</h3>
+<p>Comments can be added, starting with the term "--" and ended by the end of line. Comments can be used in particular to indicate the section where a particular description can be found.</p>

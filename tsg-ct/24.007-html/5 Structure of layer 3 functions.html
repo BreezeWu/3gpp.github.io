@@ -1,0 +1,110 @@
+<h1><a name="_Toc178270523"></a>5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Structure of layer 3 functions</h1>
+<h2><a name="_Toc11256336"></a><a name="_Toc36116328"></a><a name="_Toc45096385"></a><a name="_Toc51762251"></a><a name="_Toc178270524"></a>5.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Basic groups of functions</h2>
+<p>Most functions of layer 3 and its sub‑layers are described by the service specifications and protocol specifications of the&nbsp;(sub‑)layers.</p>
+<p>These functions are in the model realized by protocol control entities, see clause&nbsp;4.3.3.</p>
+<p>In addition, routing functions are contained in layer 3 which are related to the transport of messages, e.g. multiplexing and splitting. These routing functions are defined in the Radio Resource Management or in the 5GRR (for NAS over 3GPP access) or non-3GPP access management (for NAS over non-3GPP access) and Mobility Management or 5GMM sub‑layers.</p>
+<p>1)&nbsp;&nbsp; They have the task to pass the messages from upper&nbsp;(sub‑)layers to lower&nbsp;(sub‑)layers.</p>
+<p>2)&nbsp;&nbsp; They also have the task to pass messages provided by lower&nbsp;(sub‑layers) to the appropriate sub‑layer and, if applicable, entity.</p>
+<p>The routing functions with task 2 make use of the protocol discriminator (PD) which is part of the message header.</p>
+<p>A CM sublayer protocol may also define a transaction identifier (TI), procedure transaction identity (PTI) or EPS bearer identity as a part of the message header. This is at least the case if there are parallel entities of the same functional block, see clause&nbsp;4.3.3. If they are a part of a message, the TI, PTI, EPS bearer identity, or both PTI and EPS bearer identity are also used by the routing functions.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The MM-sublayer routing function passes the messages of the CM entities as well as of the MM, GMM and CTS-MM entities of its own sublayer to the service access point of RR, GRR, LLC or CTS-RR. Furthermore it multiplexes them in case of parallel transactions.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The routing function of Radio Resource Management distributes the messages to be sent according to their message type and protocol discriminator (PD), to the actual channel configuration, and, if applicable, to further information received from upper sub-layers to the appropriate service access point of layer 2 (identified by SAPI and logical channel). Paging messages received from the PPCH are always routed to GMM, while paging messages received from the PCH are distributed to GMM or MM based on the temporary identifier (TMSI or TLL). For EPS services, the Paging messages received from the PCH are always routed to EMM.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The messages provided at the different service access points of layer 2 are distributed by the RR sublayer routing function according to their protocol discriminator (PD). Messages with a PD equal to RR are passed to the RR entity of the own sublayer, all other messages are passed to the MM sublayer at the service access point RR-SAP.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The routing function of MM-sublayer passes Standard L3 messages according to the protocol discriminator (PD) and, if applicable, the transaction identifier (TI) or the PDP address towards the MM entity or towards the CM entities via the various MM-SAP's. GPRS L3 messages are routed to mobility management or session management according to the protocol discriminator.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; For EPS services, the routing function of EPS NAS passes standard L3 messages according to the protocol discriminator (PD) and, if applicable, the procedure transaction identity (PTI) and/or EPS bearer identity towards the EMM entity or towards the CM (ESM) entities of the various EPS NAS SAP's.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The routing function of LLC passes the messages according to the SAPIs to the MM sublayer or to the SNDCP entities.</p>
+<p>For 5GS services, the routing functions with task 2 make use of the extended protocol discriminator (EPD) which is part of the message header, or PDU session identity.</p>
+<p>A 5GCM sublayer protocol may also define a procedure transaction identity (PTI) as a part of the message header. This is at least the case if there are parallel entities of the same functional block, see clause&nbsp;6.2.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The 5GMM-sublayer routing function passes the messages of the 5GCM entities as well as of the 5GMM entities of its own sublayer to the service access point of 5GRR. Furthermore, it multiplexes them in case of parallel transactions.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; For NAS over 3GPP access, the NR or E-UTRA AS sublayer routing function distributes the messages to be sent according to their message type and extended protocol discriminator (EPD), to the actual channel configuration, and, if applicable, to further information received from upper sub-layers to the appropriate service access point of layer&nbsp;2. Paging messages received from the PCH are always routed to 5GMM.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; For NAS over 3GPP access, the messages provided at the different service access points of layer 2 are distributed by the 5GRR sublayer routing function according to their extended protocol discriminator (EPD). Messages with a EPD equal to RR are passed to the 5GRR entity of the own sublayer, all other messages are passed to the 5GMM sublayer at the service access point 5GRR-SAP.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; For NAS over non-3GPP access:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; for initial registration, EAP-5G is used to transfer NAS messages between the peer entities of the 5GMM sublayers;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; after successful initial registration, IPSec transport mode and GRE will be used to encapsulate and un-encapsulate the NAS messages between the peer entities of the 5GMM sublayers.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; For 5GS services, the routing function of 5GS NAS passes standard L3 messages according to the extended protocol discriminator (EPD) and, if applicable, the PDU session identity towards the 5GMM entity or towards the 5GSM entities of the various 5GS NAS SAPs.</p>
+<p>The message (message header or other parts of the message) are neither changed nor removed by the RR routing function or non-3GPP access management or MM routing function or 5GMM routing function before passing it to the appropriate service access point.</p>
+<h2><a name="_Toc11256337"></a><a name="_Toc36116329"></a><a name="_Toc45096386"></a><a name="_Toc51762252"></a><a name="_Toc178270525"></a>5.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Protocol architecture</h2>
+<p>The protocol architecture is visualized for each of the four models:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Figure&nbsp;5.1/3GPP&nbsp;TS&nbsp;24.007 shows the protocol architecture for a MS not supporting the GPRS service, restricting the representation of CM sublayer protocols to three paradigmatic examples, CC, SS, and SMS. The LCS protocol entity of a type A LMU would be included in the same manner. Note that the protocol stack for a class C GPRS service may be present in the MS, but it is not active simultaneously.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Figure&nbsp;5.2 shows the protocol architecture for a MS supporting the Class C GPRS service. (Note that the protocol stack for a circuit switched services may be present in the MS, but it is not active simultaneously).</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Figure&nbsp;5.3 shows the protocol architecture for non-GPRS and GPRS-services supporting Class A and Class B MSs.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Figure&nbsp;5.4 shows the protocol architecture for a MS supporting CTS services in addition to non-GPRS services.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Figure&nbsp;5.5 shows the protocol architecture for a MS supporting the PS mode of operation UMTS service.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Figure&nbsp;5.6 shows the protocol architecture for UMTS services supporting CS/PS mode of operation MSs.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Figure&nbsp;5.7 shows the protocol architecture for a MS supporting EPS services.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Figure&nbsp;5.8 shows the protocol architecture for an MS supporting EPS services and CS fallback.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Figure&nbsp;5.9 shows the protocol architecture for a MS supporting 5GS services over 3GPP access.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Figure&nbsp;5.10 shows the protocol architecture for a MS supporting 5GS services over non-3GPP access.</p>
+<p>&nbsp;</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The LCS protocol entity for a type A LMU would be included in the figure in the same manner as the protocol entities for CC, SS and SMS.</p>
+<p>&nbsp;</p>
+<p>Figure&nbsp;5.1: Protocol Architecture not supporting GPRS service ‑ MS side</p>
+<p>&nbsp;</p>
+<p>Figure 5.2: Protocol architecture supporting GPRS class C MSs, MS - side</p>
+<p>Figure 5.3/3GPP TS 24.007: Protocol architecture supporting GPRS class A and B MSs, MS - side</p>
+<p>Figure 5.4/3GPP TS 24.007: Protocol architecture supporting CTS services in addition to non- GPRS services, MS - side</p>
+<p>Figure 5.5/3GPP TS 24.007: Protocol architecture of Non Access Stratum supporting PS mode of operation MSs, MS‑side</p>
+<p><strong><br /> </strong></p>
+<p>&nbsp;</p>
+<p>Figure 5.6/24.007: Protocol architecture of Non Access Stratum supporting CS/PS mode of operation MSs, MS &ndash; side</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMS un-related parts of this figure, e.g. SNDCP should be modified for UMTS.</p>
+<p>&nbsp;</p>
+<p>Figure&nbsp;5.7/3GPP TS 24.007: Protocol architecture of Non Access Stratum supporting PS mode of operation MSs, MS‑side</p>
+<p>Figure 5.8/3GPP TS 24.007: Protocol architecture of Non Access Stratum supporting CS/PS mode 1 or CS/PS mode 2 of operation MSs, MS‑side</p>
+<p>Figure&nbsp;5.9/3GPP TS 24.007: Protocol architecture of Non Access Stratum supporting MSs, MS‑side (over 3GPP access)</p>
+<p>Figure&nbsp;5.10/3GPP TS 24.007: Protocol architecture of Non Access Stratum supporting MSs, MS‑side (over non-3GPP access)</p>
+<p>&nbsp;</p>
+<p>As shown in figure&nbsp;5.1 a hierarchy of 3 sublayers is defined:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the RR sublayer provides services to the MM sublayer and utilizes the services of signalling layer&nbsp;2;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the MM sublayer provides common services to the entities of the Connection Management (CM) sublayer;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the CM sublayer includes, among others, the CC, SS, and SMS entities, which are independent entities.</p>
+<p>Figure&nbsp;5.2 defines four sublayers for GPRS services supporting Class C MSs:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the RR sublayer provides services to the MM and LLC sublayers;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the LLC sublayer provides services to the MM sublayer, the SNDCP and GSMS entities and uses services of the RR sublayer;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the MM sublayer provides services to the SM and SS entities of the CM. The MM sublayer includes one GMM;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the CM sublayer includes the SM, SS and GSMS entities. The SM entity provides services to the SNDCP entity and uses services of the MM sublayer. The GSMS entity is identical to the SMS entity for non-GPRS services except it uses the services from the LLC sublayer. The SS entity is identical to the one for non-GPRS services except it uses the services from the LLC or PS signalling connection.</p>
+<p>Figure&nbsp;5.3 defines four sublayers for non-GPRS and GPRS-services supporting Class A and Class B MSs:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the RR sublayer provides services to the MM and LLC sublayers;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the LLC sublayer provides services to the MM sublayer, the SNDCP and GSMS entities and uses services of the RR sublayer;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the MM sublayer provides services to the SNDCP entity and to the entities of the Connection Management (CM) sublayer. In addition to the MM entity for non-GPRS services, the MM sublayer further includes one GMM entity;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the CM sublayer includes, among others, the CC, SS, GSMS and SM entities, which are independent entities;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the SM entity provides services to the SNDCP entity and uses services of the MM sublayer.<br /> The GSMS entity is an extension of the SMS entity for non-GPRS services. For message transfer it uses the services both from the LLC sublayer and the MM entity of the MM sublayer. Furthermore it retrieves from the MM entity information about which transport service to use.</p>
+<p>Figure&nbsp;5.4 defines three sub-layers for CTS services:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the RR sublayer provides services (including CTS services) to the MM sublayer and uses the services of signalling layer&nbsp;2;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the MM sublayer provides common services to the entities of the Connection Management (CM) sublayer; it provides also specific CTS services to the entities above CM;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the CM sublayer includes, among others, the CC, SS, and SMS entities, which are independent entities.</p>
+<p>Figure&nbsp;5.5 defines three sublayers for UMTS PS domain services supporting PS mode of operation:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the Access Stratum (AS) sublayer provides services to the MM sublayer and the RAB Manager (RABM) entity.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the MM sublayer provides services to the SM, SS and GSMS entities of the CM. The MM sublayer includes one GMM entity;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the CM sublayer includes the SM, SS and GSMS entities. The SM entity provides services to the RABM entity and uses services of the MM sublayer. The GSMS entity is identical to the SMS entity for GPRS services in GSM except it uses the services from the GMM sublayer. The SS entity is identical to the one for non-GPRS services except it uses the services from the LLC or PS signalling connection;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the RABM hides the concepts of RABs that can be activated/released while a PDP context is active. If UL data in the terminal is to be sent on a RAB (NSAPI) that has been released the RABM will trigger a service request procedure in GMM.</p>
+<p>Figure&nbsp;5.6 defines three sublayers for UMTS CS domain services and UMTS PS domain services supporting CS/PS mode of operation MSs:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the Access Stratum (AS) sublayer provides services to the MM sublayer and the RAB Manager (RABM) entity;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the MM sublayer provides services to the entities of the Connection Management (CM) sublayer. In addition to the MM entity for CS domain services, the MM sublayer further includes one GMM entity;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the CM sublayer includes, among others, the CC, SS, GSMS and SM entities, which are independent entities;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the SM entity provides services to the RABM entity and uses services of the MM sublayer.<br /> The GSMS entity is an extension of the SMS entity for CS domain services. For message transfer it uses the services both from the GMM entity of the MM sublayer and the MM entity of the MM sublayer. Furthermore it retrieves from the MM entity information about which transport service to use;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the RABM hides the concepts of RABs that can be activated/released while a PDP context is active. If UL data in the terminal is to be sent on a RAB (NSAPI) that has been released, the RABM will trigger a service request procedure in GMM.</p>
+<p>Figure&nbsp;5.7 defines three sublayers for EPS PS domain services:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the Access Stratum (AS) sublayer provides services to the MM sublayer;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the MM sublayer provides services to the entities of the Connection Management (CM) sublayer. The MM sublayer further includes one EMM entity;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the CM sublayer includes ESM entities;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the ESM entity provides services to the Bearer Control (BC) entity and uses services of the MM sublayer;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the BC entity hides the concepts of radio bearers that can be established/released while an EPS bearer context is active. If uplink data in the terminal is to be sent, and radio bearers have been released, the BC will trigger a service request procedure in EMM.</p>
+<p>Figure&nbsp;5.8 defines three sublayers for EPS domain services and non-EPS domain services supporting CS/PS mode 1 or CS/PS mode 2 of operation MSs:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the Access Stratum (AS) sublayer provides services to the MM sublayer;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the MM sublayer provides services to the entities of the Connection Management (CM) sublayer. In addition to the MM entity for non-EPS services, the MM sublayer further includes one EMM entity;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the CM sublayer includes among others, the CC, SS, ESMS and ESM entities, which are independent entities;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the ESM entity provides services to the Bearer Control (BC) entity and uses services of the MM sublayer.<br /> The ESMS entity is an extension of the SMS entity for non-EPS services. For message transfer, it uses the services from the EMM entity of the MM sublayer;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the BC entity hides the concepts of radio bearers that can be established/released while an EPS bearer context is active. If uplink data in the MS is to be sent, and all radio bearers have been released, the BC will trigger a service request procedure in EMM.</p>
+<p>Figure&nbsp;5.9 defines three sublayers for 5GS services:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the NR or E-UTRA AS sublayer provides services to the 5GMM sublayer;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the 5GMM sublayer provides services to the entities of the 5GCM sublayer. The 5GMM sublayer further includes one 5GMM entity;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the 5GCM sublayer includes 5GSM entities;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the 5GSM entity provides services to the QoS flow control (QFC) entity and uses services of the 5GMM sublayer;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the QFC entity hides the concepts of radio resources that can be established, released or suspended while a 5GS context is active. If uplink data in the terminal is to be sent, and 5GS radio resources have been released or suspended, the QFC will notify 5GMM.</p>
+<p>Figure&nbsp;5.10 defines three sublayers for 5GS services:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the Non-3GPP access stratum sublayer provides services to the 5GMM sublayer;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the 5GMM sublayer provides services to the entities of the 5GCM sublayer. The 5GMM sublayer further includes one 5GMM entity;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the 5GCM sublayer includes 5GSM entities;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the 5GSM entity provides services to the QoS flow control (QFC) entity and uses services of the 5GMM sublayer;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the QFC entity hides the concepts of non-3GPP access resources that can be established/released while a 5GS context is active. Whenever such resources are available, IPSec security associations will be established and maintained.</p>

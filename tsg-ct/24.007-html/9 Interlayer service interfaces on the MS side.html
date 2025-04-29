@@ -1,0 +1,1355 @@
+<h1><a name="_Toc11256566"></a><a name="_Toc36116558"></a><a name="_Toc45096615"></a><a name="_Toc51762481"></a><a name="_Toc178270754"></a>9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Interlayer service interfaces on the MS side</h1>
+<p>In addition to the services described in this clause, the RR entity and MM entity also provide services to CM entities which do not belong to the functional blocks of CC, SMS, and SS. (For example, the RR entity provides service to Group Call and Broadcast Call entities.) These services are not further described in this clause.</p>
+<h2><a name="_Toc11256567"></a><a name="_Toc36116559"></a><a name="_Toc45096616"></a><a name="_Toc51762482"></a><a name="_Toc178270755"></a>9.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Services provided by the Radio Resource Management entity</h2>
+<p>The Radio Resource Management (RR) sublayer provides a service to the Mobility Management entity (MM).</p>
+<p>The RR services are used for:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; establishing control channel connections;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; releasing control channel connections;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; control-data transfer.</p>
+<p>The Radio Resource Management services are represented by the RR‑service primitives.</p>
+<p>Figure&nbsp;9.1: Services provided at RR‑SAP ‑ MS side</p>
+<h3><a name="_Toc11256568"></a><a name="_Toc36116560"></a><a name="_Toc45096617"></a><a name="_Toc51762483"></a><a name="_Toc178270756"></a>9.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service state diagram</h3>
+<p>The primitives provided by the Radio Resource Management entity and the transition between permitted states are shown in figure&nbsp;9.2.</p>
+<p>&nbsp;</p>
+<p>Figure&nbsp;9.2: Service graph of the Radio Resource Management ‑ MS side</p>
+<h3><a name="_Toc11256569"></a><a name="_Toc36116561"></a><a name="_Toc45096618"></a><a name="_Toc51762484"></a><a name="_Toc178270757"></a>9.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives</h3>
+<p>Table&nbsp;9.1: Primitives and parameters at the RR‑SAP ‑ MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="206">
+<p>PRIMITIVES</p>
+</td>
+<td width="313">
+<p>PARAMETERS</p>
+</td>
+<td width="120">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="206">
+<p>RR_EST_REQ</p>
+</td>
+<td width="313">
+<p>Layer 3 message transferred in the SABM frame, CN domain identity</p>
+</td>
+<td width="120">
+<p>9.1.2.1</p>
+</td>
+</tr>
+<tr>
+<td width="206">
+<p>RR_EST_IND</p>
+</td>
+<td width="313">
+<p>‑</p>
+</td>
+<td width="120">
+<p>9.1.2.2</p>
+</td>
+</tr>
+<tr>
+<td width="206">
+<p>RR_EST_CNF</p>
+</td>
+<td width="313">
+<p>‑</p>
+</td>
+<td width="120">
+<p>9.1.2.3</p>
+</td>
+</tr>
+<tr>
+<td width="206">
+<p>RR_REL_IND</p>
+</td>
+<td width="313">
+<p>cause</p>
+</td>
+<td width="120">
+<p>9.1.2.4</p>
+</td>
+</tr>
+<tr>
+<td width="206">
+<p>RR_SYNC_IND</p>
+</td>
+<td width="313">
+<p>cause (ciphering, res. ass., channel mode modify), list of (RAB ID, NAS Synchronization Indicator, maximum data rate)</p>
+</td>
+<td width="120">
+<p>9.1.2.5</p>
+</td>
+</tr>
+<tr>
+<td width="206">
+<p>RR_DATA_REQ</p>
+</td>
+<td width="313">
+<p>Layer 3 message, local flow identifier CN domain identity</p>
+</td>
+<td width="120">
+<p>9.1.2.6</p>
+</td>
+</tr>
+<tr>
+<td width="206">
+<p>RR_DATA_IND</p>
+</td>
+<td width="313">
+<p>Layer 3 message, CN domain identity</p>
+</td>
+<td width="120">
+<p>9.1.2.7</p>
+</td>
+</tr>
+<tr>
+<td width="206">
+<p>RR_UNIT DATA_IND</p>
+</td>
+<td width="313">
+<p>Layer 3 message</p>
+</td>
+<td width="120">
+<p>9.1.2.8</p>
+</td>
+</tr>
+<tr>
+<td width="206">
+<p>RR_ABORT_REQ</p>
+</td>
+<td width="313">
+<p>cause</p>
+</td>
+<td width="120">
+<p>9.1.2.9</p>
+</td>
+</tr>
+<tr>
+<td width="206">
+<p>RR_ABORT_IND</p>
+</td>
+<td width="313">
+<p>cause</p>
+</td>
+<td width="120">
+<p>9.1.2.10</p>
+</td>
+</tr>
+<tr>
+<td width="206">
+<p>RR_ACT_REQ</p>
+</td>
+<td width="313">
+<p>reselection mode</p>
+</td>
+<td width="120">
+<p>9.1.2.11</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256570"></a><a name="_Toc36116562"></a><a name="_Toc45096619"></a><a name="_Toc51762485"></a><a name="_Toc178270758"></a>9.1.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RR_EST_REQ</h4>
+<p>In A/Gb mode it is used by the Mobility Management entity to request establishment of a Mobile originated RR connection.</p>
+<p>The request shall be given only in the IDLE state when the MS listens to the CCCH and the previously selected BCCH.</p>
+<p>In Iu mode it is used by the Mobility Management entity to request the establishment of a signalling connection to the CN domain type given in the parameter CN domain identity. The request shall be given only if no signalling connection to the specific CN domain type is established.</p>
+<h4><a name="_Toc11256571"></a><a name="_Toc36116563"></a><a name="_Toc45096620"></a><a name="_Toc51762486"></a><a name="_Toc178270759"></a>9.1.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RR_EST_IND</h4>
+<p>Indicates to the Mobility Management entity the establishment of a Mobile terminated RR connection. By this indication MM is informed that a transparent connection exists and RR is in the dedicated mode.</p>
+<h4><a name="_Toc11256572"></a><a name="_Toc36116564"></a><a name="_Toc45096621"></a><a name="_Toc51762487"></a><a name="_Toc178270760"></a>9.1.2.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RR_EST_CNF</h4>
+<p>Is used by RR to indicate the successful completion of a Mobile originated RR connection establishment. RR connection exists and RR is in the dedicated mode.</p>
+<h4><a name="_Toc11256573"></a><a name="_Toc36116565"></a><a name="_Toc45096622"></a><a name="_Toc51762488"></a><a name="_Toc178270761"></a>9.1.2.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RR_REL_IND</h4>
+<p>Is used by RR to indicate to the Mobility Management entity the release of a RR connection when RR has received a CHANNEL RELEASE from the Network and has triggered a normal release of the data link layer. It is also used to indicate that a requested RR connection cannot be established. In both cases, RR returns to IDLE mode.</p>
+<h4><a name="_Toc11256574"></a><a name="_Toc36116566"></a><a name="_Toc45096623"></a><a name="_Toc51762489"></a><a name="_Toc178270762"></a>9.1.2.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RR_SYNC_IND</h4>
+<p>Is used for synchronizing RR and the Mobility Management entity after the establishment of a Mobile originated or Mobile terminated RR connection. This indication is provided to MM in the following cases:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; ciphering has been started (ciphering);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; integrity protection has been started (integrity) (UMTS only);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a traffic channel has been assigned (res. ass.&nbsp;=&nbsp;"resource assigned");</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the channel mode has been modified (channel mode modify).</p>
+<p>In Iu mode, in case of a resource assignment or channel mode modification, RR indicates to the Mobility Management entity the list of RAB IDs and, optionally,</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the NAS Synchronization Indicators associated with the assigned or modified radio bearers; or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the maximum data rate (at RLC layer) associated with the assigned or modified radio bearers, if no NAS Synchronization Indicator is available.</p>
+<h4><a name="_Toc11256575"></a><a name="_Toc36116567"></a><a name="_Toc45096624"></a><a name="_Toc51762490"></a><a name="_Toc178270763"></a>9.1.2.5a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h4>
+<h4><a name="_Toc11256576"></a><a name="_Toc36116568"></a><a name="_Toc45096625"></a><a name="_Toc51762491"></a><a name="_Toc178270764"></a>9.1.2.5b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h4>
+<h4><a name="_Toc11256577"></a><a name="_Toc36116569"></a><a name="_Toc45096626"></a><a name="_Toc51762492"></a><a name="_Toc178270765"></a>9.1.2.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RR_DATA_REQ</h4>
+<p>Is used by the Mobility Management entity to send control data to its peer entity on the Network side via an existing RR connection.</p>
+<h4><a name="_Toc11256578"></a><a name="_Toc36116570"></a><a name="_Toc45096627"></a><a name="_Toc51762493"></a><a name="_Toc178270766"></a>9.1.2.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RR_DATA_IND</h4>
+<p>Is used by RR to indicate control‑data, which has been received from its peer entity on the Network side via an existing RR connection.</p>
+<p>For UMTS, RR_DATA_IND is also used to indicate whether control-data has been:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; successfully integrity checked;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; unsuccessfully integrity checked;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; received with no integrity protection.</p>
+<h4><a name="_Toc11256579"></a><a name="_Toc36116571"></a><a name="_Toc45096628"></a><a name="_Toc51762494"></a><a name="_Toc178270767"></a>9.1.2.7a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h4>
+<h4><a name="_Toc11256580"></a><a name="_Toc36116572"></a><a name="_Toc45096629"></a><a name="_Toc51762495"></a><a name="_Toc178270768"></a>9.1.2.8 RR_UNIT_DATA_IND</h4>
+<p>Is used by RR to provide MM with system info. The system info is received on the current BCCH if RR is in the IDLE state. If a RR connection has been established, the system info is received on the SACCH.</p>
+<h4><a name="_Toc11256581"></a><a name="_Toc36116573"></a><a name="_Toc45096630"></a><a name="_Toc51762496"></a><a name="_Toc178270769"></a>9.1.2.9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RR_ABORT_REQ</h4>
+<p>Request to abort an existing RR connection or a RR connection in progress. The data link, if already established, shall be released by a normal release procedure (DISC/UA) initiated by the MS. This is the only way the MS can trigger the release of a RR connection in case of exceptional conditions. The RR returns to the IDLE state.</p>
+<h4><a name="_Toc11256582"></a><a name="_Toc36116574"></a><a name="_Toc45096631"></a><a name="_Toc51762497"></a><a name="_Toc178270770"></a>9.1.2.10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RR_ABORT_IND</h4>
+<p>Indication that the RR connection has been aborted by a lower layer failure and RR has returned to the IDLE state.</p>
+<h3><a name="_Toc11256583"></a><a name="_Toc36116575"></a><a name="_Toc45096632"></a><a name="_Toc51762498"></a><a name="_Toc178270771"></a>9.1.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Services provided by the Radio Resource Management entity for CTS</h3>
+<p>Inside the RR sub-layer, the CTS Radio Resource Management (CTS‑RR) sublayer provides services to the CTS Mobility Management (CTS‑MM) entity.</p>
+<p>The CTS-RR services are used for:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; alive check.</p>
+<p>The CTS Radio Resource Management services are represented by the CTS‑RR‑service primitives.</p>
+<p>Table&nbsp;9.1.3: Primitives and parameters at the RR‑SAP ‑ MS side for CTS</p>
+<table>
+<tbody>
+<tr>
+<td width="206">
+<p>PRIMITIVES</p>
+</td>
+<td width="313">
+<p>PARAMETERS</p>
+</td>
+<td width="120">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="206">
+<p>CTS_RR_ALIVE_CHECK_IND</p>
+</td>
+<td width="313">
+<p>‑</p>
+</td>
+<td width="120">
+<p>9.1.3.1</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256584"></a><a name="_Toc36116576"></a><a name="_Toc45096633"></a><a name="_Toc51762499"></a><a name="_Toc178270772"></a>9.1.3.1 CTS_RR_ALIVE_CHECK_IND</h4>
+<p>Indicates to the CTS Mobility Management entity that an alive check request has been received from the fixed part.</p>
+<h2><a name="_Toc11256585"></a><a name="_Toc36116577"></a><a name="_Toc45096634"></a><a name="_Toc51762500"></a><a name="_Toc178270773"></a>9.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Services provided by the Mobility Management entity</h2>
+<p>The Mobility Management (MM) sublayer provides services to the Call Control (CC) entity, the Supplementary Services Support (SS) entity, the Location Services (LCS) entity (only for type A LMU) and the Short Message Service Support (SMS) entity.</p>
+<p>The Mobility Management services primitives are discriminated by the MMCC, MMSS, MMLCS and MMSMS prefix.</p>
+<p>&nbsp;</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The LCS protocol entities for communication between a type A LMU and the network would be included in the figure in the same manner as the protocol entities for CC, SS and SMS.</p>
+<p>&nbsp;</p>
+<p>Figure&nbsp;9.3: Services provided at the MMCC‑SAP, MMSS‑SAP, MMLCS-SAP, MMSMS‑SAP ‑ MS side</p>
+<p>&nbsp;</p>
+<h3><a name="_Toc11256586"></a><a name="_Toc36116578"></a><a name="_Toc45096635"></a><a name="_Toc51762501"></a><a name="_Toc178270774"></a>9.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service state diagram</h3>
+<p>The primitives provided by the Mobility Management entity towards Call Control, call independent Supplementary Service Support, Location Services Support for type A LMU and towards Short Messages Service Support and the transition between permitted states are illustrated in figure&nbsp;9.4.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p>NOTE&nbsp;1:&nbsp;&nbsp; MMCC‑primitives only at MMCC‑SAP.</p>
+<p>NOTE&nbsp;2:&nbsp;&nbsp; The prefix MMXX is used for substitution of MMCC, MMSS, MMLCS or MMSMS.</p>
+<p>&nbsp;</p>
+<p>Figure&nbsp;9.4: Service graph of the Mobility Management entity ‑ MS side</p>
+<h3><a name="_Toc11256587"></a><a name="_Toc36116579"></a><a name="_Toc45096636"></a><a name="_Toc51762502"></a><a name="_Toc178270775"></a>9.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives</h3>
+<p>Table&nbsp;9.2: Primitives and Parameters at MMCC‑SAP, MMSS‑SAP (for type A LMU), MMLCS-SAP or MMSMS‑SAP&nbsp;‑&nbsp;MS&nbsp;side</p>
+<table>
+<tbody>
+<tr>
+<td width="269">
+<p>PRIMITIVES</p>
+</td>
+<td width="250">
+<p>PARAMETERS</p>
+</td>
+<td width="120">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_EST_REQ (see note 1)</p>
+</td>
+<td width="250">
+<p>Parameters for the appropriate CM&nbsp;SERVICE&nbsp;REQUEST (if any)</p>
+</td>
+<td width="120">
+<p>9.2.2.1</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_EST_IND (see note 1)</p>
+</td>
+<td width="250">
+<p>First CM message</p>
+</td>
+<td width="120">
+<p>9.2.2.2</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_EST_CNF (see note 1)</p>
+</td>
+<td width="250">
+<p>&nbsp;‑</p>
+</td>
+<td width="120">
+<p>9.2.2.3</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_REL_REQ (see note 1)</p>
+</td>
+<td width="250">
+<p>cause</p>
+</td>
+<td width="120">
+<p>9.2.2.4</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_REL_IND (see note 1)</p>
+</td>
+<td width="250">
+<p>cause</p>
+</td>
+<td width="120">
+<p>9.2.2.5</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_DATA_REQ (see note 1)</p>
+</td>
+<td width="250">
+<p>Layer 3 message</p>
+</td>
+<td width="120">
+<p>9.2.2.6</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_DATA_IND (see note 1)</p>
+</td>
+<td width="250">
+<p>Layer 3 message</p>
+</td>
+<td width="120">
+<p>9.2.2.7</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_UNIT_DATA_REQ (see note 1)</p>
+</td>
+<td width="250">
+<p>Layer 3 message</p>
+</td>
+<td width="120">
+<p>9.2.2.8</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_UNIT_DATA_IND (see note 1)</p>
+</td>
+<td width="250">
+<p>Layer 3 message</p>
+</td>
+<td width="120">
+<p>9.2.2.9</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMCC_SYNC_IND (see note 2)</p>
+</td>
+<td width="250">
+<p>cause: res.ass; list of (RAB ID, NAS Synchronization Indicator, maximum data rate)</p>
+</td>
+<td width="120">
+<p>9.2.2.10</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_REEST_REQ (see note 1)</p>
+</td>
+<td width="250">
+<p>&nbsp;</p>
+</td>
+<td width="120">
+<p>9.2.2.11</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_REEST_CNF (see note 1)</p>
+</td>
+<td width="250">
+<p>&nbsp;</p>
+</td>
+<td width="120">
+<p>9.2.2.12</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_ERR_IND (see note 1)</p>
+</td>
+<td width="250">
+<p>cause</p>
+</td>
+<td width="120">
+<p>9.2.2.13</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_PROMPT_IND (see note 1)</p>
+</td>
+<td width="250">
+<p>-</p>
+</td>
+<td width="120">
+<p>9.2.2.14</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>MMXX_PROMPT_REJ (see note 1)</p>
+</td>
+<td width="250">
+<p>-</p>
+</td>
+<td width="120">
+<p>9.2.2.15</p>
+</td>
+</tr>
+<tr>
+<td colspan="3" width="638">
+<p>NOTE&nbsp;1:&nbsp;&nbsp; MMXX is used as substitution for MMCC, MMSS, MMLCS or MMSMS.</p>
+<p>NOTE&nbsp;2:&nbsp;&nbsp; Only at MMCC‑SAP.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256588"></a><a name="_Toc36116580"></a><a name="_Toc45096637"></a><a name="_Toc51762503"></a><a name="_Toc178270776"></a>9.2.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMXX_EST_REQ</h4>
+<p>Request used by CC, SS, LCS (for type A LMU) and SMS respectively, to request establishment of a MM connection. Several MM connections may be provided in parallel to the requesting entities. The primitive may contain parameters which are relevant for the CM SERVICE REQUEST message, e.g. to distinguish a basic call from an emergency call.</p>
+<h4><a name="_Toc11256589"></a><a name="_Toc36116581"></a><a name="_Toc45096638"></a><a name="_Toc51762504"></a><a name="_Toc178270777"></a>9.2.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMXX_EST_IND</h4>
+<p>Indication to CC, SS, LCS (for type A LMU) or SMS that a Mobile terminated MM connection has been established and the first message has been received from the respective peer entity. Several MM connections may be provided in parallel. If a MM connection already exists, a new MM connection using the same RR connection is indicated by this primitive if MM detects a message with a new combination of Protocol Discriminator (PD) and Transaction Identifier&nbsp;(TI).</p>
+<h4><a name="_Toc11256590"></a><a name="_Toc36116582"></a><a name="_Toc45096639"></a><a name="_Toc51762505"></a><a name="_Toc178270778"></a>9.2.2.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMXX_EST_CNF</h4>
+<p>Successful confirmation of the MM connection establishment by the MM sublayer to be given to the appropriate entity which has requested the service.</p>
+<h4><a name="_Toc11256591"></a><a name="_Toc36116583"></a><a name="_Toc45096640"></a><a name="_Toc51762506"></a><a name="_Toc178270779"></a>9.2.2.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMXX_REL_REQ</h4>
+<p>Used by CC, SS, LCS (for type A LMU) or SMS respectively, to request release of the MM connection. The corresponding PD/TI will be released and may be used for a new MM connection.</p>
+<h4><a name="_Toc11256592"></a><a name="_Toc36116584"></a><a name="_Toc45096641"></a><a name="_Toc51762507"></a><a name="_Toc178270780"></a>9.2.2.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMXX_REL_IND</h4>
+<p>Indication of the release of an existing MM connection or a MM connection in progress. This primitive is used in exceptional cases to indicate that the MM connection cannot be established or kept any longer and PD/TI have been released.</p>
+<h4><a name="_Toc11256593"></a><a name="_Toc36116585"></a><a name="_Toc45096642"></a><a name="_Toc51762508"></a><a name="_Toc178270781"></a>9.2.2.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMXX_DATA_REQ</h4>
+<p>Request used by the CC, SS or SMS entities for acknowledged control‑data transmission.</p>
+<h4><a name="_Toc11256594"></a><a name="_Toc36116586"></a><a name="_Toc45096643"></a><a name="_Toc51762509"></a><a name="_Toc178270782"></a>9.2.2.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMXX_DATA_IND</h4>
+<p>Indication used by MM to transfer the received acknowledged control‑data to the CC, SS, LCS (for type A LMU) or SMS entities.</p>
+<h4><a name="_Toc11256595"></a><a name="_Toc36116587"></a><a name="_Toc45096644"></a><a name="_Toc51762510"></a><a name="_Toc178270783"></a>9.2.2.8 MMXX_UNIT_DATA_REQ</h4>
+<p>Request used by the CC, SS, LCS (for type A LMU) or SMS entities for unacknowledged control‑data transmission.</p>
+<h4><a name="_Toc11256596"></a><a name="_Toc36116588"></a><a name="_Toc45096645"></a><a name="_Toc51762511"></a><a name="_Toc178270784"></a>9.2.2.9 MMXX_UNIT_DATA_IND</h4>
+<p>Indication used by MM to transfer the received unacknowledged control‑data to the CC, SS, LCS or SMS entities.</p>
+<h4><a name="_Toc11256597"></a><a name="_Toc36116589"></a><a name="_Toc45096646"></a><a name="_Toc51762512"></a><a name="_Toc178270785"></a>9.2.2.10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMCC_SYNC_IND</h4>
+<p>Indication that a dedicated channel assignment has been performed and/or the channel mode has been changed (only towards the CC entity).</p>
+<p>In Iu mode, MM indicates the list of the RAB IDs and, optionally,</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the NAS Synchronization Indicators associated with the assigned or modified radio bearers; or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the maximum data rate (at RLC layer) associated with the assigned or modified radio bearers, if no NAS Synchronization Indicator is available.</p>
+<p>During a network-initiated in-call modification the CC entity uses the NAS Synchronization Indicator or the maximum data rate to determine whether a suitable channel for the new call mode is available.</p>
+<h4><a name="_Toc11256598"></a><a name="_Toc36116590"></a><a name="_Toc45096647"></a><a name="_Toc51762513"></a><a name="_Toc178270786"></a>9.2.2.11 MMXX_REEST_REQ</h4>
+<p>Request to establish a MM connection which has been interrupted by a lower layer failure. The interruption must have been indicated by MMXX_ERR_IND.</p>
+<h4><a name="_Toc11256599"></a><a name="_Toc36116591"></a><a name="_Toc45096648"></a><a name="_Toc51762514"></a><a name="_Toc178270787"></a>9.2.2.12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMXX_REEST_CNF</h4>
+<p>Confirmation of the successful re‑establishment of the MM connection. The MM connection will continue with PD/TI as it had before.</p>
+<h4><a name="_Toc11256600"></a><a name="_Toc36116592"></a><a name="_Toc45096649"></a><a name="_Toc51762515"></a><a name="_Toc178270788"></a>9.2.2.13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MMXX_ERR_IND</h4>
+<p>Indication of a lower layer failure interrupting the MM connection. The PD/TI are still kept by MM. In case of parallel transactions this indication is passed to all CM entities for which a MM connection has been established. It is left to the decision of the appropriate CM entity to either request the re‑establishment of the MM connection by MMXX_REEST_REQ or to release it by MMXX_REL_REQ.</p>
+<h4><a name="_Toc11256601"></a><a name="_Toc36116593"></a><a name="_Toc45096650"></a><a name="_Toc51762516"></a><a name="_Toc178270789"></a>9.2.2.14 MMXX_PROMPT_IND</h4>
+<p>Indication given by MM to inform of the completion of the MM connection to the CC, SS, LCS (for type A LMU) or SMS entities for a mobile station which supports "Network Initiated MO CM Connection Request".</p>
+<h4><a name="_Toc11256602"></a><a name="_Toc36116594"></a><a name="_Toc45096651"></a><a name="_Toc51762517"></a><a name="_Toc178270790"></a>9.2.2.15 MMXX_PROMPT_REJ</h4>
+<p>Response to the MMXX_PROMPT_IND indication to the MM entity in a mobile station which supports "Network Initiated MO CM Connection Request" in case when it is impossible to establish the prompted CM connection e.g. due to lack of free transaction identifiers.</p>
+<h2><a name="_Toc11256603"></a><a name="_Toc36116595"></a><a name="_Toc45096652"></a><a name="_Toc51762518"></a><a name="_Toc178270791"></a>9.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Services provided by radio resource management entity for GPRS services</h2>
+<p>The service primitives for UMTS are defined in the present document. The services provided by the Access Stratum (AS) are specified in 3GPP TS 23.110 [20].</p>
+<h3><a name="_Toc11256604"></a><a name="_Toc36116596"></a><a name="_Toc45096653"></a><a name="_Toc51762519"></a><a name="_Toc178270792"></a>9.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives for GRR-SAP (GSM only)</h3>
+<p>The GRR-SAP service primitives are defined in 3GPP&nbsp;TS&nbsp;44.064&nbsp;[11a]</p>
+<p>[[Table 9.3.1, and chapters 9.3.1.1 - 9.3.1.5 are Void]</p>
+<h3><a name="_Toc11256605"></a><a name="_Toc36116597"></a><a name="_Toc45096654"></a><a name="_Toc51762520"></a><a name="_Toc178270793"></a>9.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives for GMMRR-SAP (GSM only)</h3>
+<p>Table 9.3.2: Primitives and Parameters at GMMRR-SAP - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="215">
+<p>PRIMITIVE</p>
+</td>
+<td width="312">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="111">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="215">
+<p>GMMRR-ASSIGN-REQ</p>
+</td>
+<td width="312">
+<p>newTLLI</p>
+</td>
+<td width="111">
+<p>9.3.2.1</p>
+</td>
+</tr>
+<tr>
+<td width="215">
+<p>GMMRR-PAGE-IND</p>
+</td>
+<td width="312">
+<p>TLLI</p>
+</td>
+<td width="111">
+<p>9.3.2.2</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256606"></a><a name="_Toc36116598"></a><a name="_Toc45096655"></a><a name="_Toc51762521"></a><a name="_Toc178270794"></a>9.3.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMRR-ASSIGN-REQ</h4>
+<p>A new TLLI is assigned to the RR sublayer.</p>
+<h4><a name="_Toc11256607"></a><a name="_Toc36116599"></a><a name="_Toc45096656"></a><a name="_Toc51762522"></a><a name="_Toc178270795"></a>9.3.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMRR-PAGE-IND</h4>
+<p>A RR-paging message has been received by the RR sublayer.</p>
+<h3><a name="_Toc11256608"></a><a name="_Toc36116600"></a><a name="_Toc45096657"></a><a name="_Toc51762523"></a><a name="_Toc178270796"></a>9.3.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives for RABMAS-SAP (UMTS only)</h3>
+<p>Table 9.3.3: Primitives and parameters at RABMAS-SAP</p>
+<table>
+<tbody>
+<tr>
+<td width="212">
+<p>PRIMITIVE</p>
+</td>
+<td width="198">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="112">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="212">
+<p>RABMAS-RAB-ESTABLISH-IND</p>
+</td>
+<td width="198">
+<p>&nbsp;RAB ID list</p>
+</td>
+<td width="112">
+<p>9.3.3.1</p>
+</td>
+</tr>
+<tr>
+<td width="212">
+<p>RABMAS-RAB-ESTABLISH-RES</p>
+</td>
+<td width="198">
+<p>&nbsp;-</p>
+</td>
+<td width="112">
+<p>9.3.3.2</p>
+</td>
+</tr>
+<tr>
+<td width="212">
+<p>RABMAS-RAB-ESTABLISH-REJ</p>
+</td>
+<td width="198">
+<p>&nbsp;</p>
+</td>
+<td width="112">
+<p>9.3.3.3</p>
+</td>
+</tr>
+<tr>
+<td width="212">
+<p>RABMAS-RAB-RELEASE-IND</p>
+</td>
+<td width="198">
+<p>&nbsp;RAB ID list</p>
+</td>
+<td width="112">
+<p>9.3.3.4</p>
+</td>
+</tr>
+<tr>
+<td width="212">
+<p>RABMAS-RAB-RELEASE-RES</p>
+</td>
+<td width="198">
+<p>&nbsp;-</p>
+</td>
+<td width="112">
+<p>9.3.3.5</p>
+</td>
+</tr>
+<tr>
+<td width="212">
+<p>RABMAS-STATUS-IND</p>
+</td>
+<td width="198">
+<p>&nbsp;Cause</p>
+</td>
+<td width="112">
+<p>9.3.3.6</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256609"></a><a name="_Toc36116601"></a><a name="_Toc45096658"></a><a name="_Toc51762524"></a><a name="_Toc178270797"></a>9.3.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMAS-RAB-ESTABLISH-IND</h4>
+<p>Indication from the Access Stratum layer that radio access bearer setup for the indicated list of RAB IDs (contains NSAPI) has commenced.</p>
+<h4><a name="_Toc11256610"></a><a name="_Toc36116602"></a><a name="_Toc45096659"></a><a name="_Toc51762525"></a><a name="_Toc178270798"></a>9.3.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMAS-RAB-ESTABLISH-RES</h4>
+<p>Response (to RABMAS-RAB-ESTABLISH-IND) used by the RABM entity to inform the Access Stratum sublayer that the indicated NSAPI (in RAB ID) is currently or has been activated by the SM.</p>
+<h4><a name="_Toc11256611"></a><a name="_Toc36116603"></a><a name="_Toc45096660"></a><a name="_Toc51762526"></a><a name="_Toc178270799"></a>9.3.3.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMAS-RAB-ESTABLISH-REJ</h4>
+<p>Response (to RABMAS-RAB-ESTABLISH-IND) used by the RABM entity to inform the Access Stratum sublayer that all of the NSAPIs, indicated by RAB ID list in the received RABMAS-RAB-ESTABLISH-IND, have not been activated by the SM-layer and the attempt to setup the radio access bearers shall be rejected.</p>
+<h4><a name="_Toc11256612"></a><a name="_Toc36116604"></a><a name="_Toc45096661"></a><a name="_Toc51762527"></a><a name="_Toc178270800"></a>9.3.3.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMAS-RAB-RELEASE-IND</h4>
+<p>Indication from the Access Stratum layer that a radio access bearer for the indicated NSAPI has been released.</p>
+<h4><a name="_Toc11256613"></a><a name="_Toc36116605"></a><a name="_Toc45096662"></a><a name="_Toc51762528"></a><a name="_Toc178270801"></a>9.3.3.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMAS-RAB-RELEASE-RES</h4>
+<p>Response used by the RABM entity to inform the Access Stratum sublayer that the indicated RAB ID has been released in the RABM.</p>
+<h4><a name="_Toc11256614"></a><a name="_Toc36116606"></a><a name="_Toc45096663"></a><a name="_Toc51762529"></a><a name="_Toc178270802"></a>9.3.3.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RABMAS-STATUS-IND</h4>
+<p>Indication used by the AS sublayer to transfer failures to the RABM.</p>
+<h3><a name="_Toc11256615"></a><a name="_Toc36116607"></a><a name="_Toc45096664"></a><a name="_Toc51762530"></a><a name="_Toc178270803"></a>9.3.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives for GMMAS-SAP (UMTS only)</h3>
+<p>Table 9.3.4: Service primitives and parameters at GMMAS-SAP - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="193">
+<p>PRIMITIVE</p>
+</td>
+<td width="234">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="95">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="193">
+<p>GMMAS-SECURITY-IND</p>
+</td>
+<td width="234">
+<p>&nbsp;</p>
+</td>
+<td width="95">
+<p>9.3.4.1</p>
+</td>
+</tr>
+<tr>
+<td width="193">
+<p>GMMAS-SECURITY-RES</p>
+</td>
+<td width="234">
+<p>CK, IK</p>
+</td>
+<td width="95">
+<p>9.3.4.2</p>
+</td>
+</tr>
+<tr>
+<td width="193">
+<p>GMMAS- ESTABLISH-REQ</p>
+</td>
+<td width="234">
+<p>Layer 3-PDU, Establishment cause, Priority, CN Domain Identity, MS Identity, LAI/RAI</p>
+</td>
+<td width="95">
+<p>9.3.4.3</p>
+</td>
+</tr>
+<tr>
+<td width="193">
+<p>GMMAS- ESTABLISH-CNF</p>
+</td>
+<td width="234">
+<p>&nbsp;</p>
+</td>
+<td width="95">
+<p>9.3.4.4</p>
+</td>
+</tr>
+<tr>
+<td width="193">
+<p>GMMAS- ESTABLISH-REJ</p>
+</td>
+<td width="234">
+<p>&nbsp;</p>
+</td>
+<td width="95">
+<p>9.3.4.5</p>
+</td>
+</tr>
+<tr>
+<td width="193">
+<p>GMMAS- RELEASE-REQ</p>
+</td>
+<td width="234">
+<p>CN Domain identity</p>
+</td>
+<td width="95">
+<p>9.3.4.6</p>
+</td>
+</tr>
+<tr>
+<td width="193">
+<p>GMMAS- RELEASE-IND</p>
+</td>
+<td width="234">
+<p>Cause</p>
+</td>
+<td width="95">
+<p>9.3.4.7</p>
+</td>
+</tr>
+<tr>
+<td width="193">
+<p>GMMAS- DATA-REQ</p>
+</td>
+<td width="234">
+<p>Layer 3-PDU, Priority, CN Domain identity</p>
+</td>
+<td width="95">
+<p>9.3.4.8</p>
+</td>
+</tr>
+<tr>
+<td width="193">
+<p>GMMAS- DATA-IND</p>
+</td>
+<td width="234">
+<p>Layer 3-PDU</p>
+</td>
+<td width="95">
+<p>9.3.4.9</p>
+</td>
+</tr>
+<tr>
+<td width="193">
+<p>GMMAS-PAGE-IND</p>
+</td>
+<td width="234">
+<p>MS Identity type, Paging Cause</p>
+</td>
+<td width="95">
+<p>9.3.4.10</p>
+</td>
+</tr>
+<tr>
+<td width="193">
+<p>GMMAS-STATUS-IND</p>
+</td>
+<td width="234">
+<p>Cause</p>
+</td>
+<td width="95">
+<p>9.3.4.11</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256616"></a><a name="_Toc36116608"></a><a name="_Toc45096665"></a><a name="_Toc51762531"></a><a name="_Toc178270804"></a>9.3.4.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMAS-SECURITY-IND</h4>
+<p>Indication from the AS sublayer that ciphering (and integrity protection) shall be started. The GMM sublayer uses this primitive as an indication of the completion of the service request procedure.</p>
+<h4><a name="_Toc11256617"></a><a name="_Toc36116609"></a><a name="_Toc45096666"></a><a name="_Toc51762532"></a><a name="_Toc178270805"></a>9.3.4.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMAS-SECURITY-RES</h4>
+<p>Ciphering and integrity keys are assigned to the AS sublayer to enable ciphering (and integrity protection).</p>
+<h4><a name="_Toc11256618"></a><a name="_Toc36116610"></a><a name="_Toc45096667"></a><a name="_Toc51762533"></a><a name="_Toc178270806"></a>9.3.4.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMAS-ESTABLISH-REQ</h4>
+<p>To establish a signalling connection and to carry the initial Layer 3-PDU over the radio interface.</p>
+<h4><a name="_Toc11256619"></a><a name="_Toc36116611"></a><a name="_Toc45096668"></a><a name="_Toc51762534"></a><a name="_Toc178270807"></a>9.3.4.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMAS-ESTABLISH-CNF</h4>
+<p>Confirmation from the AS sublayer that a PS signalling connection has been established.</p>
+<h4><a name="_Toc11256620"></a><a name="_Toc36116612"></a><a name="_Toc45096669"></a><a name="_Toc51762535"></a><a name="_Toc178270808"></a>9.3.4.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMAS-ESTABLISH-REJ</h4>
+<p>The attempt to establish a PS signalling connection was rejected by the network.</p>
+<h4><a name="_Toc11256621"></a><a name="_Toc36116613"></a><a name="_Toc45096670"></a><a name="_Toc51762536"></a><a name="_Toc178270809"></a>9.3.4.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMAS- RELEASE-REQ</h4>
+<p>Request used by the MM-sublayer to request the release of the PS signalling connection.</p>
+<h4><a name="_Toc11256622"></a><a name="_Toc36116614"></a><a name="_Toc45096671"></a><a name="_Toc51762537"></a><a name="_Toc178270810"></a>9.3.4.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMAS- RELEASE-IND</h4>
+<p>Indication from the AS sublayer that the PS signalling connection has been released.</p>
+<h4><a name="_Toc11256623"></a><a name="_Toc36116615"></a><a name="_Toc45096672"></a><a name="_Toc51762538"></a><a name="_Toc178270811"></a>9.3.4.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMAS- DATA-REQ</h4>
+<p>Request used by the MM-sublayer for transfer of data.</p>
+<h4><a name="_Toc11256624"></a><a name="_Toc36116616"></a><a name="_Toc45096673"></a><a name="_Toc51762539"></a><a name="_Toc178270812"></a>9.3.4.9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMAS- DATA-IND</h4>
+<p>Indication used by the AS sublayer to transfer received data to MM sublayer.</p>
+<h4><a name="_Toc11256625"></a><a name="_Toc36116617"></a><a name="_Toc45096674"></a><a name="_Toc51762540"></a><a name="_Toc178270813"></a>9.3.4.10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMAS-PAGE-IND</h4>
+<p>A paging message has been received by the AS sublayer.</p>
+<h4><a name="_Toc11256626"></a><a name="_Toc36116618"></a><a name="_Toc45096675"></a><a name="_Toc51762541"></a><a name="_Toc178270814"></a>9.3.4.11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMAS-STATUS-IND</h4>
+<p>Indication used by the AS sublayer to transfer failures to the MM sublayer.</p>
+<h2><a name="_Toc11256627"></a><a name="_Toc36116619"></a><a name="_Toc45096676"></a><a name="_Toc51762542"></a><a name="_Toc178270815"></a>9.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Services provided by the LLC entity for GPRS services (GSM only)</h2>
+<p>This clause is informative, the service primitives are defined in 3GPP&nbsp;TS&nbsp;44.064&nbsp;[11a]. They are included here to provide a complete overview of the radio interface protocol architecture.</p>
+<h3><a name="_Toc11256628"></a><a name="_Toc36116620"></a><a name="_Toc45096677"></a><a name="_Toc51762543"></a><a name="_Toc178270816"></a>9.4.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives for LLGMM-SAP</h3>
+<p>Table 9.4.1: Primitives and parameters at LLGMM-SAP - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="225">
+<p>PRIMITIVE</p>
+</td>
+<td width="302">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="104">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LLGMM-ASSIGN-REQ</p>
+</td>
+<td width="302">
+<p>oldTLLI, newTLLI, Kc, RAND, Ciphering Algorithm</p>
+</td>
+<td width="104">
+<p>9.4.1.1</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LLGMM-TRIGGER-REQ</p>
+</td>
+<td width="302">
+<p>Cause</p>
+</td>
+<td width="104">
+<p>9.4.1.2</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LLGMM-SUSPEND-REQ</p>
+</td>
+<td width="302">
+<p>TLLI</p>
+</td>
+<td width="104">
+<p>9.4.1.4</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LLGMM-RESUME-REQ</p>
+</td>
+<td width="302">
+<p>TLLI</p>
+</td>
+<td width="104">
+<p>9.4.1.5</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-UNITDATA-REQ</p>
+</td>
+<td width="302">
+<p>TLLI, GMM-PDU, protect, cipher</p>
+</td>
+<td width="104">
+<p>9.4.1.8</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-UNITDATA-IND</p>
+</td>
+<td width="302">
+<p>TLLI, GMM-PDU, cipher</p>
+</td>
+<td width="104">
+<p>9.4.1.9</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LLGMM-STATUS-IND</p>
+</td>
+<td width="302">
+<p>TLLI, cause</p>
+</td>
+<td width="104">
+<p>9.4.1.10</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256629"></a><a name="_Toc36116621"></a><a name="_Toc45096678"></a><a name="_Toc51762544"></a><a name="_Toc178270817"></a>9.4.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LLGMM-ASSIGN-REQ</h4>
+<p>A new TLLI and/or a ciphering key and/or a ciphering algorithm is assigned to the LLC sublayer.</p>
+<h4><a name="_Toc11256630"></a><a name="_Toc36116622"></a><a name="_Toc45096679"></a><a name="_Toc51762545"></a><a name="_Toc178270818"></a>9.4.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LLGMM-TRIGGER-REQ</h4>
+<p>Request to send an LLC PDU to the network. Cause indicates if the primitive is sent to trigger an implicit page response.</p>
+<h4><a name="_Toc11256631"></a><a name="_Toc36116623"></a><a name="_Toc45096680"></a><a name="_Toc51762546"></a><a name="_Toc178270819"></a>9.4.1.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h4>
+<h4><a name="_Toc11256632"></a><a name="_Toc36116624"></a><a name="_Toc45096681"></a><a name="_Toc51762547"></a><a name="_Toc178270820"></a>9.4.1.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LLGMM-SUSPEND-REQ</h4>
+<p>All LLC links in ABM mode will cease sending PDUs. GMM messages can still be sent and received.</p>
+<h4><a name="_Toc11256633"></a><a name="_Toc36116625"></a><a name="_Toc45096682"></a><a name="_Toc51762548"></a><a name="_Toc178270821"></a>9.4.1.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h4>
+<h4><a name="_Toc11256634"></a><a name="_Toc36116626"></a><a name="_Toc45096683"></a><a name="_Toc51762549"></a><a name="_Toc178270822"></a>9.4.1.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h4>
+<h4><a name="_Toc11256635"></a><a name="_Toc36116627"></a><a name="_Toc45096684"></a><a name="_Toc51762550"></a><a name="_Toc178270823"></a>9.4.1.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LLGMM-WINDOW-CNF</h4>
+<p>The actual LLC's V(R)s for each LLC link in ABM mode are transferred to GMM.</p>
+<h4><a name="_Toc11256636"></a><a name="_Toc36116628"></a><a name="_Toc45096685"></a><a name="_Toc51762551"></a><a name="_Toc178270824"></a>9.4.1.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-UNITDATA-REQ</h4>
+<p>Request to send a GMM message in unacknowledged mode to the peer entity.</p>
+<h4><a name="_Toc11256637"></a><a name="_Toc36116629"></a><a name="_Toc45096686"></a><a name="_Toc51762552"></a><a name="_Toc178270825"></a>9.4.1.9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-UNITDATA-IND</h4>
+<p>A GMM message in unacknowledged mode has been received from the peer entity.</p>
+<h4><a name="_Toc11256638"></a><a name="_Toc36116630"></a><a name="_Toc45096687"></a><a name="_Toc51762553"></a><a name="_Toc178270826"></a>9.4.1.10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LLGMM-STATUS-IND</h4>
+<p>Indication used by LLC to transfer LLC failures to the GMM sublayer. The failure may also be caused due to errors at the RLC/MAC layer.</p>
+<h3><a name="_Toc11256639"></a><a name="_Toc36116631"></a><a name="_Toc45096688"></a><a name="_Toc51762554"></a><a name="_Toc178270827"></a>9.4.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives for LLSMS-SAP</h3>
+<p>Table 9.4.2: Service primitives and parameters at LLSMS-SAP - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="225">
+<p>PRIMITIVE</p>
+</td>
+<td width="302">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="104">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-UNITDATA-REQ</p>
+</td>
+<td width="302">
+<p>TLLI, SMS-CP-PDU, protect, cipher</p>
+</td>
+<td width="104">
+<p>9.4.2.1</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>LL-UNITDATA-IND</p>
+</td>
+<td width="302">
+<p>TLLI, SMS-CP-PDU,</p>
+</td>
+<td width="104">
+<p>9.4.2.2</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256640"></a><a name="_Toc36116632"></a><a name="_Toc45096689"></a><a name="_Toc51762555"></a><a name="_Toc178270828"></a>9.4.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-UNITDATA-REQ</h4>
+<p>An LLC UI frame will be sent to the peer entity.</p>
+<h4><a name="_Toc11256641"></a><a name="_Toc36116633"></a><a name="_Toc45096690"></a><a name="_Toc51762556"></a><a name="_Toc178270829"></a>9.4.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LL-UNITDATA-IND</h4>
+<p>An LLC UI frame has been received from the peer entity.</p>
+<h2><a name="_Toc11256642"></a><a name="_Toc36116634"></a><a name="_Toc45096691"></a><a name="_Toc51762557"></a><a name="_Toc178270830"></a>9.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Services provided by the GMM for GPRS services</h2>
+<p>The GPRS Mobility Management (GMM) sublayer provides services to the Session Management (SM) entity, Supplementary Service (SS) entity and the Short Message Service Support (GSMS) entity for message transfer.</p>
+<h3><a name="_Toc11256643"></a><a name="_Toc36116635"></a><a name="_Toc45096692"></a><a name="_Toc51762558"></a><a name="_Toc178270831"></a>9.5.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives for GMMSM-SAP</h3>
+<p>Session Management services may request GPRS service registration or perform procedures needed to activate a multicast service before activating a PDP or an MBMS context.</p>
+<p>Table 9.5.1: Primitives and parameters at GMMSM-SAP - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="225">
+<p>PRIMITIVE</p>
+</td>
+<td width="293">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="113">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSM-ESTABLISH-REQ</p>
+</td>
+<td width="293">
+<p>-</p>
+</td>
+<td width="113">
+<p>9.5.1.1</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSM-ESTABLISH-CNF</p>
+</td>
+<td width="293">
+<p>-</p>
+</td>
+<td width="113">
+<p>9.5.1.2</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSM-ESTABLISH-REJ</p>
+</td>
+<td width="293">
+<p>cause</p>
+</td>
+<td width="113">
+<p>9.5.1.3</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSM-RELEASE-IND</p>
+</td>
+<td width="293">
+<p>-</p>
+</td>
+<td width="113">
+<p>9.5.1.4</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSM-UNITDATA-REQ</p>
+</td>
+<td width="293">
+<p>SM-PDU</p>
+</td>
+<td width="113">
+<p>9.5.1.5</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSM-UNITDATA-IND</p>
+</td>
+<td width="293">
+<p>SM-PDU</p>
+</td>
+<td width="113">
+<p>9.5.1.6</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256644"></a><a name="_Toc36116636"></a><a name="_Toc45096693"></a><a name="_Toc51762559"></a><a name="_Toc178270832"></a>9.5.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSM-ESTABLISH-REQ</h4>
+<p>Request from Session Management to send an ATTACH REQUEST message to the network to setup a GMM connection. The request is only performed in case the MS is not already attached. The GPRS attach is then indirectly caused by a request from Session Management, e.g. a requested PDP context activation or MBMS context activation.</p>
+<h4><a name="_Toc11256645"></a><a name="_Toc36116637"></a><a name="_Toc45096694"></a><a name="_Toc51762560"></a><a name="_Toc178270833"></a>9.5.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSM-ESTABLISH-CNF</h4>
+<p>The network has send the ATTACH ACCEPT message to the MS, the indirect attach was successful. Now, Session Management can proceed with the Session Management request, e.g. the PDP context activation or the MBMS context activation..</p>
+<h4><a name="_Toc11256646"></a><a name="_Toc36116638"></a><a name="_Toc45096695"></a><a name="_Toc51762561"></a><a name="_Toc178270834"></a>9.5.1.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSM-ESTABLISH-REJ</h4>
+<p>The network has rejected the attach. The MS has received the ATTACH REJECT message.</p>
+<h4><a name="_Toc11256647"></a><a name="_Toc36116639"></a><a name="_Toc45096696"></a><a name="_Toc51762562"></a><a name="_Toc178270835"></a>9.5.1.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSM-RELEASE-IND</h4>
+<p>The GPRS Mobility Management informs the Session Management that the MS has been GPRS detached, e.g. by timer expiry, and therefore, the PDP context(s) and the MBMS context(s), if any, are not valid anymore.</p>
+<h4><a name="_Toc11256648"></a><a name="_Toc36116640"></a><a name="_Toc45096697"></a><a name="_Toc51762563"></a><a name="_Toc178270836"></a>9.5.1.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSM-UNITDATA-REQ</h4>
+<p>The GMM is requested to forward a SM PDU to LLC in order to send it in unacknowledged more to the peer entity.</p>
+<h4><a name="_Toc11256649"></a><a name="_Toc36116641"></a><a name="_Toc45096698"></a><a name="_Toc51762564"></a><a name="_Toc178270837"></a>9.5.1.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSM-UNITDATA-IND</h4>
+<p>The GMM forwards a SM PDU, which has been received in unacknowledged mode via LLC from the peer entity.</p>
+<h3><a name="_Toc11256650"></a><a name="_Toc36116642"></a><a name="_Toc45096699"></a><a name="_Toc51762565"></a><a name="_Toc178270838"></a>9.5.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h3>
+<h3><a name="_Toc11256651"></a><a name="_Toc36116643"></a><a name="_Toc45096700"></a><a name="_Toc51762566"></a><a name="_Toc178270839"></a>9.5.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives for GMMSMS-SAP</h3>
+<p>The Short Message entity may request from the GMM entity the GMM IMSI registration state before an MO SMS transmission is initiated.</p>
+<p>Table 9.5.3: Primitives and parameters at GMMSMS-SAP - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="225">
+<p>PRIMITIVE</p>
+</td>
+<td width="293">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="113">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSMS-REG-STATE-REQ</p>
+</td>
+<td width="293">
+<p>-</p>
+</td>
+<td width="113">
+<p>9.5.3.1</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSM- REG-STATE -RSP</p>
+</td>
+<td width="293">
+<p>Registration state</p>
+</td>
+<td width="113">
+<p>9.5.3.2</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256652"></a><a name="_Toc36116644"></a><a name="_Toc45096701"></a><a name="_Toc51762567"></a><a name="_Toc178270840"></a>9.5.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSMS-REG-STATE-REQ</h4>
+<p>Request for the current IMSI registration state from the Short Message entity.</p>
+<h4><a name="_Toc11256653"></a><a name="_Toc36116645"></a><a name="_Toc45096702"></a><a name="_Toc51762568"></a><a name="_Toc178270841"></a>9.5.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSM- REG-STATE -RSP</h4>
+<p>The current IMSI registration state is sent to the Short Message entity.</p>
+<h3><a name="_Toc11256654"></a><a name="_Toc36116646"></a><a name="_Toc45096703"></a><a name="_Toc51762569"></a><a name="_Toc178270842"></a>9.5.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives for PMMSMS-SAP</h3>
+<p>Table&nbsp;9.5.4: Primitives and Parameters at PMMSMS‑SAP&nbsp;‑&nbsp;MS&nbsp;side</p>
+<table>
+<tbody>
+<tr>
+<td width="269">
+<p>PRIMITIVES</p>
+</td>
+<td width="250">
+<p>PARAMETERS</p>
+<p>(message, info elements of message, other parameters)</p>
+</td>
+<td width="120">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>PMMSMS_EST_REQ</p>
+</td>
+<td width="250">
+<p>Mobile-ID</p>
+</td>
+<td width="120">
+<p>9.5.4.1</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>PMMSMS_EST_CNF</p>
+</td>
+<td width="250">
+<p>-</p>
+</td>
+<td width="120">
+<p>9.5.4.2</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>PMMSMS_ERROR_IND</p>
+</td>
+<td width="250">
+<p>Cause</p>
+</td>
+<td width="120">
+<p>9.5.4.3</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>PMMSMS_UNITDATA_REQ</p>
+</td>
+<td width="250">
+<p>SMS-PDU</p>
+</td>
+<td width="120">
+<p>9.5.4.4</p>
+</td>
+</tr>
+<tr>
+<td width="269">
+<p>PMMSMS_UNITDATA_IND</p>
+</td>
+<td width="250">
+<p>SMS-PDU</p>
+</td>
+<td width="120">
+<p>9.5.4.5</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256655"></a><a name="_Toc36116647"></a><a name="_Toc45096704"></a><a name="_Toc51762570"></a><a name="_Toc178270843"></a>9.5.4.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PMMSMS_EST _REQ</h4>
+<p>The GMM is requested to establish a PS signalling conection.</p>
+<h4><a name="_Toc11256656"></a><a name="_Toc36116648"></a><a name="_Toc45096705"></a><a name="_Toc51762571"></a><a name="_Toc178270844"></a>9.5.4.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PMMSMS_EST _CNF</h4>
+<p>The GMM indicates a PS signalling connection is established.</p>
+<h4><a name="_Toc11256657"></a><a name="_Toc36116649"></a><a name="_Toc45096706"></a><a name="_Toc51762572"></a><a name="_Toc178270845"></a>9.5.4.3 PMMSMS_ERROR_IND</h4>
+<p>The GMM indicates that a PS signalling connection has been released.</p>
+<h4><a name="_Toc11256658"></a><a name="_Toc36116650"></a><a name="_Toc45096707"></a><a name="_Toc51762573"></a><a name="_Toc178270846"></a>9.5.4.4 PMMSMS_UNITDATA_REQ</h4>
+<p>The GMM is requested to forward a SMS PDU in order to send it to the peer entity.</p>
+<h4><a name="_Toc11256659"></a><a name="_Toc36116651"></a><a name="_Toc45096708"></a><a name="_Toc51762574"></a><a name="_Toc178270847"></a>9.5.4.5 PMMSMS_UNITDATA_IND</h4>
+<p>Indication used by GMM to transfer the received data to the GSMS entities.</p>
+<h3><a name="_Toc11256660"></a><a name="_Toc36116652"></a><a name="_Toc45096709"></a><a name="_Toc51762575"></a><a name="_Toc178270848"></a>9.5.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives for GMMRABM-SAP (UMTS only)</h3>
+<p>Table 9.5.5: Service primitives and parameters at GMMRABM-SAP &ndash; MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="225">
+<p>PRIMITIVE</p>
+</td>
+<td width="204">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="116">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMRABM-REESTABLISH-REQ</p>
+</td>
+<td width="204">
+<p>&nbsp;</p>
+</td>
+<td width="116">
+<p>9.5.5.1</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMRABM-REESTABLISH-RSP</p>
+</td>
+<td width="204">
+<p>&nbsp;</p>
+</td>
+<td width="116">
+<p>9.5.5.2</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMRABM-REESTABLISH-REJ</p>
+</td>
+<td width="204">
+<p>Cause</p>
+</td>
+<td width="116">
+<p>9.5.5.3</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Confirmation to the RABMGMM-REESTABLISH-REQ is given to the RABM in the form of indications from the AS sublayer that establishment of RABs has commenced or been completed.</p>
+<h4><a name="_Toc11256661"></a><a name="_Toc36116653"></a><a name="_Toc45096710"></a><a name="_Toc51762576"></a><a name="_Toc178270849"></a>9.5.5.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMRABM-REESTABLISH-REQ</h4>
+<p>This primitive is used by the RABM entity to inform the GMM sublayer that UL user data has been received for an NSAPI without an active RAB. GMM shall initiate a service request procedure to re-establish the RAB for the NSAPI(S).</p>
+<h4><a name="_Toc11256662"></a><a name="_Toc36116654"></a><a name="_Toc45096711"></a><a name="_Toc51762577"></a><a name="_Toc178270850"></a>9.5.5.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMRABM-REESTABLISH-RSP</h4>
+<p>This primitive is used by the GMM sublayer to inform the RABM entity that the reception of the Service Request message has been acknowledged by the network.</p>
+<h4><a name="_Toc11256663"></a><a name="_Toc36116655"></a><a name="_Toc45096712"></a><a name="_Toc51762578"></a><a name="_Toc178270851"></a>9.5.5.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMRABM-REESTABLISH-REJ</h4>
+<p>This primitive is used by the GMM sublayer to inform the RABM entity that the re-establishment of RABs by the service request procedure has failed.</p>
+<h3><a name="_Toc11256664"></a><a name="_Toc36116656"></a><a name="_Toc45096713"></a><a name="_Toc51762579"></a><a name="_Toc178270852"></a>9.5.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives for GMMSS-SAP</h3>
+<p>Supplementary Services may request GPRS service registration before sending SS PDU.</p>
+<p>Table 9.5.6: Primitives and parameters at GMMSS-SAP - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="225">
+<p>PRIMITIVE</p>
+</td>
+<td width="293">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="113">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSS-ESTABLISH-REQ</p>
+</td>
+<td width="293">
+<p>-</p>
+</td>
+<td width="113">
+<p>9.5.6.1</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSS-ESTABLISH-CNF</p>
+</td>
+<td width="293">
+<p>-</p>
+</td>
+<td width="113">
+<p>9.5.6.2</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSS-ESTABLISH-REJ</p>
+</td>
+<td width="293">
+<p>cause</p>
+</td>
+<td width="113">
+<p>9.5.6.3</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSS-RELEASE-IND</p>
+</td>
+<td width="293">
+<p>-</p>
+</td>
+<td width="113">
+<p>9.5.6.4</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSS-UNITDATA-REQ</p>
+</td>
+<td width="293">
+<p>SS-PDU</p>
+</td>
+<td width="113">
+<p>9.5.6.5</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSS-UNITDATA-IND</p>
+</td>
+<td width="293">
+<p>SS-PDU</p>
+</td>
+<td width="113">
+<p>9.5.6.6</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256665"></a><a name="_Toc36116657"></a><a name="_Toc45096714"></a><a name="_Toc51762580"></a><a name="_Toc178270853"></a>9.5.6.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSS-ESTABLISH-REQ</h4>
+<p>Request from Supplementary Services to send an ATTACH REQUEST message to the network to setup a GMM connection. The request is only performed in case the MS is not already attached. The GPRS attach is then indirectly caused by a sending of SS PDU.</p>
+<h4><a name="_Toc11256666"></a><a name="_Toc36116658"></a><a name="_Toc45096715"></a><a name="_Toc51762581"></a><a name="_Toc178270854"></a>9.5.6.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSS-ESTABLISH-CNF</h4>
+<p>The network has send the ATTACH ACCEPT message to the MS, the indirect attach was successful. Now Supplementary Services can proceed with sending SS PDU.</p>
+<h4><a name="_Toc11256667"></a><a name="_Toc36116659"></a><a name="_Toc45096716"></a><a name="_Toc51762582"></a><a name="_Toc178270855"></a>9.5.6.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSS-ESTABLISH-REJ</h4>
+<p>The network has rejected the attach. The MS has received the ATTACH REJECT message.</p>
+<h4><a name="_Toc11256668"></a><a name="_Toc36116660"></a><a name="_Toc45096717"></a><a name="_Toc51762583"></a><a name="_Toc178270856"></a>9.5.6.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSS-RELEASE-IND</h4>
+<p>The GPRS mobility management informs the Supplementary Services that the MS has been GPRS detached, e.g. by timer expiry.</p>
+<h4><a name="_Toc11256669"></a><a name="_Toc36116661"></a><a name="_Toc45096718"></a><a name="_Toc51762584"></a><a name="_Toc178270857"></a>9.5.6.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSS-UNITDATA-REQ</h4>
+<p>The GMM is requested to forward a SS PDU to lower layer in order to send it to the peer entity.</p>
+<h4><a name="_Toc11256670"></a><a name="_Toc36116662"></a><a name="_Toc45096719"></a><a name="_Toc51762585"></a><a name="_Toc178270858"></a>9.5.6.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSS-UNITDATA-IND</h4>
+<p>The GMM forwards a SS PDU, which has been received from the peer entity.</p>
+<h3><a name="_Toc11256671"></a><a name="_Toc36116663"></a><a name="_Toc45096720"></a><a name="_Toc51762586"></a><a name="_Toc178270859"></a>9.5.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service primitives for GMMSS2-SAP</h3>
+<p>The Supplementary Service entity may request to the MM and/or GMM entity the MM and/or GMM IMSI registration state before an SS PDU transmission is initiated from the mobile station.</p>
+<p>Table 9.5.7: Primitives and parameters at GMMSS2-SAP - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="225">
+<p>PRIMITIVE</p>
+</td>
+<td width="293">
+<p>PARAMETER<br /> (message, info elements of message, other parameters)</p>
+</td>
+<td width="113">
+<p>REFERENCE</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSS2-REG-STATE-REQ</p>
+</td>
+<td width="293">
+<p>-</p>
+</td>
+<td width="113">
+<p>9.5.7.1</p>
+</td>
+</tr>
+<tr>
+<td width="225">
+<p>GMMSS2- REG-STATE -RSP</p>
+</td>
+<td width="293">
+<p>Registration state</p>
+</td>
+<td width="113">
+<p>9.5.7.2</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256672"></a><a name="_Toc36116664"></a><a name="_Toc45096721"></a><a name="_Toc51762587"></a><a name="_Toc178270860"></a>9.5.7.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMMSS2-REG-STATE-REQ</h4>
+<p>Request for the current IMSI registration state from the Supplementary Services entity.</p>
+<h4><a name="_Toc11256673"></a><a name="_Toc36116665"></a><a name="_Toc45096722"></a><a name="_Toc51762588"></a><a name="_Toc178270861"></a>9.5.7.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMM SS2- REG-STATE -RSP</h4>
+<p>The current IMSI registration state is sent to the Supplementary Services entity.</p>

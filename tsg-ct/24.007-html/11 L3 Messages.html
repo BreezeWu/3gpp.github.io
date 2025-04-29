@@ -1,0 +1,2708 @@
+<h1><a name="_Toc11256745"></a><a name="_Toc36116737"></a><a name="_Toc45096794"></a><a name="_Toc51762660"></a><a name="_Toc178270933"></a>11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; L3 Messages</h1>
+<p>This clause specifies the generic methods used in the layer 3 protocol specifications to describe messages. It define in particular a generic message structure, that of the "standard L3 messages". Not all messages in layer 3 protocols follow this structure, but many do, and this clause specifies how to interpret the standard description.</p>
+<p>This clause also addresses basic aspects of the handling of messages received but not compliant with the allowed structure. In most cases, only the conditions that lead to the diagnosis of an error are described. The reaction of an entity receiving a message leading to such a diagnosis is in general specified for each protocol in the relevant protocol specification.</p>
+<h2><a name="_Toc11256746"></a><a name="_Toc36116738"></a><a name="_Toc45096795"></a><a name="_Toc51762661"></a><a name="_Toc178270934"></a>11.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; General</h2>
+<h3><a name="_Toc11256747"></a><a name="_Toc36116739"></a><a name="_Toc45096796"></a><a name="_Toc51762662"></a><a name="_Toc178270935"></a>11.1.1&nbsp;&nbsp;&nbsp;&nbsp; Messages</h3>
+<p>For all concerned protocols, concrete messages are bit strings of variable length, formally a succession of a finite, possibly null, number of bits (i.e., elements of the set {"0", "1"}), with a beginning and an end.</p>
+<p>The services provided by lower layers includes the transmission of such bit strings.</p>
+<p>Considered as messages, these bit strings follow some structure (the syntax), enabling to organize bits in information pieces of a different meaning level.</p>
+<p>The term <em>message</em> is used as well for a concrete message (i.e., a bit-string, as defined by the giving of all its bits, in practice appearing at one point of time in a concrete dialog), as for a class of concrete messages sharing a common structure. A concrete message is an instance of the corresponding class of messages. Message classes can be described as sets of potential bit strings, and of a common structure, enabling in particular to identify parts meaningful for the co-operation functions the protocol supports.</p>
+<p>In general, in the rest of the clause as in the protocol specifications, the term <em>message</em> will be used to refer to the class. It may be used, when the context prevents ambiguity, to refer to a message instance (e.g., a received is usually a message instance). In the rest of this clause, the term <em>message instance</em> will be used when needed to refer unambiguously to specific concrete message, i.e. to a specific bit string.</p>
+<p>A message (message class) can be described directly as a set of bit strings, using the formal notation described in Annex&nbsp;B.</p>
+<p>A message can also be described as a standard L3 message, in which case the interpretation of the message description in term of a set of bit strings is specified in the next clauses.</p>
+<p>In all cases, structuring messages is based on the underlying bit string. Thus, the following terms are used:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a <em>part</em> of a message instance is a sub-string of the corresponding string; a part of a message (as a class) is described by a definition applicable to all instances; a part of a message then is both a structural attribute of the message as a class, and a set of sub-strings, composed of the sub-strings obtained by applying the definition to each possible instance; for instance, &laquo;&nbsp;the first octet&nbsp;&raquo; of a message instance is defined from the moment its length is greater than 8, and is the sub-string composed of the first 8 bits of the message&nbsp;instance; the &laquo;&nbsp;first octet&nbsp;&raquo; of a message as a class is the structural definition given above, and the set of all 8-bit octet strings that can be obtained as the first octet of one instance of the class;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; "part A <em>follows</em> part B" means that in the message the sub-string corresponding to part B is concatenated with the sub-string of part A;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the <em>length</em> of a message instance, or of part of message instance, is the number of bits of the corresponding sub string; rigorously speaking, a message as a class (or a part seen as a class) has a length only if all the corresponding instances have the same length; by extension, sentences such as &laquo;&nbsp;a message as a length in the range so and so&nbsp;&raquo; means that the length of an instances of the class always fall in the range.</p>
+<h3><a name="_Toc11256748"></a><a name="_Toc36116740"></a><a name="_Toc45096797"></a><a name="_Toc51762663"></a><a name="_Toc178270936"></a>11.1.2&nbsp;&nbsp;&nbsp;&nbsp; Octets</h3>
+<p>In many places, a message is described as a succession of octets. An octet is generally a succession of 8 bits. Unless otherwise indicated, the term octet is used more restrictively to refer to a part of message, defined when considering a message as a succession of octets, e.g., the first 8 bits of a message, or the 17th&nbsp;to the 23rd, form an octet, but not the second bit to the 9th.</p>
+<p>Unless specified otherwise, the numbering conventions are the following:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Octets in a message or in a part are numbered from 1 onward, starting at the beginning of the bit string. This numbering can be strictly applied only for message instances, and for the first part of a message structurally identical for all instances.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Bits in octets are numbered from 8 down to 1, starting at the beginning of the octet.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; When represented as tables showing the different bit positions, octets are presented in the natural occidental order, i.e., from the top of a page downward. Bits in octets are presented with the first bit on the left of the page.</p>
+<h3><a name="_Toc11256749"></a><a name="_Toc36116741"></a><a name="_Toc45096798"></a><a name="_Toc51762664"></a><a name="_Toc178270937"></a>11.1.3&nbsp;&nbsp;&nbsp;&nbsp; Integer</h3>
+<p>In many places, message parts are described as encoding integers. Two generic encoding are defined in this clause.</p>
+<h4><a name="_Toc11256750"></a><a name="_Toc36116742"></a><a name="_Toc45096799"></a><a name="_Toc51762665"></a><a name="_Toc178270938"></a>11.1.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Binary</h4>
+<p>A message part is said to encode in binary an integer to indicate that concrete strings are mapped, for some usage, on the set of non signed integers with the following rule:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Let k denote the length of the bit string, and let b(i) denote an integer of value 0 if the i<sup>th</sup> bit in the string is "0", and 1 otherwise. The encoded integer n respects the equation:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256751"></a><a name="_Toc36116743"></a><a name="_Toc45096800"></a><a name="_Toc51762666"></a><a name="_Toc178270939"></a>11.1.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2-complement binary</h4>
+<p>A message part is said to encode in 2-complement binary an integer to indicate that concrete strings are mapped, for some usage, on the set of signed integers with the following rule:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Let k denote the length of the bit string, and let b(i) denote an integer of value 0 if the i<sup>th</sup> bit in the string is "0", and 1 otherwise. The encoded integer n respects the equation:</p>
+<p>&nbsp;</p>
+<h3><a name="_Toc11256752"></a><a name="_Toc36116744"></a><a name="_Toc45096801"></a><a name="_Toc51762667"></a><a name="_Toc178270940"></a>11.1.4&nbsp;&nbsp;&nbsp;&nbsp; Spare parts</h3>
+<p>In some cases the specification is that which message instances can be accepted by a receiver comprise more that the legal message instances that can be sent. One example of this is the notion of spare bit. A spare bit has to send as the value indicated in the specification (typically 0), but can be accepted as a 0 or a 1 by the receiver without error diagnosis. A spare field is a field composed entirely of spare bits.</p>
+<h2><a name="_Toc11256753"></a><a name="_Toc36116745"></a><a name="_Toc45096802"></a><a name="_Toc51762668"></a><a name="_Toc178270941"></a>11.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Standard L3 messages</h2>
+<h3><a name="_Toc11256754"></a><a name="_Toc36116746"></a><a name="_Toc45096803"></a><a name="_Toc51762669"></a><a name="_Toc178270942"></a>11.2.1&nbsp;&nbsp;&nbsp;&nbsp; Components of a standard L3 message</h3>
+<p>A standard L3 message consists of an imperative part, itself composed of a header and the rest of imperative part, followed by a non-imperative part. Both the non-header part of the imperative part and the non-imperative part are composed of successive parts referred as standard information elements.</p>
+<h4><a name="_Toc11256755"></a><a name="_Toc36116747"></a><a name="_Toc45096804"></a><a name="_Toc51762670"></a><a name="_Toc178270943"></a>11.2.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Format of standard information elements</h4>
+<p>A standard IE may have the following parts, in that order:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; an information element identifier (IEI);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a length indicator (LI);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a value part.</p>
+<p>A standard IE has one of the formats shown in table 11.1:</p>
+<p>Table&nbsp;11.1: Formats of information elements</p>
+<table>
+<tbody>
+<tr>
+<td width="102">
+<p>Format</p>
+</td>
+<td width="153">
+<p>Meaning</p>
+</td>
+<td width="128">
+<p>IEI present</p>
+</td>
+<td width="128">
+<p>LI present</p>
+</td>
+<td width="128">
+<p>Value part present</p>
+</td>
+</tr>
+<tr>
+<td width="102">
+<p>T</p>
+</td>
+<td width="153">
+<p>Type only</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+<td width="128">
+<p>no</p>
+</td>
+<td width="128">
+<p>no</p>
+</td>
+</tr>
+<tr>
+<td width="102">
+<p>V</p>
+</td>
+<td width="153">
+<p>Value only</p>
+</td>
+<td width="128">
+<p>no</p>
+</td>
+<td width="128">
+<p>no</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+</tr>
+<tr>
+<td width="102">
+<p>TV</p>
+</td>
+<td width="153">
+<p>Type and Value</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+<td width="128">
+<p>no</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+</tr>
+<tr>
+<td width="102">
+<p>LV</p>
+</td>
+<td width="153">
+<p>Length and Value</p>
+</td>
+<td width="128">
+<p>no</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+</tr>
+<tr>
+<td width="102">
+<p>TLV</p>
+</td>
+<td width="153">
+<p>Type, Length and Value</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+</tr>
+<tr>
+<td width="102">
+<p>LV-E</p>
+</td>
+<td width="153">
+<p>Length and Value</p>
+</td>
+<td width="128">
+<p>no</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+</tr>
+<tr>
+<td width="102">
+<p>TLV-E</p>
+</td>
+<td width="153">
+<p>Type, Length and Value</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+<td width="128">
+<p>yes</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Some IEs may appear in the structure, but not in all instances of messages. An IE is then said to be present or not present in the message instance. If an IE is not present in a message instance, none of the three parts is present. Otherwise, parts must be present according to the IE format.</p>
+<p>In the message structure, an IE that is allowed not to be present in all message instances is said not to be mandatory. Other IEs are said to be mandatory.</p>
+<p>LV-E and TLV-E are used by for example, 5GS Mobility Management (5GMM), 5GS Session Management (5GSM), EPS Mobility Management (EMM), EPS Session Management (ESM), GPRS Mobility Management (GMM) and GPRS Session Management (SM). The use of LV-E and TLV-E is specified for each protocol in the relevant protocol specification (e.g. 3GPP&nbsp;TS&nbsp;24.301&nbsp;[25], 3GPP&nbsp;TS&nbsp;24.501&nbsp;[31], 3GPP&nbsp;TS&nbsp;24.587&nbsp;[34], 3GPP&nbsp;TS&nbsp;24.193&nbsp;[35]). In GPRS GMM and GPRS SM messages, IEs of format LV-E and TLV-E may be used only after MS and network have successfully negotiated support of such IEs.</p>
+<h5><a name="_Toc11256756"></a><a name="_Toc36116748"></a><a name="_Toc45096805"></a><a name="_Toc51762671"></a><a name="_Toc178270944"></a>11.2.1.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Information element type and value part</h5>
+<p>Every standard IE has an information element type which determines the values possible for the value part of the IE, and the basic meaning of the information. The information element type describes only the value part. Standard IEs of the same information element type may appear with different formats. The format used for a given standard IE in a given message is specified within the description of the message.</p>
+<p>The value part of a standard IE either consists of a half octet or one or more octets; the value part of a standard IE with format LV or TLV consists of an integral number of octets, between 0 and 255 inclusive; it then may be empty, i.e., consist of zero octets; if it consists of a half octet and has format TV, its IEI consists of a half octet, too. For LV-E and TLV-E, the value part of a standard IE consists of an integral number of octets, between 0 and 65535 inclusive. The value part of a standard IE may be further structured into parts, called fields.</p>
+<h5><a name="_Toc11256757"></a><a name="_Toc36116749"></a><a name="_Toc45096806"></a><a name="_Toc51762672"></a><a name="_Toc178270945"></a>11.2.1.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Length indicator</h5>
+<p>For LV or TLV, the length indicator (LI) of a standard IE consists of one octet. For LV-E and TLV-E, the LI of a standard IE consists of two octets where bit 8 of octet n contains the most significant bit and bit 1 of octet n+1 contains the least significant bit (refer to figure&nbsp;11.9 in clause&nbsp;11.2.1.1.4 for the relative ordering of the 2 octets). The LI contains the binary encoding of the number of octets of the IE value part. The LI of a standard IE with empty value part indicates 0 octets. Standard IE of an information element type such that the possible values may have different values must be formatted with a length field, i.e., LV, TLV, LV-E or TLV-E.</p>
+<h5><a name="_Toc11256758"></a><a name="_Toc36116750"></a><a name="_Toc45096807"></a><a name="_Toc51762673"></a><a name="_Toc178270946"></a>11.2.1.1.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Information element identifier</h5>
+<p>When present, the IEI of a standard IE consists of a half octet or one octet. A standard IE with IEI consisting of a half octet has format TV, and its value part consists of a half octet. The value of the IEI depends on the standard IE, not on its information element type. The IEI, if any, of a given standard IE in a given message is specified within the description of the message. In some protocol specifications, default IEI values can be indicated. They are to be used if not indicated in the message specification. Non mandatory standard IE in a given message, i.e., IE which may be not be present (formally, for which the null string is acceptable in the message), must be formatted with an IEI, i.e., with format T, TV, TLV or TLV-E.</p>
+<h5><a name="_Toc11256759"></a><a name="_Toc36116751"></a><a name="_Toc45096808"></a><a name="_Toc51762674"></a><a name="_Toc178270947"></a>11.2.1.1.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Categories of IEs; order of occurrence of IEI, LI, and value part</h5>
+<p>Totally five categories of standard information elements are defined:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; information elements of format V or TV with value part consisting of 1/2 octet (type 1);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; information elements of format T with value part consisting of 0 octets (type 2);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; information elements of format V or TV with value part that has fixed length of at least one octet (type 3);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; information elements of format LV or TLV with value part consisting of zero, one or more octets and a maximum of 255 octets (type 4);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; information elements of format LV-E or TLV-E with value part consisting of zero, one or more octets and a maximum of 65535 octets (type 6). This category is used in 5GS, EPS and GPRS only.</p>
+<p>Type 1 standard information elements of format V provide the value in bit positions 8, 7, 6, 5 of an octet (see figure&nbsp;11.1) or bits 4, 3, 2, 1 of an octet (see figure&nbsp;11.2).</p>
+<p>Figure&nbsp;11.1: Type 1 IE of format V</p>
+<p>Figure&nbsp;11.2: Type 1 IE of format V</p>
+<p>Type 1 standard information elements of format TV have an IEI of a half octet length; they provide the IEI in bit positions 8, 7, 6, 5 of an octet and the value part in bit positions 4, 3, 2, 1 of the same octet, see figure&nbsp;11.3.</p>
+<p>Figure&nbsp;11.3: Type 1 IE of format TV</p>
+<p>A type 2 standard IE has format T; its IEI consists of one octet, its value part is empty, see figure&nbsp;11.4.</p>
+<p>Figure&nbsp;11.4: Type 2 IE</p>
+<p>A type 3 standard information element has format V or TV; if it has format TV, its IEI consists of one octet and precedes the value part in the IE. The value part consists of at least one octet. See figure&nbsp;11.5 and figure&nbsp;11.6.</p>
+<p>Figure&nbsp;11.5: Type 3 IE of format V (k&nbsp;=&nbsp;0, 1, 2, ...)</p>
+<p>Figure&nbsp;11.6: Type 3 IE of format TV (k&nbsp;=&nbsp;1, 2, ...)</p>
+<p>A type 4 standard information element has format LV or TLV. Its LI has one octet and precedes the value part, which consists of zero, one, or up to 255 octets; if present, its IEI has one octet length and precedes the LI. See figure&nbsp;11.7 and figure&nbsp;11.8.</p>
+<p>Figure&nbsp;11.7: Type 4 IE of format LV (k&nbsp;=&nbsp;0, 1, 2, ...)</p>
+<p>Figure&nbsp;11.8: Type 4 IE of format TLV (k&nbsp;=&nbsp;1, 2, ...)</p>
+<p>A type 6 standard information element has format LV-E or TLV-E. Its LI has 2 octets and precedes the value part, which consists of zero, one or up to 65535 octets; if present, its IEI has one octet length and precedes the LI. See figure&nbsp;11.9 and figure&nbsp;11.10.</p>
+<p>Figure&nbsp;11.9: Type 6 IE of format LV-E (k&nbsp;=&nbsp;1, 2, ...)</p>
+<p>&nbsp;</p>
+<p>Figure&nbsp;11. 10: Type 6 IE of format TLV-E (k&nbsp;=&nbsp;1, 2, ...)</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In the 5GS protocol 5GMM, certain type 6 IEs of format TLV-E can also be included within a Type 6 IE container information element in the standard L3 message (see 3GPP&nbsp;TS&nbsp;24.501&nbsp;[31], clause&nbsp;9.11.3.98).</p>
+<h3><a name="_Toc11256760"></a><a name="_Toc36116752"></a><a name="_Toc45096809"></a><a name="_Toc51762675"></a><a name="_Toc178270948"></a>11.2.2&nbsp;&nbsp;&nbsp;&nbsp; Description methods for IE structure</h3>
+<p>Standard IEs can be further structured in parts called fields. Two description methods are recommended and described hereafter.</p>
+<h4><a name="_Toc11256761"></a><a name="_Toc36116753"></a><a name="_Toc45096810"></a><a name="_Toc51762676"></a><a name="_Toc178270949"></a>11.2.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tables</h4>
+<p>According to this description method, the IE is presented in its maximum format, i.e., T, TV, TLV or TLV-E, in a picture representing the bits in a table, each line representing an octet. Bits appear in the occidental order, i.e., from left of the page to right of the page, and from top of the page to bottom of the page.</p>
+<p>Boxes so delimited contains typically the field name, possibly an indication of which bits in the field are in the box, and possibly a value (e.g., for spare bits).</p>
+<p>A specific method can be used in the IE description to describe a branching structure, i.e., a structure variable according to the value of particular fields in the IE. This design is unusual outside type 4 and type 6 IEs, and as, a design rule, should be used only in type 4 and type 6 IEs.</p>
+<ol>
+<li>a) The octet number of an octet within the IE is defined typically in the table. It consists of a positive integer, possibly of an additional letter, and possibly of an additional asterisk, see clause f). The positive integer identifies one octet or a group of octets.</li>
+<li>b) Each octet group is a self contained entity. The internal structure of an octet group may be defined in alternative ways.</li>
+<li>c) An octet group is formed by using some extension mechanism. The preferred extension mechanism is to extend an octet (N) through the next octet(s) (Na, Nb, etc.) by using bit 8 in each octet as an extension bit.</li>
+</ol>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The bit value "0" indicates that the octet group continues through to the next octet. The bit value "1" indicates that this octet is the last octet of the group. If one octet (Nb) is present, the preceding octets (N and Na) shall also be present.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; In the format descriptions of the individual information elements, bit 8 is marked "0/1 ext" if another octet follows. Bit 8 is marked "1 ext" if this is the last octet in the extension domain.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Additional octets may be defined in later versions of the protocols ("1 ext" changed to "0/1 ext") and equipments shall be prepared to receive such additional octets; the contents of these octets shall be ignored. However the length indicated in the formal description of the messages and of the individual information elements only takes into account this version of the protocols.</p>
+<ol>
+<li>d) In addition to the extension mechanism defined above, an octet (N) may be extended through the next octet(s) (N+1, N+2 etc.) by indications in bits 7-1 (of octet N).</li>
+<li>e) The mechanisms in c) and d) may be combined.</li>
+<li>f) Optional octets are marked with asterisks (*). As a design rule, the presence or absence of an optional octet should be determinable from information in the IE and preceding the optional octet. Care should be taken not to introduce ambiguities with optional octets.</li>
+<li>g) At the end of the IE, additional octets may be added in later versions of the protocols also without using the mechanisms defined in c) and d). Equipments shall be prepared to receive such additional octets; the contents of these octets shall be ignored. However the length indicated in the formal description of the messages and of the individual information elements only takes into account this version of the protocols.</li>
+</ol>
+<h5><a name="_Toc11256762"></a><a name="_Toc36116754"></a><a name="_Toc45096811"></a><a name="_Toc51762677"></a><a name="_Toc178270950"></a>11.2.2.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Compact notation</h5>
+<p>The compact notation described in Annex B can be used to describe the value part of a standard IE. This method is recommended for complex structures, or for a branching structure not respecting octet boundaries.</p>
+<h3><a name="_Toc11256763"></a><a name="_Toc36116755"></a><a name="_Toc45096812"></a><a name="_Toc51762678"></a><a name="_Toc178270951"></a>11.2.3&nbsp;&nbsp;&nbsp;&nbsp; Imperative part of a standard L3 message</h3>
+<p>The imperative part of a standard L3 message is composed of a header possibly followed by mandatory standard IEs having the format V, LV or LV-E.</p>
+<h4><a name="_Toc11256764"></a><a name="_Toc36116756"></a><a name="_Toc45096813"></a><a name="_Toc51762679"></a><a name="_Toc178270952"></a>11.2.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Standard L3 message header</h4>
+<p>For the MM, GMM, CC and SM protocols defined in 3GPP&nbsp;TS&nbsp;24.008&nbsp;[6], the header of a standard L3 message is composed of two octets, and structured in three main parts, the protocol discriminator (1/2 octet), a message type octet, and a half octet used in some cases as a Transaction Identifier, in some other cases as a sub-protocol discriminator, and called skip indicator otherwise.</p>
+<p>For the EPS protocols EMM and ESM, a standard L3 message can be either a plain NAS message or a security protected NAS message:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The header of a plain NAS message is composed of two or three octets, and structured in four main parts, the protocol discriminator (1/2 octet), a half octet used in some cases as security header type and in other cases as an EPS bearer identity (1/2 octet), a message type octet, and one octet included in some cases and used as a procedure transaction identity (PTI). If the procedure transaction identity is present, it is preceding the message type octet.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The header of a security protected NAS message is composed of six octets, and structured in four main parts, the protocol discriminator (1/2 octet), a half octet used as security header type, a message authentication code of four octets, and a sequence number of one octet. This header is followed by a complete plain NAS message (i.e. including the header of this plain NAS message).</p>
+<p>For the 5GS protocols 5GMM and 5GSM, a standard L3 message can be either a plain 5GS NAS message or a security protected 5GS NAS message:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The header of a plain 5GS NAS message is composed of three octets for 5GMM NAS messages and composed of four octets for 5GSM NAS messages, and structured in four main parts, namely, the extended protocol discriminator (1 octet); an octet used as security header type (1/2 octet) plus a spare half octet in case of 5GMM NAS messages, and a PDU session identity of one octet in case of 5GSM NAS messages; an octet for procedure transaction identity (PTI) in case of 5GSM NAS messages; and one octet for message type. If the procedure transaction identity is present, it is preceding the message type octet.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The header of a security protected 5GS NAS message is composed of seven octets, and structured in four main parts, the extended protocol discriminator (1 octet), an octet used as security header type (1/2 octet) plus a spare half octet, a message authentication code of four octets, and a sequence number of one octet. This header is followed by a complete plain 5GS NAS message (i.e. including the header of this plain 5GS NAS message).</p>
+<h5><a name="_Toc11256765"></a><a name="_Toc36116757"></a><a name="_Toc45096814"></a><a name="_Toc51762680"></a><a name="_Toc178270953"></a>11.2.3.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Protocol discriminator</h5>
+<p>Bits 1 to 4 of the first octet of a standard L3 message contain the protocol discriminator (PD) information element. The PD (with exception of "extension of the PD to one octet length") identifies the L3 protocol to which the standard layer 3 message belongs. The correspondence between L3 protocols and PDs (with exception of "extension of the PD to one octet length") is one-to-one.</p>
+<p>When the PD is set to "extension of the PD to one octet length", the first octet of a standard L3 message contains the extended protocol discriminator (EPD) information element as specified in clause&nbsp;11.2.3.1.1A.</p>
+<p>The PD can take the following values:</p>
+<p>Table 11.2: Protocol discriminator values</p>
+<p>&nbsp;</p>
+<table>
+<tbody>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="4" width="581">
+<p>bits&nbsp; 4 3 2 1</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 0 0 0</p>
+</td>
+<td colspan="2" width="394">
+<p>group call control</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 0 0 1</p>
+</td>
+<td colspan="2" width="394">
+<p>broadcast call control</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 0 1 0</p>
+</td>
+<td colspan="2" width="394">
+<p>EPS session management messages</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 0 1 1</p>
+</td>
+<td colspan="2" width="394">
+<p>call control; call related SS messages</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 1 0 0</p>
+</td>
+<td colspan="2" width="394">
+<p>GPRS Transparent Transport Protocol (GTTP)</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 1 0 1</p>
+</td>
+<td colspan="2" width="394">
+<p>mobility management messages</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 1 1 0</p>
+</td>
+<td colspan="2" width="394">
+<p>radio resources management messages</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 1 1 1</p>
+</td>
+<td colspan="2" width="394">
+<p>EPS mobility management messages</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 0 0 0</p>
+</td>
+<td colspan="2" width="394">
+<p>GPRS mobility management messages</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 0 0 1</p>
+</td>
+<td colspan="2" width="394">
+<p>SMS messages</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 0 1 0</p>
+</td>
+<td colspan="2" width="394">
+<p>GPRS session management messages</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 0 1 1</p>
+</td>
+<td colspan="2" width="394">
+<p>non call related SS messages</p>
+</td>
+</tr>
+<tr>
+<td colspan="2" width="187">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 1 0 0</p>
+</td>
+<td colspan="2" width="394">
+<p>Location services specified in 3GPP&nbsp;TS&nbsp;44.071&nbsp;[8a]</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 1 1 0</p>
+</td>
+<td colspan="2" width="394">
+<p>extension of the PD to one octet length</p>
+</td>
+</tr>
+<tr>
+<td width="5">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="186">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 1 1 1</p>
+</td>
+<td colspan="2" width="394">
+<p>used by tests procedures described in 3GPP&nbsp;TS&nbsp;44.014&nbsp;[5a], 3GPP&nbsp;TS&nbsp;34.109&nbsp;[17a], 3GPP&nbsp;TS&nbsp;36.509&nbsp;[26] and 3GPP&nbsp;TS&nbsp;38.509&nbsp;[29].</p>
+</td>
+</tr>
+<tr>
+<td width="1">&nbsp;</td>
+<td width="65">&nbsp;</td>
+<td width="4">&nbsp;</td>
+<td width="174">&nbsp;</td>
+<td width="3">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>If the network receives, on a SAP where it expects standard L3 messages, a message with a protocol discriminator different from those specified in table&nbsp;11.2, the network may ignore the message or initiate the channel release procedure defined in 3GPP&nbsp;TS&nbsp;44.018&nbsp;[6b].</p>
+<p>If the Mobile Station receives, on a SAP where it expects standard L3 messages, a standard L3 message with a protocol discriminator different from those specified in table&nbsp;11.2, or for a protocol that it does not support, the Mobile Station shall ignore the message.</p>
+<h5><a name="_Toc11256766"></a><a name="_Toc36116758"></a><a name="_Toc45096815"></a><a name="_Toc51762681"></a><a name="_Toc178270954"></a>11.2.3.1.1A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Extended protocol discriminator (EPD)</h5>
+<p>When the PD is set to "extension of the PD to one octet length" as specified in clause&nbsp;11.2.3.1.1, bits 1 to 8 of the first octet of a standard L3 message contain the extended protocol discriminator (EPD) information element.</p>
+<p>The EPD identifies the L3 protocol to which the standard layer 3 message belongs. The correspondence between L3 protocols and EPDs is one-to-one.</p>
+<p>The EPD can take the values specified in table&nbsp;11.2.3.1.1A.1.</p>
+<p>Table 11.2.3.1.1A.1: EPD values</p>
+<table>
+<tbody>
+<tr>
+<td colspan="9" width="473">
+<p>EPD value (octet 1, bit 1 to bit 8)</p>
+</td>
+</tr>
+<tr>
+<td colspan="9" width="473">
+<p>Bits</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>8</p>
+</td>
+<td width="19">
+<p>7</p>
+</td>
+<td width="19">
+<p>6</p>
+</td>
+<td width="19">
+<p>5</p>
+</td>
+<td width="19">
+<p>4</p>
+</td>
+<td width="19">
+<p>3</p>
+</td>
+<td width="19">
+<p>2</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="321">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>5GS session management messages</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>5GS mobility management messages</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>reserved</p>
+</td>
+</tr>
+<tr>
+<td colspan="9" width="473">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td colspan="9" width="473">
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bits 4 to 1 of each EPD value contain "extension of the PD to one octet length" as specified in clause&nbsp;11.2.3.1.1.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>If the network receives, on a SAP where it expects standard L3 messages, a message with an EPD different from those specified in table&nbsp;11.2.3.1.1A.1, the network may ignore the message, may initiate the RRC connection release procedure defined in 3GPP&nbsp;TS&nbsp;36.331&nbsp;[24], or may initiate the RRC connection release procedure defined in 3GPP&nbsp;TS&nbsp;38.331&nbsp;[28].</p>
+<p>If the Mobile Station receives, on a SAP where it expects standard L3 messages, a standard L3 message with an EPD different from those specified in table&nbsp;11.2.3.1.1A.1, or for a protocol that it does not support, the Mobile Station shall ignore the message.</p>
+<h5><a name="_Toc11256767"></a><a name="_Toc36116759"></a><a name="_Toc45096816"></a><a name="_Toc51762682"></a><a name="_Toc178270955"></a>11.2.3.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Skip indicator</h5>
+<p>Bits 5 to 8 of octet 1 of a standard L3 message may be used differently, depending on the protocol and the SAP. The use of this half-octet is consistent for a given PD and SAP. One possibility is that this half-octet contains the skip indicator. Another possibility is that this half-octet is a part of EPD as specified in clause&nbsp;11.2.3.1.1A. Unless otherwise specified in the protocol, the skip indicator IE is a spare field.</p>
+<h5><a name="_Toc11256768"></a><a name="_Toc36116760"></a><a name="_Toc45096817"></a><a name="_Toc51762683"></a><a name="_Toc178270956"></a>11.2.3.1.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transaction identifier</h5>
+<p>A L3 protocol may define that bits 5 to 8 of octet 1 of a standard L3 message of the protocol contains the transaction identifier (TI). The TI allows to distinguish up to 16 different bi-directional messages flows for a given PD and a given SAP. Such a message flow is called a transaction.</p>
+<p>An extension mechanism for TI is also defined. This mechanism allows to distinguish up to 256 different bi-directional messages flows for a given PD and a given SAP. The extension mechanism shall not be used unless explicitly stated in the core specification(s) for the protocol. The TI IE is coded as shown in figure&nbsp;11.9 and table&nbsp;11.3. It is composed of the TI value and the TI flag.</p>
+<p>The TI value and the TI flag occupy bits 5 - 7 and bit 8 of the first octet respectively.</p>
+<p>The extended TI shall not be used unless TI values of 7 or greater are needed.</p>
+<p>Where the extended TI is used, the TI IE includes a second octet. The TI value in the first octet is ignored, and the TI value is encoded in bits 7-1 of the second octet.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In other specifications, in respect to error handling, there are references to TI value "111". This refers to the binary encoding of bits 5 &ndash;7 in octet 1. For protocols which do not use the extended TI this '111' encoding is still handled as an error case.Transactions are dynamically created, and their TI value is assigned at creation time. TI values are assigned by the side of the interface initiating a transaction. At the beginning of a transaction a free TI value (i.e., a value not yet used for the given PD, the given SAP, and with the given initiator) is chosen and assigned to this transaction. It then remains fixed for the lifetime of the transaction. After a transaction ends, the associated TI value is free and may be reassigned to a later transaction.</p>
+<p>Two identical TI values may be used when each value pertains to a transaction initiated by the different sides of the interface. In this case the TI flag shall avoid ambiguity. The transaction identifier flag can take the values "0" or "1". The TI flag is used to identify which side of the interface initiated the transaction. A message has a TI flag set to "0" when it belongs to transaction initiated by its sender, and to "1" otherwise.</p>
+<p>Hence the TI flag identifies who allocated the TI value for this transaction and the only purpose of the TI flag is to resolve simultaneous attempts to allocate the same TI value.</p>
+<p>The TI extension mechanism may in future evolution of the L3 protocols be further extended by setting the EXT flag in octet 2 to "0" (see figure&nbsp;11.9).</p>
+<p>&nbsp;</p>
+<table>
+<tbody>
+<tr>
+<td width="41">
+<p>&nbsp;</p>
+</td>
+<td width="48">
+<p>8</p>
+</td>
+<td width="43">
+<p>7</p>
+</td>
+<td width="48">
+<p>6</p>
+</td>
+<td width="48">
+<p>5</p>
+</td>
+<td width="48">
+<p>4</p>
+</td>
+<td width="48">
+<p>3</p>
+</td>
+<td width="48">
+<p>2</p>
+</td>
+<td width="48">
+<p>1</p>
+</td>
+<td width="60">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="41">
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</td>
+<td width="48">
+<p>TI flag</p>
+</td>
+<td colspan="3" width="139">
+<p>TIO</p>
+</td>
+<td width="48">
+<p>-</p>
+</td>
+<td width="48">
+<p>-</p>
+</td>
+<td width="48">
+<p>-</p>
+</td>
+<td width="48">
+<p>-</p>
+</td>
+<td width="60">
+<p>Octet 1</p>
+</td>
+</tr>
+<tr>
+<td width="41">
+<p>&nbsp;</p>
+</td>
+<td width="48">
+<p>1</p>
+<p>EXT</p>
+</td>
+<td colspan="7" width="331">
+<p>TIE</p>
+</td>
+<td width="60">
+<p>Octet 2 *</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Figure&nbsp;11.9: Transaction identifier</p>
+<p>Table&nbsp;11.3: Transaction identifier</p>
+<table>
+<tbody>
+<tr>
+<td width="121">
+<p>&nbsp;TI flag (octet 1)</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;Bit</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;8</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;0</p>
+</td>
+<td width="359">
+<p>The message is sent from the side that originates the TI</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;1</p>
+</td>
+<td width="359">
+<p>The message is sent to the side that originates the TI</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;TIO (octet 1)</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;Bits</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;7 6 5</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;0 0 0</p>
+</td>
+<td width="359">
+<p>TI value 0</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;0 0 1</p>
+</td>
+<td width="359">
+<p>&nbsp; ‑&nbsp;&nbsp;&nbsp; ‑&nbsp;&nbsp;&nbsp;&nbsp; 1</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;0 1 0</p>
+</td>
+<td width="359">
+<p>&nbsp; ‑&nbsp;&nbsp;&nbsp; ‑&nbsp;&nbsp;&nbsp;&nbsp; 2</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;0 1 1</p>
+</td>
+<td width="359">
+<p>&nbsp; ‑&nbsp;&nbsp;&nbsp; ‑&nbsp;&nbsp;&nbsp;&nbsp; 3</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;1 0 0&nbsp;</p>
+</td>
+<td width="359">
+<p>&nbsp; ‑&nbsp;&nbsp;&nbsp; ‑&nbsp;&nbsp;&nbsp;&nbsp; 4</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;1 0 1</p>
+</td>
+<td width="359">
+<p>&nbsp; ‑&nbsp;&nbsp;&nbsp; ‑&nbsp;&nbsp;&nbsp;&nbsp; 5</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;1 1 0&nbsp;</p>
+</td>
+<td width="359">
+<p>&nbsp; ‑&nbsp;&nbsp;&nbsp; ‑&nbsp;&nbsp;&nbsp;&nbsp; 6</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;1 1 1</p>
+</td>
+<td width="359">
+<p>The TI value is given by the TIE in octet 2</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>TIE&nbsp; (octet 2)</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>Bits 7-1</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>0000000</p>
+<p>0000001</p>
+<p>0000010</p>
+<p>0000011</p>
+<p>0000100</p>
+<p>0000101</p>
+<p>0000110</p>
+</td>
+<td width="359">
+<p>Reserved.</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>All other values</p>
+</td>
+<td width="359">
+<p>The TI value is the binary representation of TIE</p>
+<p>Where bit 7 is the most significant bit</p>
+<p>And bit 1 is the least significant bit</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>&nbsp;</p>
+</td>
+<td width="359">
+<p>&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h5><a name="_Toc11256769"></a><a name="_Toc36116761"></a><a name="_Toc45096818"></a><a name="_Toc51762684"></a><a name="_Toc178270957"></a>11.2.3.1.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sub-protocol discriminator</h5>
+<p>A L3 protocol may define that bits 5 to 8 of octet 1 of a standard L3 message of the protocol contains the sub-protocol discriminator (SPD). The SPD allows to distinguish between different protocols inside one sublayer.</p>
+<p>Table 11.4: Sub-Protocol discriminator values</p>
+<table>
+<tbody>
+<tr>
+<td colspan="2" width="581">
+<p>bits&nbsp; 8 7 6 5</p>
+</td>
+</tr>
+<tr>
+<td width="187">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 0 0 0</p>
+</td>
+<td width="394">
+<p>Value used by the Skip Indicator (see 11.2.3.1.2)</p>
+</td>
+</tr>
+<tr>
+<td width="187">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 0 0 1</p>
+</td>
+<td width="394">
+<p>CTS sub-protocol</p>
+</td>
+</tr>
+<tr>
+<td width="187">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 0 1 0</p>
+</td>
+<td width="394">
+<p>&nbsp;\</p>
+</td>
+</tr>
+<tr>
+<td width="187">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; To</p>
+</td>
+<td width="394">
+<p>&nbsp;} all other values are reserved</p>
+</td>
+</tr>
+<tr>
+<td width="187">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 1 1 1</p>
+</td>
+<td width="394">
+<p>/</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h5><a name="_Toc11256770"></a><a name="_Toc36116762"></a><a name="_Toc45096819"></a><a name="_Toc51762685"></a><a name="_Toc178270958"></a>11.2.3.1.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EPS bearer identity</h5>
+<p>A L3 protocol may define that bits 5 to 8 of octet 1 of a standard L3 message of the protocol contain the EPS bearer identity. The EPS bearer identity is used to identify a message flow.</p>
+<p>&nbsp;</p>
+<table>
+<tbody>
+<tr>
+<td width="41">
+<p>&nbsp;</p>
+</td>
+<td width="48">
+<p>8</p>
+</td>
+<td width="43">
+<p>7</p>
+</td>
+<td width="48">
+<p>6</p>
+</td>
+<td width="48">
+<p>5</p>
+</td>
+<td width="48">
+<p>4</p>
+</td>
+<td width="48">
+<p>3</p>
+</td>
+<td width="48">
+<p>2</p>
+</td>
+<td width="48">
+<p>1</p>
+</td>
+<td width="60">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="41">
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</td>
+<td colspan="4" width="187">
+<p>EPS bearer identity value</p>
+</td>
+<td width="48">
+<p>-</p>
+</td>
+<td width="48">
+<p>-</p>
+</td>
+<td width="48">
+<p>-</p>
+</td>
+<td width="48">
+<p>-</p>
+</td>
+<td width="60">
+<p>octet 1</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Figure 11.9a: EPS bearer identity</p>
+<p>Table 11.5: EPS bearer identity</p>
+<table>
+<tbody>
+<tr>
+<td colspan="5" width="472">
+<p>EPS bearer identity value (octet 1)</p>
+</td>
+</tr>
+<tr>
+<td colspan="5" width="472">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td colspan="5" width="472">
+<p>Bits</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>8</p>
+</td>
+<td width="19">
+<p>7</p>
+</td>
+<td width="19">
+<p>6</p>
+</td>
+<td width="19">
+<p>5</p>
+</td>
+<td width="397">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="397">
+<p>No EPS bearer identity assigned</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 1</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 2</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 3</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 4</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 5</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 6</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 7</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 8</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 9</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 10</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 11</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 12</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 13</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 14</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="397">
+<p>EPS bearer identity value 15</p>
+</td>
+</tr>
+<tr>
+<td colspan="5" width="472">
+<p>&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h5><a name="_Toc11256771"></a><a name="_Toc36116763"></a><a name="_Toc45096820"></a><a name="_Toc51762686"></a><a name="_Toc178270959"></a>11.2.3.1.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Security header type</h5>
+<p>For EPS protocols, a L3 protocol may define that bits 5 to 8 of octet 1 of a standard L3 message of the protocol contain the security header type.</p>
+<p>For 5GS protocols, a L3 protocol may define that bits 1 to 4 of octet 2 of a standard L3 message of the protocol contain the security header type.</p>
+<h4><a name="_Toc11256772"></a><a name="_Toc36116764"></a><a name="_Toc45096821"></a><a name="_Toc51762687"></a><a name="_Toc178270960"></a>11.2.3.1a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Procedure transaction identity</h4>
+<p>A L3 protocol may define that a standard L3 message of the protocol contains the procedure transaction identity (PTI). The PTI allows distinguishing up to 254 different bi-directional messages flows for a given PD and a given SAP. Such a message flow is called a transaction. The procedure transaction identity is released when the procedure is completed.</p>
+<p>Table 11.6: Procedure transaction identity</p>
+<table>
+<tbody>
+<tr>
+<td colspan="10" width="463">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td colspan="10" width="463">
+<p>Bits</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>8</p>
+</td>
+<td width="19">
+<p>7</p>
+</td>
+<td width="19">
+<p>6</p>
+</td>
+<td width="19">
+<p>5</p>
+</td>
+<td width="19">
+<p>4</p>
+</td>
+<td width="19">
+<p>3</p>
+</td>
+<td width="19">
+<p>2</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="293">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="293">
+<p>No procedure transaction identity assigned</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="293">
+<p>\</p>
+</td>
+</tr>
+<tr>
+<td colspan="8" width="151">
+<p>to</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="293">
+<p>} Procedure transaction identity value</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="293">
+<p>/</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="293">
+<p>Reserved</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="19">
+<p>&nbsp;</p>
+</td>
+<td width="293">
+<p>&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256773"></a><a name="_Toc36116765"></a><a name="_Toc45096822"></a><a name="_Toc51762688"></a><a name="_Toc178270961"></a>11.2.3.1b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PDU session identity</h4>
+<p>A L3 protocol may define that octet 2 of a standard L3 message of the protocol contains the PDU session identity. The PDU session identity is used to identify a PDU session.</p>
+<p>The range of PDU session identity values indicated in table&nbsp;11.2.3.1c.1 is shared between the PDU sessions over 3GPP access and the PDU sessions over non-3GPP access.</p>
+<p>&nbsp;</p>
+<table>
+<tbody>
+<tr>
+<td width="41">
+<p>&nbsp;</p>
+</td>
+<td width="48">
+<p>8</p>
+</td>
+<td width="43">
+<p>7</p>
+</td>
+<td width="48">
+<p>6</p>
+</td>
+<td width="48">
+<p>5</p>
+</td>
+<td width="48">
+<p>4</p>
+</td>
+<td width="48">
+<p>3</p>
+</td>
+<td width="48">
+<p>2</p>
+</td>
+<td width="48">
+<p>1</p>
+</td>
+<td width="60">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="41">
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</td>
+<td colspan="8" width="379">
+<p>PDU session identity</p>
+</td>
+<td width="60">
+<p>octet 1</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Figure&nbsp;11.2.3.1c.1: PDU session identity</p>
+<p>Table&nbsp;11.2.3.1c.1: PDU session identity</p>
+<table>
+<tbody>
+<tr>
+<td colspan="9" width="473">
+<p>PDU session identity value (octet 1, bit 1 to bit 8)</p>
+</td>
+</tr>
+<tr>
+<td colspan="9" width="473">
+<p>Bits</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>8</p>
+</td>
+<td width="19">
+<p>7</p>
+</td>
+<td width="19">
+<p>6</p>
+</td>
+<td width="19">
+<p>5</p>
+</td>
+<td width="19">
+<p>4</p>
+</td>
+<td width="19">
+<p>3</p>
+</td>
+<td width="19">
+<p>2</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="321">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>No PDU session identity assigned</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="321">
+<p>PDU session identity value 1</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>PDU session identity value 2</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="321">
+<p>PDU session identity value 3</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>PDU session identity value 4</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="321">
+<p>PDU session identity value 5</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>PDU session identity value 6</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="321">
+<p>PDU session identity value 7</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>PDU session identity value 8</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="321">
+<p>PDU session identity value 9</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>PDU session identity value 10</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="321">
+<p>PDU session identity value 11</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>PDU session identity value 12</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="321">
+<p>PDU session identity value 13</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="321">
+<p>PDU session identity value 14</p>
+</td>
+</tr>
+<tr>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>0</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="19">
+<p>1</p>
+</td>
+<td width="321">
+<p>PDU session identity value 15</p>
+</td>
+</tr>
+<tr>
+<td colspan="9" width="473">
+<p>&nbsp;</p>
+<p>All other values are reserved (see NOTE).</p>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td colspan="9" width="473">
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Values 64 up to and including 95 are used by the core network as specified in TS&nbsp;29.571&nbsp;[37] and are unavailable for future usage in NAS.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4><a name="_Toc11256774"></a><a name="_Toc36116766"></a><a name="_Toc45096823"></a><a name="_Toc51762689"></a><a name="_Toc178270962"></a>11.2.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Message type octet</h4>
+<h5><a name="_Toc11256775"></a><a name="_Toc36116767"></a><a name="_Toc45096824"></a><a name="_Toc51762690"></a><a name="_Toc178270963"></a>11.2.3.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Message type octet (when accessing Release 98 and older networks only)</h5>
+<p>The message type octet is the second octet in a standard L3 message.</p>
+<p>When a standard L3 message is expected, and a message is received that is less than 16 bit long, that message shall be ignored.</p>
+<p>When the radio connection started with a core network node of a Release 98 or older network, the message type IE is coded as shown in figure 11.10a and 11.10x.</p>
+<p>Bit 8 is encoded as "0"; value "1" is reserved for possible future use as an extension bit. A protocol entity expecting a standard L3 message, and receiving a message containing bit 8 of octet 2 encoded as "1" shall diagnose a " message not defined for the PD" error and treat the message accordingly.</p>
+<p>In messages of MM, CC, SS (via CS domain), GCC and BCC protocol sent using the transmission functionality provided by the RR layer to upper layers, and sent from the mobile station or the LMU to the network, bit 7 of octet 2 is used for send sequence number, see clause&nbsp;11.2.3.2.3.</p>
+<p>In messages of the LCS protocol sent using the transmission functionality provided by the RR layer to upper layers, and sent from the type A LMU to the network, bit 7 of octet 2 is used for send sequence number, see clause&nbsp;11.2.3.2.3.</p>
+<p>In all other standard layer 3 messages, except for RR messages, bit 7 is set to a default value. A protocol entity expecting a standard L3 message, and not using the transmission functionality provided by the RR layer, and receiving a message containing bit 7 of octet&nbsp;2 encoded different to the default value shall diagnose a "message not defined for the PD" error and treat the message accordingly.</p>
+<p>The default value for bit 7 is 0 except for the SM protocol where the default value is 1. No default value for bit 7 is specified for RR protocol. For RR message types see 3GPP&nbsp;TS&nbsp;44.018.</p>
+<p>Figure&nbsp;11.10a: Message type IE (MM, CC, SS, GCC, BCC and LCS)</p>
+<p>Figure&nbsp;11.10x: Message type IE (protocol other than MM, CC, SS, GCC, BCC and LCS)</p>
+<p>For MM, CC, SS, GCC, BCC and LCS protocols bits 1 to 6 of octet 2 of standard L3 messages contain the message type. For all other L3 protocols bits 1 to 8 of octet 2 of standard L3 message contain the message type.</p>
+<p>The message type determines the function of a message within a protocol in a given direction. The meaning of the message type is therefore dependent on the protocol (the same value may have different meanings in different protocols), and the direction (the same value may have different meanings in the same protocol, when sent from the Mobile Station to the network and when sent from the network to the Mobile Station).</p>
+<p>Each protocol defines a list of allowed message types for each relevant SAP. A message received analysed as a standard L3 message, and with a message type not in the corresponding list leads to the diagnosis "message not defined for the PD". Some message types may correspond to a function not implemented by the receiver. They are then said to be not implemented by the receiver.</p>
+<p>The reaction of a protocol entity expecting a standard L3 message and receiving a message with message type not defined for the PD or not implemented by the receiver and the reception conditions is defined in the relevant protocol specification. As a general rule, a protocol specification should not force the receiver to analyse the message further.</p>
+<h5><a name="_Toc11256776"></a><a name="_Toc36116768"></a><a name="_Toc45096825"></a><a name="_Toc51762691"></a><a name="_Toc178270964"></a>11.2.3.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Message type octet (when accessing Release 99 and newer networks)</h5>
+<p>The message type octet is the second octet in a standard L3 message.</p>
+<p>When a standard L3 message is expected, and a message is received that is less than 16 bit long, that message shall be ignored.</p>
+<p>When the radio connection started with a core network node of a Release&nbsp;99 or later network, the message type IE is coded dependent on the PD as shown in figures&nbsp;11.10b, c and d.</p>
+<p>In messages of MM, CC and SS (via CS domain) protocol sent using the transmission functionality provided by the RR and/or access stratum layer to upper layers, and sent from the mobile station or the LMU to the network, bits 7 and 8 of octet 2 are used for send sequence number, see clause&nbsp;11.2.3.2.3.</p>
+<p>In messages of GCC and BCC protocol sent using the transmission functionality provided by the RR layer to upper layers, and sent from the mobile station or the LMU to the network, only bit 7 of octet 2 is used for send sequence number. Bit&nbsp;8 is set to the default value.</p>
+<p>In messages of the LCS protocol sent using the transmission functionality provided by the RR layer to upper layers, and sent from the type A LMU to the network, only bit 7 of octet 2 is used for send sequence number. Bit&nbsp;8 is set to the default value.</p>
+<p>In all other standard layer 3 messages, except for RR messages, bits 7 and 8 are set to the default value. A protocol entity expecting a standard L3 message, and not using the transmission functionality provided by the RR and/or access stratum layer, and receiving a message containing bit 7 or bit 8 of octet 2 encoded different to the default value shall diagnose a "message not defined for the PD" error and treat the message accordingly.</p>
+<p>In messages of the RR protocol entity, bit 8 of octet 2 is set to the default value. The other value is reserved for possible future use as an extension bit .If an RR protocol entity expecting a standard L3 message receives message containing bit 8 of octet 2 encoded different from the default value it shall diagnose a "message not defined for the PD" error and treat the message accordingly.</p>
+<p>The default value for bit 8 is 0. The default value for bit 7 is 0 except for the SM protocol which has a default value of&nbsp;1. No default value for bit 7 is specified for RR protocol. For RR message types see 3GPP&nbsp;TS&nbsp;44.018.</p>
+<p>For EPS; the default value for bit 7 is 1. The value for bit 8 is 0 for the EMM protocol and 1 for the ESM protocol.</p>
+<p>For 5GS; the default value for bit 7 is 1. The value for bit 8 is 0 for the 5GMM protocol and 1 for the 5GSM protocol.</p>
+<p>Figure&nbsp;11.10b: Message type IE (MM, CC and SS)</p>
+<p>Figure&nbsp;11.10c: Message type IE (GCC, BCC and LCS)</p>
+<p>Figure&nbsp;11.10d: Message type IE (protocol other than MM, CC, SS, GCC, BCC and LCS)</p>
+<p>For MM, CC, SS, GCC, BCC and LCS protocols bits 1 to 6 of octet 2 of standard L3 messages contain the message type. For all other L3 protocols bits 1 to 8 of octet 2 of standard L3 message contain the message type.</p>
+<p>The message type determines the function of a message within a protocol in a given direction. The meaning of the message type is therefore dependent on the protocol (the same value may have different meanings in different protocols), and the direction (the same value may have different meanings in the same protocol, when sent from the Mobile Station to the network and when sent from the network to the Mobile Station).</p>
+<p>Each protocol defines a list of allowed message types for each relevant SAP. A message received analysed as a standard L3 message, and with a message type not in the corresponding list leads to the diagnosis "message not defined for the PD". Some message types may correspond to a function not implemented by the receiver. They are then said to be not implemented by the receiver.</p>
+<p>The reaction of a protocol entity expecting a standard L3 message and receiving a message with message type not defined for the PD or not implemented by the receiver and the reception conditions is defined in the relevant protocol specification. As a general rule, a protocol specification should not force the receiver to analyse the message further.</p>
+<h5><a name="_Toc11256777"></a><a name="_Toc36116769"></a><a name="_Toc45096826"></a><a name="_Toc51762692"></a><a name="_Toc178270965"></a>11.2.3.2.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sequenced message transfer operation</h5>
+<p>Upper layer messages sent using the RR sub-layer transport service from the mobile station to the network can be duplicated by the data link layer in at least the following cases:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; in A/Gb mode, when a channel change of dedicated channels is required (assignment or handover procedure) and the last layer 2 frame has not been acknowledged by the peer data link layer before the mobile station leaves the old channel;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; in Iu mode, when an RLC re-establishment occurs (e.g. due to relocation) and the RLC layer has not acknowledged the last one or more RLC PDUs before RLC re-establishment;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; an inter-system change from Iu mode to A/Gb mode is performed and the RLC layer has not acknowledged the last one or more RLC PDUs;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; an inter-system change from A/Gb mode to Iu mode is performed and the last layer 2 frame in A/Gb mode has not been acknowledged by the peer data link layer before the mobile station leaves the old channel.</p>
+<p>In these cases, the mobile station does not know whether the network has received the messages correctly. Therefore, the mobile station has to send the messages again when the channel change is completed.</p>
+<p>The network must be able to detect the duplicated received messages. Therefore, each concerned upper layer messages must be marked with a send sequence number.</p>
+<p>To allow for different termination points in the infrastructure of the messages of different PDs, the sequence numbering is specific to each PD. For historical reasons, an exception is that messages sent with the CC, SS (via CS domain) and MM PDs share the same sequence numbering. In the following, the phrase <strong>upper layer message flow</strong> refers to a flow of messages sharing the same sequence numbering. The different upper layer flows are MM+CC+SS (via CS domain), GCC, BCC and LCS. The GMM, EMM, SM, ESM, SMS, SS (via PS domain) and TC (Test Control, see 3GPP&nbsp;TS&nbsp;44.014&nbsp;[5a], 3GPP&nbsp;TS&nbsp;34.109&nbsp;[17a] and 3GPP&nbsp;TS&nbsp;36.509&nbsp;[26]) protocols do not use layer 3 sequence numbering.</p>
+<p>In a shared network with a MOCN configuration, Network Sharing non-supporting UEs can be redirected between CN operators (see 3GPP&nbsp;TS&nbsp;23.251&nbsp;[22]). When the redirection takes place, the CN node of the redirecting CN operator shall forward via the RAN the value of N(SD) of the last message received on the MM+CC+SS (via CS domain) message flow to the CN node of the next CN operator (3GPP&nbsp;TS&nbsp;25.413&nbsp;[23]).</p>
+<p>&nbsp;</p>
+<p><a name="_Toc11256778"></a><a name="_Toc36116770"></a><a name="_Toc45096827"></a><a name="_Toc51762693"></a>11.2.3.2.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Variables and sequence numbers</p>
+<p><a name="_Toc11256779"></a><a name="_Toc36116771"></a><a name="_Toc45096828"></a><a name="_Toc51762694"></a>11.2.3.2.3.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Send state variable V(SD)</p>
+<p>The mobile station shall have one associated send state variable V(SD) ("Send Duplicated") for each upper layer message flow. The send state variable denotes the sequence number of the next in sequence numbered message in the flow to be transmitted. The value of the corresponding send state variable shall be incremented by one with each numbered message transmission.</p>
+<p>For the MM+CC+SS (via CS domain) upper layer message flow:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; when the RR connection starts with a core network of Release&nbsp;98 or earlier, arithmetic operations on V(SD) are performed modulo 2. The mobile station shall keep using modulo 2 for the duration of the RR connection;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; when the RR connection starts with a core network of Release&nbsp;99 or later, arithmetic operations on V(SD) are performed modulo 4. The mobile station shall keep using modulo 4 for the duration of the RR connection;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; after successful completion of SRVCC handover (see 3GPP&nbsp;TS&nbsp;23.216&nbsp;[27]), the mobile station shall perform modulo 4 arithmetic operations on V(SD). The mobile station shall keep using modulo 4 until the release of the RR connection established at SRVCC handover.</p>
+<p>NOTE&nbsp;1:&nbsp; In A/Gb mode, the release supported by the core network is indicated in the MSCR bit and in the SGSNR bit in the system information broadcast (see 3GPP&nbsp;TS&nbsp;44.018&nbsp;[6b] and 3GPP&nbsp;TS&nbsp;44.060&nbsp;[10a]).</p>
+<p>NOTE&nbsp;2:&nbsp; During SRVCC handover the MSCR bit is not provided to the mobile station, and therefore the mobile station assumes to access to a Release&nbsp;99 or later core network.</p>
+<p>For the GCC, BCC, and LCS upper layer message flows, arithmetic operations on V(SD) are performed modulo 2.</p>
+<p><a name="_Toc11256780"></a><a name="_Toc36116772"></a><a name="_Toc45096829"></a><a name="_Toc51762695"></a>11.2.3.2.3.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Send sequence number N(SD)</p>
+<p>At the time when such a message to be numbered is designated for transmission, the value of N(SD) for the message to be transferred is set equal to the value of the send state variable V(SD).</p>
+<p><a name="_Toc11256781"></a><a name="_Toc36116773"></a><a name="_Toc45096830"></a><a name="_Toc51762696"></a>11.2.3.2.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Procedures for the initiation, transfer execution and termination of the sequenced message transfer operation</p>
+<p><a name="_Toc11256782"></a><a name="_Toc36116774"></a><a name="_Toc45096831"></a><a name="_Toc51762697"></a>11.2.3.2.3.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Initiation</p>
+<p>The sequenced message transfer operation is initiated by establishing a RR connection. The send state variables V(SD) are set to 0.</p>
+<p>After successful completion of SRVCC handover (see 3GPP TS 23.216 [27]), the mobile station shall set the send state variable V(SD) to 0.</p>
+<p><a name="_Toc11256783"></a><a name="_Toc36116775"></a><a name="_Toc45096832"></a><a name="_Toc51762698"></a>11.2.3.2.3.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transfer Execution</p>
+<p>The core network shall compare the send sequence numbers of pairs of subsequent messages in the same upper layer messages flow.</p>
+<p>For the GCC, BCC, and LCS upper layer message flows, in case the send sequence numbers of two subsequent messages in a flow are not identical, no duplication has occurred. In case the send sequence numbers are identical, the network must ignore the second one of the received messages.</p>
+<p>For the MM+CC+SS (via CS domain) upper layer message flow:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; when accessed by a release 98 or earlier mobile station, in case the send sequence numbers of two subsequent messages in the flow are identical, the core network shall discard the second one of the received messages;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; when accessed by a release 99 or later mobile station, the core network shall discard any message whose N(SD) is not the increment by one (modulo 4) of the N(SD) of the last accepted message.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The release supported by the mobile station is indicated by the revision level in <em>the Mobile Station Classmark 1</em> or <em>Mobile</em><em> Station Classmark 2</em> information element, or by the revision level indicator in the <em>MS network capability</em> information element (see 3GPP&nbsp;TS&nbsp;24.008, clause&nbsp;10.5).</p>
+<p>In a shared network with a MOCN configuration, the core network node to which the mobile station was redirected shall compare the send sequence number of the first message received after the redirection in the MM+CC+SS (via CS domain) message flow with the value of N(SD) received during the redirection procedure (see 3GPP&nbsp;TS&nbsp;23.251&nbsp;[22]):</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; when accessed by a release 98 or earlier mobile station, if the two send sequence numbers are identical, the core network shall discard the received message from the mobile station;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; when accessed by a release 99 or later mobile station, the core network shall discard any message whose N(SD) is not the increment by one (modulo 4) of the N(SD) received during the redirection procedure.</p>
+<p><a name="_Toc11256784"></a><a name="_Toc36116776"></a><a name="_Toc45096833"></a><a name="_Toc51762699"></a>11.2.3.2.3.2.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Termination</p>
+<p>The sequenced message transfer operation is terminated by the RR connection release procedure.</p>
+<p>Inter system change from A/Gb mode to Iu mode or from Iu mode to A/Gb mode shall not terminate the sequenced message transfer. UMTS SRNC relocation shall not terminate the sequenced message transfer.</p>
+<h4><a name="_Toc11256785"></a><a name="_Toc36116777"></a><a name="_Toc45096834"></a><a name="_Toc51762700"></a><a name="_Toc178270966"></a>11.2.3.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Standard information elements of the imperative part</h4>
+<p>The message type octet of a standard L3 message may be followed by mandatory standard IEs having the format V, LV or LV-E as specified in the message description in the relevant protocol specification.</p>
+<p>As a design rule, octet boundaries must be respected. This implies that half-octet standard IEs (i.e., V formatted type 1 standard IEs) must appear by pair. The first half-octet IE occupies bits 1 to 4 of octet N, the second half-octet IE bits 5 to 8 of octet N, the third half-octet IE bits 1 to 4 of octet N + 1 etc. If the number of half-octet IEs is odd then bits 5 to 8 of the last octet occupied by these half-octet IEs contains a spare half-octet IE in format V.</p>
+<p>If message is received as a standard L3 message, and that is too short to contain the complete imperative part as specified in the relevant protocol specification, an imperative message part error is diagnosed. (The same error may be diagnosed at detection of certain contents of the imperative part of a message; this is defined in the relevant protocol specification.) The treatment of an imperative message part error is defined in the relevant protocol specification.</p>
+<h3><a name="_Toc11256786"></a><a name="_Toc36116778"></a><a name="_Toc45096835"></a><a name="_Toc51762701"></a><a name="_Toc178270967"></a>11.2.4&nbsp;&nbsp;&nbsp;&nbsp; Non-imperative part of a standard L3 message</h3>
+<p>The imperative part of a standard L3 message is followed by the (possibly empty) non-imperative part. The relevant protocol specification defines where the imperative part of a standard L3 message ends. The non-imperative part of a standard L3 message is composed of (zero, one, or several) standard IEs having the format T, TV, TLV or TLV-E. The receiver of a standard L3 message shall analyse the non imperative part as a succession of standard IEs each containing an IEI, and shall be prepared for the non-imperative part of the message to contain standard IEs that are not specified in the relevant protocol specification.</p>
+<p>An IEI may be known in a message or unknown in a message. Each protocol specification lists, for each message (i.e.,&nbsp;according to the message type, the direction and the lower layer SAP), the known standard IEs in the non-imperative part.</p>
+<p>An IEI that is known in a message designates the IE type of the IE the first part of which the IEI is, as well as the use of the information. Which IE type it designates is specified in the relevant protocol specification. Within a message, different IEIs may designate the same IE type if that is defined in the relevant protocol specification.</p>
+<p>Whether the second part of an IE with IEI known in a message is the length or not (in other words, whether the IEI is the first part of an IE formatted as TLV, TLV-E or not) is specified in the relevant protocol specification.</p>
+<p>Unless otherwise specified in the protocol specification, the receiver shall assume that IE with unknown IEI are TV formatted type 1, T formatted type 2, TLV formatted type 4 or TLV-E formatted type 6 standard IEs. The IEI of unknown IEs together with, when applicable, the length indicator, enable the receiver to determine the total length of the IE, and then to skip unknown IEs. The receiver shall assume the following rule for IEs with unknown IEI:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bit 8 of the IEI octet is set to "1" indicates a TV formatted type 1 standard IE or a T formatted type 2 IEs. Hence, a 1 valued bit 8 indicates that the whole IE is one octet long. The respective IEI includes a value in the range from hexadecimal 8 to F in bits 8 to 5.</p>
+<p>Furthermore, for the EPS protocols EMM and ESM:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bit 8 of the IEI octet set to "0" and bits 7 to 4 set to "1" indicates a TLV-E formatted type 6 IE, i.e. the following two octets are length octets. The respective IEI value range is from hexadecimal 78 to 7F. Bit 8 of the IEI octet set to "0" and bit 7 to 4 set to any other bit combination indicates a TLV formatted type 4 IE, i.e. the following octet is a length octet. The respective IEI value range is from hexadecimal 00 to 77.</p>
+<p>Furthermore, for the 5GS protocols 5GMM and 5GSM:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bit 8 of the IEI octet set to "0" and bits 7 to 5 set to "1" indicates a TLV-E formatted type 6 IE, i.e. the following two octets are length octets. The respective IEI value range is from hexadecimal 70 to 7F. Bit 8 of the IEI octet set to "0" and bit 7 to 5 set to any other bit combination indicates a TLV formatted type 4 IE, i.e. the following octet is a length octet. The respective IEI value range is from hexadecimal 00 to 6F.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The above rule for the IEI value encoding for 5GMM and 5GSM is not applicable to the IEIs of type 6 IEs included in the Type 6 IE container information element specified in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[31], clause&nbsp;9.11.3.98. The IEIs in such an information element can take any value in the range 00 to FF (hexadecimal).</p>
+<p>IEI assignment in 3GPP&nbsp;TS&nbsp;24.334&nbsp;[36] shall comply with the above rule for the EPS protocols EMM and ESM.</p>
+<p>IEI assignment in 3GPP&nbsp;TS&nbsp;24.519&nbsp;[33], 3GPP&nbsp;TS&nbsp;24.587&nbsp;[34], 3GPP&nbsp;TS&nbsp;24.193&nbsp;[35], 3GPP&nbsp;TS&nbsp;24.554&nbsp;[38], 3GPP&nbsp;TS&nbsp;24.572&nbsp;[40], 3GPP&nbsp;TS&nbsp;24.514&nbsp;[41] and 3GPP&nbsp;TS&nbsp;24.577&nbsp;[42] shall comply with the above rule for the 5GS protocols 5GMM and 5GSM.</p>
+<p>IEI assignment for UE policy delivery service in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[31] shall comply with the above rule for the 5GS protocols 5GMM and 5GSM.</p>
+<p>For all other protocols:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bit 8 of the IEI octet set to "0" indicates a TLV formatted type 4 IE. Hence, the following octet is a length octet.</p>
+<p>As a design rule, it is recommended that IEIs of any TV formatted type 1, T formatted type 2, TLV formatted type 4 or TLV-E formatted type 6 IE follow the rule, even if assumed to be known by all potential receivers.</p>
+<p>As a design rule, it is recommended that no T formatted type 2 IE is added to the non-imperative part of a standard L3 message.</p>
+<p>NOTE&nbsp;1:&nbsp; Type 2 IEs restrict the number of possible type 1 IEs which can be used in a message and type 2 IEs cannot be extended or modified once introduced.</p>
+<p>As a design rule, it is recommended that no new TV formatted type 3 IE is added to the non-imperative part of a standard L3 message except in the first release of a protocol specification which specifies the standard L3 message.</p>
+<p>NOTE&nbsp;2:&nbsp; For example, for the 5GS protocols 5GMM and 5GSM, Release&nbsp;15 is the first release of a protocol specification for REGISTRATION REQUEST message.</p>
+<p>A message may contain two or more IEs with equal IEI. Two IEs with the same IEI in a same message must have the same format, and, when of type 3, the same length. More generally, care should be taken not to introduce ambiguities by using an IEI for two purposes. Ambiguities appear in particular when two IEs potentially immediately successive have the same IEI but different meanings and when both are non-mandatory. As a recommended design rule, messages should contain a single IE of a given IEI.</p>
+<p>Each protocol specification may put specific rules for the order of IEs in the non-imperative part. An IE known in the message, but at a position non compliant with these rules is said to be out of sequence. An out of sequence IE is decoded according to the format, and, when of type 3 the length, as defined in the message for its IEI.</p>
+<h3><a name="_Toc11256787"></a><a name="_Toc36116779"></a><a name="_Toc45096836"></a><a name="_Toc51762702"></a><a name="_Toc178270968"></a>11.2.5&nbsp;&nbsp;&nbsp;&nbsp; Presence requirements of information elements</h3>
+<p>The relevant protocol specification may define three different presence requirements (M, C, or O) for a standard IE within a given standard L3 message:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; M ("Mandatory") means that the IE shall be included by the sending side, and that the receiver diagnoses a "missing mandatory IE" error when detecting that the IE is not present. An IE belonging to the imperative part of a message has presence requirement M. An IE belonging to the non-imperative part of a message may have presence requirement M;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; C ("Conditional") means:</p>
+<p>*&nbsp;&nbsp;&nbsp; that inclusion of the IE by the sender depends on conditions specified in the relevant protocol specification;</p>
+<p>*&nbsp;&nbsp;&nbsp; that there are conditions for the receiver to expect that the IE is present and/or conditions for the receiver to expect that the IE is not present in a received message of a given PD, SAP and message type; these conditions depend only on the content of the message itself, and not for instance on the state in which the message was received, or on the receiver characteristics; they are known as static conditions;</p>
+<p>*&nbsp;&nbsp;&nbsp; that the receiver detecting that the IE is not present when sufficient static conditions are fulfilled for its presence, shall diagnose a "missing conditional IE" error;</p>
+<p>*&nbsp;&nbsp;&nbsp; that the receiver detecting that the IE is present when sufficient static conditions are fulfilled for its non-presence, shall diagnose an "unexpected conditional IE" error.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Only IEs belonging to the non-imperative part of a message may have presence requirement C;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; O ("Optional") means that the receiver shall never diagnose a "missing mandatory IE" error, a "missing conditional IE" error, or an "unexpected conditional IE" error because it detects that the IE is present or that the IE is not present. (There may however be conditions depending on the states, resources, etc. of the receiver to diagnose other errors.) Only IEs belonging to the non-imperative part of a message may have presence requirement O.</p>
+<p>Unless otherwise specified the presence of a IE of unknown IEI or of an out of sequence IE shall not lead by itself to an error. An alternative specification is the 'comprehension required' scheme. A type 4 IE is encoded as 'comprehension required' if bits 5, 6, 7 and 8 of its IEI are set to zero. A type 6 IE is encoded as 'comprehension required' if bit 8 is set to zero and bits 2, 3, 4, 5, 6, and 7 of its IEI are set to one.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In earlier versions of this specification, type 6 IEs with IEI values 7C and 7D were defined as 'comprehension required'. I.e., dependent on the protocol, receipt of such an IE by a UE or network implemented according to an earlier version of this specification can result in detection of an "invalid mandatory information" error. Therefore, IEIs 7C and 7D can be used for type 6 IEs only if the sender of the message knows that the receiver does not treat these IEs as unknown 'comprehension required' IEs.</p>
+<p>The 'comprehension required' scheme is to be applied if explicitly indicated in the protocol specification. The reaction on the reception of an unknown or out of sequence IE coded as 'comprehension required' is specified in the relevant protocol specification.</p>
+<h3><a name="_Toc11256788"></a><a name="_Toc36116780"></a><a name="_Toc45096837"></a><a name="_Toc51762703"></a><a name="_Toc178270969"></a>11.2.6&nbsp;&nbsp;&nbsp;&nbsp; Description of standard L3 messages</h3>
+<p>This clause describes a generic description method for standard L3 messages, the tabular description. Protocol specification may follow other methods.</p>
+<p>A standard L3 message is described by a table listing the header elements and the standard IEs in the message. For each element is given:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if applicable the IEI, in hexadecimal representation (one digit followed by and hyphen for TV formatted type 1, and two digits for the other cases);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the name of the IE (this is used in particular for the description of conditional presence rules);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the type of the information element, with a reference of where the internal structure of the value part is specified;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the format of the standard IE&nbsp;(T, V, TV, LV, TLV, LV-E or TLV-E); and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the length, or the range of lengths, of the whole standard IE, including when applicable the T and L parts.</p>
+<p>The list of elements is given in the table in the order they appear in the resulting bit string, with the exception of half‑octet elements in the imperative part: half octets in a pair are inverted. This applies in particular for the two first header elements: the protocol discriminator appears first in a table describing a standard L3 message.</p>
+<h2><a name="_Toc11256789"></a><a name="_Toc36116781"></a><a name="_Toc45096838"></a><a name="_Toc51762704"></a><a name="_Toc178270970"></a>11.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Non standard L3 messages</h2>
+<p>In some protocols, the structure of part or all of the messages might not always follow the standard L3 message structure. As a design rule, this should be consistent for a given protocol, direction and lower layer SAP.</p>
+<p>A possibility is to describe the message with the compact notation described in Annex B.</p>
+<p>A few consistent structures are found in the present protocol specifications, and are described hereafter.</p>
+<p>Other structures can be described directly in the protocol specifications.</p>
+<h3><a name="_Toc11256790"></a><a name="_Toc36116782"></a><a name="_Toc45096839"></a><a name="_Toc51762705"></a><a name="_Toc178270971"></a>11.3.1&nbsp;&nbsp;&nbsp;&nbsp; Case A: BCCH and AGCH/PCH messages</h3>
+<p>In these cases, the SAP capability is for fixed length messages. The messages are structured as standard L3 messages plus one octet in front, the L2 pseudo length octet, and a rest octet part at the end.</p>
+<h4><a name="_Toc11256791"></a><a name="_Toc36116783"></a><a name="_Toc45096840"></a><a name="_Toc51762706"></a><a name="_Toc178270972"></a>11.3.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; L2 Pseudo Length octet</h4>
+<p>This octet, the L2 pseudo length indicator octet, indicates the length in octets of the subsequent octet string that can be analysed as a standard L3 message.</p>
+<p>The octet is structured as follows:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bits 3 to 8 encodes in binary the L2 pseudo length, i.e., the length of the part to be analysed as a standard L3 message;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bit 2 is set to "0";</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bit 1 is set to "1".</p>
+<p>A receiver expecting a message so structured and receiving a message with bit 1 of octet 1 (i.e., the 8<sup>th</sup> bit of the message) set to "1" and bit 2 of octet 1 (i.e., the 7<sup>th</sup> bit of the message) different from "0", shall abandon the analysis of the message.</p>
+<p>A receiver expecting a message so structured and receiving a message on AGCH/PCH:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; with an L2 pseudo length indicator encoding 0 or 1 shall skip the indicated number of octets and not try to analyse the standard L3 message part;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; with a L2 pseudo length indicator bigger than what is compatible with the SAP capability shall abandon the analysis of the message.</p>
+<h4><a name="_Toc11256792"></a><a name="_Toc36116784"></a><a name="_Toc45096841"></a><a name="_Toc51762707"></a><a name="_Toc178270973"></a>11.3.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Rest Octets</h4>
+<p>The part after the part structured as a standard L3 message, and up to the end of the message as constrained by lower layers, is presented as a non standard IE of variable length (sometime indicated as of type 5), the "rest octets" IE.</p>
+<p>The rest octets element may be described by table description, or, preferably, using the compact notation described in Annex B of the present document.</p>
+<h4><a name="_Toc11256793"></a><a name="_Toc36116785"></a><a name="_Toc45096842"></a><a name="_Toc51762708"></a><a name="_Toc178270974"></a>11.3.1.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Description of a modified standard L3 message</h4>
+<p>The description can be provided in the same way as a standard L3 message, with in the case of a tabular description one non standard IE at the beginning (of type L2 pseudo length), and one non standard IE at the end.</p>
+<h3><a name="_Toc11256794"></a><a name="_Toc36116786"></a><a name="_Toc45096843"></a><a name="_Toc51762709"></a><a name="_Toc178270975"></a>11.3.2&nbsp;&nbsp;&nbsp;&nbsp; Case B: SACCH / SDCCH / FACCH messages sent in unacknowledged mode</h3>
+<p>The messages are structured either as standard L3 messages, or in the so-called short header format. The value of the 8<sup>th</sup> bit (bit 1 of octet 1) of the link layer PDU distinguishes the two cases. In the case of the short header, the L3 message is the same bit string as the link layer PDU, and has a fixed length. The following description includes the 2-bit link layer header.</p>
+<h4><a name="_Toc11256795"></a><a name="_Toc36116787"></a><a name="_Toc45096844"></a><a name="_Toc51762710"></a><a name="_Toc178270976"></a>11.3.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The first octet</h4>
+<p>Bits 1 and 2 are the link layer header. Bit 2 of octet 1 is set to "0", and bit 1 is reserved for the link layer.</p>
+<p>A protocol discriminator is the first part of the message (starting bit 8 of octet 1). The protocol discriminator field may have different lengths. The following protocol discriminator is defined:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp; RR.</p>
+<p>All additional PD defined for this structure shall start by 1. The reception of a message with bit 8 of octet 1 set to 1 when expecting a message structured as defined by this clause shall be diagnosed as an unknown PD, and the message ignored.</p>
+<p>As a design rule, a message type field should follow the PD, and of a length such that the PD and the message type fit in the 6 first bits of the message.</p>
+<h4><a name="_Toc11256796"></a><a name="_Toc36116788"></a><a name="_Toc45096845"></a><a name="_Toc51762711"></a><a name="_Toc178270977"></a>11.3.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The rest of the message</h4>
+<p>The rest of the structure is not more constrained.</p>
+<p>The preferred description method is the one described in Annex B.</p>
+<h3><a name="_Toc11256797"></a><a name="_Toc36116789"></a><a name="_Toc45096846"></a><a name="_Toc51762712"></a><a name="_Toc178270978"></a>11.3.3&nbsp;&nbsp;&nbsp;&nbsp; Design guidelines for non standard parts</h3>
+<p>The guidelines in this clause apply to non standard parts, such as rest octets, short header broadcast message or fully non standard L3 messages.</p>
+<h4><a name="_Toc11256798"></a><a name="_Toc36116790"></a><a name="_Toc45096847"></a><a name="_Toc51762713"></a><a name="_Toc178270979"></a>11.3.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; General</h4>
+<p>The structure should be as far as possible be such that the analysis can be conducted from beginning to end. In other terms, the conditions determining the syntactic analysis of a part (e.g., tags, lengths) should appear before that part.</p>
+<p>The part should be structured as a succession of information elements, each carrying an elementary semantic information. An information element should be composed of (possibly) a tag, than (possibly) a length indicator, then a value part.</p>
+<p>Tags can be of fixed or variable length, their extent being analysable from beginning to end. A typical tagging is the one bit tagging, which should preferably used as follows: value "0" indicates that the IE is no more than the tag bit, and "1" indicates that the IE continues at least with the next bit.</p>
+<p>Variable length tagging should be used to distinguish between several possible formats of the element. Tag lengths are then chosen according to packing efficiency criteria.</p>
+<p>The T field of standard IEs can be presented as a variable tagging with only two lengths: 4 and 8 bits.</p>
+<p>The length indicator can be of fixed or variable length, their extent being analysable from beginning to end. It should preferably be presented as encoding the length in bits of the value part.</p>
+<p>The L field of standard IEs can be presented as a fixed length (one octet) length indicator which can encode only lengths multiple of 8 bits.</p>
+<p>The value part can be described as further structured, in a similar way. This can be used to help the reading, and to cover some presence dependence.</p>
+<h2><a name="_Toc11256799"></a><a name="_Toc36116791"></a><a name="_Toc45096848"></a><a name="_Toc51762714"></a><a name="_Toc178270980"></a>11.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Handling of superfluous information</h2>
+<p>All equipment should be able to ignore any extra information present in an L3 message, which is not required for the proper operation of that equipment. For example, a mobile station may ignore the calling party BCD number if that number is of no interest to the Mobile Station when a SETUP message is received.</p>
+<h3><a name="_Toc11256800"></a><a name="_Toc36116792"></a><a name="_Toc45096849"></a><a name="_Toc51762715"></a><a name="_Toc178270981"></a>11.4.1&nbsp;&nbsp;&nbsp;&nbsp; Information elements that are unnecessary in a message</h3>
+<p>The relevant protocol specification may define certain IEs to be under some conditions unnecessary in a L3 message. A protocol entity detecting an unnecessary IE in a received L3 message shall ignore the contents of that IE for treating the message; it is not obliged to check whether the contents of the IE are syntactically correct.</p>
+<h3><a name="_Toc11256801"></a><a name="_Toc36116793"></a><a name="_Toc45096850"></a><a name="_Toc51762716"></a><a name="_Toc178270982"></a>11.4.2&nbsp;&nbsp;&nbsp;&nbsp; Other syntactic errors</h3>
+<p>This clause applies to the analysis of the value part of an information element. It defines the following terminology:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; An IE is defined to be syntactically incorrect in a message if it contains at least one value defined as "reserved", or if its value part violates syntactic rules given in the specification of the value part.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; It is not a syntactical error that a type 4 and type 6 standard IE specifies in its length indicator a greater length than possible according to the value part specification: extra bits shall be ignored.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; It should not be considered a syntactical error if a type 4 and type 6 IE is received with a shorter length than defined in this version of the specification if the IE is correctly encoded according to an earlier version of the specification.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; A message is defined to have semantically incorrect contents if it contains information which, possibly dependant on the state of the receiver, is in contradiction to the resources of the receiver and/or to the procedural part.</p>
+<p>&nbsp;</p>
+<p><a name="_Toc11256802"></a><a name="_Toc36116794"></a><a name="_Toc45096851"></a><a name="_Toc51762717"></a><a name="_Toc178270983"></a>Annex A (informative):<br /> MN‑Services arrow diagram</p>
+<p>Figure&nbsp;A.1: Mobile originated Call Setup. Successful case</p>
+<p>Figure&nbsp;A.2: Mobile terminated Call Setup. Successful case</p>
+<p>Figure&nbsp;A.3: Mobile originated, Call Release and Channel Release. Successful case</p>
+<p>Figure&nbsp;A.4: Location updating. Successful case</p>
+<p>Figure&nbsp;A.5: Handover. Successful case</p>
+<p>Figure&nbsp;A.6: Establishment of parallel transactions (General view)</p>
+<p>Figure&nbsp;A.7: Release of parallel transactions (General view)</p>
+<p>&nbsp;</p>
+<p><a name="_Toc11256803"></a><a name="_Toc36116795"></a><a name="_Toc45096852"></a><a name="_Toc51762718"></a><a name="_Toc178270984"></a>Annex B (informative):<br /> Description of CSN.1</p>
+<p>The goal of the notation described hereafter is to describe the structure of the syntactically correct messages for a given signalling protocol, or of part of such messages. The notation addresses the cases where the concrete messages are binary strings. The notation allows to describe <em>sets </em>of strings: the structure of a message defined a protocol defines a set of allowable bit strings. It also allows to put labels on parts of strings that follow a given structure.</p>
+<p>One aspect of the specification of message set is to define the set of strings that are acceptable as when received. All the strings that cannot be recognized as syntactically correct messages are to be rejected for syntactical reasons. In many cases, only a subset of this set are allowed to be sent. The notation allows also to distinguish the set of the strings that can be sent and the set of strings that are recognized as syntactically correct.</p>
+<p>Another aspect of the specification of messages is the splitting of an acceptable string in a number of sub-strings that will be use to derive the exact significance of the message. The notation provides this function by labelling sub-strings. These labels can then in turn be used in textual or formal semantic descriptions which are not covered in the present document.</p>
+<p>The notation described here could be enhanced in the future, with the addition of new rules.</p>
