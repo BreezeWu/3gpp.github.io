@@ -1,0 +1,983 @@
+<h1><a name="_Toc171524087"></a>5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Elementary procedures for circuit-switched Call Control</h1>
+<h2><a name="_Toc171524088"></a>5.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Overview</h2>
+<h3><a name="_Toc171524089"></a>5.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; General</h3>
+<p>This subclause describes the call control (CC) protocol, which is one of the protocols of the Connection Management (CM) sublayer (see 3GPP&nbsp;TS&nbsp;24.007&nbsp;[20]).</p>
+<p>Every mobile station must support the call control protocol. If a mobile station does not support any bearer capability at all then it shall respond to a SETUP message with a RELEASE COMPLETE message as specified in subclause&nbsp;5.2.2.2.</p>
+<p>In Iu mode only, integrity protected signalling (see subclause&nbsp;4.1.1.1.1 of the present document and in general, see 3GPP&nbsp;TS&nbsp;33.102&nbsp;[5a]) is mandatory. In Iu mode only, all protocols shall use integrity protected signalling. Integrity protection of all CC signalling messages is the responsibility of lower layers. It is the network which activates integrity protection. This is done using the security mode control procedure (3GPP&nbsp;TS&nbsp;25.331&nbsp;[23c] and 3GPP&nbsp;TS&nbsp;44.118&nbsp;[111]).</p>
+<p>In the call control protocol, more than one CC entity are defined. Each CC entity is independent from each other and shall communicate with the correspondent peer entity using its own MM connection. Different CC entities use different transaction identifiers.</p>
+<p>With a few exceptions the present document describes the call control protocol only with regard to two peer entities. The call control entities are described as communicating finite state machines which exchange messages across the radio interface and communicate internally with other protocol (sub)layers. This description is only normative as far as the consequential externally observable behaviour is concerned.</p>
+<p>Certain sequences of actions of the two peer entities compose "elementary procedures" which are used as a basis for the description in this subclause. These elementary procedures may be grouped into the following classes:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; call establishment procedures;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; call clearing procedures;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; call information phase procedures;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; miscellaneous procedures.</p>
+<p>The terms "mobile originating" or "mobile originated" (MO) are used to describe a call initiated by the mobile station. The terms "mobile terminating" or "mobile terminated" (MT) are used to describe a call initiated by the network.</p>
+<p>Figure 5.1a/3GPP TS 24.008 gives an overview of the main states and transitions on the mobile station side.</p>
+<p>The MS side extension figure 5.1a.1/3GPP TS 24.008 shows how for the Network Initiated MO call the MS reaches state U1.0 from state U0 $(CCBS)$.</p>
+<p>Figure 5.1a.2/3GPP TS 24.008 illustrates the additional state transitions possible in the MS due to SRVCC handovers from PS to CS or 5G-SRVCC handover from NG-RAN to UTRAN.</p>
+<p>Figure 5.1a.3/3GPP TS 24.008 illustrates the additional state transitions possible in the MS due to SRVCC handovers from CS to PS.</p>
+<p>Figure 5.1b/3GPP TS 24.008 gives an overview of the main states and transitions on the network side.</p>
+<p>The Network side extension figure 5.1b.1/3GPP TS 24.008 shows for Network Initiated MO Calls the Network reaches state N1.0 from state N0 $(CCBS)$.Figure 5.1b.2/3GPP TS 24.008 illustrates the additional state transitions possible in the network due to SRVCC handovers from PS to CS or 5G-SRVCC handover from NG-RAN to UTRAN.</p>
+<p>Figure 5.1b.3/3GPP TS 24.008 illustrates the additional state transitions possible in the network due to SRVCC handovers from CS to PS.</p>
+<p>&nbsp;</p>
+<p>Figure 5.1a/3GPP&nbsp;TS 24.008: Overview call control protocol/MS side</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Figure 5.1a.1/3GPP TS 24.008: Overview call control protocol/MS side, extension</p>
+<p>&nbsp;</p>
+<p>Figure 5.1a.2/3GPP TS 24.008: Overview call control protocol/MS side, extension for SRVCC from PS to CS or 5G-SRVCC handover from NG-RAN to UTRAN</p>
+<p>Figure 5.1a.3/3GPP TS 24.008: Overview call control protocol/MS side, extension for SRVCC from CS to PS</p>
+<p><strong><br /> </strong></p>
+<p>&nbsp;</p>
+<p><strong><br /> </strong></p>
+<p>Figure 5.1b/3GPP&nbsp;TS 24.008 Overview call control protocol/Network side</p>
+<p><strong><br /> </strong></p>
+<p>Figure 5.1b.1/3GPP TS 24.008 Overview call control protocol/Network side, extension</p>
+<p>&nbsp;</p>
+<p>Figure 5.1b.2/3GPP TS 24.008: Overview call control protocol/Network side, extension for SRVCC from PS to CS or 5G-SRVCC handover from NG-RAN to UTRAN</p>
+<p>Figure 5.1b.3/3GPP TS 24.008: Overview call control protocol/Network side, extension for SRVCC from CS to PS</p>
+<h3><a name="_Toc171524090"></a>5.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call Control States</h3>
+<h4><a name="_Toc171524091"></a>5.1.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call states at the mobile station side of the interface</h4>
+<p>The states which may exist on the mobile station side of the radio interface are defined in this subclause.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; States U0.1, U0.2, U0.3, U0.4, U0.5, U0.6, U26, and U27 are 3GPP&nbsp;specific. All other states are ITU-T defined.</p>
+<h5><a name="_Toc171524092"></a>5.1.2.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Null (State U0)</h5>
+<p>No call exists.</p>
+<h5><a name="_Toc171524093"></a>5.1.2.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MM Connection pending (U0.1)</h5>
+<p>This state exists for a mobile originating call, when the mobile station requests the establishment of a MM connection.</p>
+<h5><a name="_Toc171524094"></a>5.1.2.1.2a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CC prompt present (U0.2) $(CCBS)$</h5>
+<p>This state exists for a mobile originating call when the network has prompted the mobile station to establish a CC connection but the mobile station has not yet responded.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This state is transient.</p>
+<h5><a name="_Toc171524095"></a>5.1.2.1.2b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wait for network information (U0.3) $(CCBS)$</h5>
+<p>This state exists for a mobile originating call when the mobile station has responded to the prompt from the network to establish a CC connection and the mobile station is waiting for further information from the network.</p>
+<h5><a name="_Toc171524096"></a>5.1.2.1.2c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CC-Establishment present (U0.4) $(CCBS)$</h5>
+<p>This state exists for a mobile originating call when the mobile station has received a CC-establishment request but has not yet responded.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This state is transient.</p>
+<h5><a name="_Toc171524097"></a>5.1.2.1.2d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CC-Establishment confirmed (U0.5) $(CCBS)$</h5>
+<p>This state exists for a mobile originating call when the mobile station has sent the acknowledgement that the mobile station has received all the CC information that is needed.</p>
+<h5><a name="_Toc171524098"></a>5.1.2.1.2e&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Recall present (U0.6) $(CCBS)$</h5>
+<p>This state exists for a mobile originating call when the mobile station has received a recall request but has not yet responded.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This state is transient.</p>
+<h5><a name="_Toc171524099"></a>5.1.2.1.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call initiated (U1)</h5>
+<p>This state exists for a mobile originating call, when the MS requests call establishment from the network.</p>
+<h5><a name="_Toc171524100"></a>5.1.2.1.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile originating call proceeding (U3)</h5>
+<p>This state exists for a mobile originating call when the mobile station has received acknowledgement that the network has received all call information necessary to effect call establishment.</p>
+<h5><a name="_Toc171524101"></a>5.1.2.1.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call delivered (U4)</h5>
+<p>This state exists for a mobile originating call, when the calling mobile station has received an indication that remote user alerting has been initiated.</p>
+<h5><a name="_Toc171524102"></a>5.1.2.1.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call present (U6)</h5>
+<p>This state exists for a mobile terminating call when the mobile station has received a call establishment request but has not yet responded.</p>
+<h5><a name="_Toc171524103"></a>5.1.2.1.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call received (U7)</h5>
+<p>This state exists for a mobile terminating call when the mobile station has indicated alerting but has not yet answered.</p>
+<h5><a name="_Toc171524104"></a>5.1.2.1.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Connect Request (U8)</h5>
+<p>This state exists for a mobile terminating call, when the mobile station has answered the call and is waiting to be awarded the call.</p>
+<h5><a name="_Toc171524105"></a>5.1.2.1.9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile terminating call confirmed (U9)</h5>
+<p>This state exists for a mobile terminating call when the mobile station has sent acknowledgement that the mobile station has received all call information necessary to effect call establishment.</p>
+<h5><a name="_Toc171524106"></a>5.1.2.1.10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Active (U10)</h5>
+<p>This state exists for a mobile terminating call when the MS has answered the call. This state exists for a mobile originating call when the MS has received an indication that the remote user has answered the call.</p>
+<h5><a name="_Toc171524107"></a>5.1.2.1.11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Disconnect request (U11)</h5>
+<p>This state exists when the mobile station has requested the network to clear the end-to-end connection (if any) and is waiting for a response.</p>
+<h5><a name="_Toc171524108"></a>5.1.2.1.12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Disconnect indication (U12)</h5>
+<p>This state exists when the mobile station has received an invitation to disconnect because the network has disconnected the end-to-end connection (if any).</p>
+<h5><a name="_Toc171524109"></a>5.1.2.1.13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Release request (U19)</h5>
+<p>This state exists when the MS has requested the network to release and is waiting for a response.</p>
+<h5><a name="_Toc171524110"></a>5.1.2.1.14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile originating modify (U26)</h5>
+<p>This state exists when the mobile station has sent a request to the network for a new mode but has not yet received an answer.</p>
+<h5><a name="_Toc171524111"></a>5.1.2.1.15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile terminating modify (U27)</h5>
+<p>This state exists when the mobile station has received a request from the network for a new mode and has not yet sent a response to this request.</p>
+<h4><a name="_Toc171524112"></a>5.1.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Network call states</h4>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; States N0.1, N0.2, N0.3, N0.4, N0.5, N0.6, N26, N27, N28, N3a, N4,a, N7a, and N9a are 3GPP&nbsp;specific. All other states are ITU-T defined.</p>
+<p>The call states that may exist on the network side of the radio interface are defined in this subclause.</p>
+<h5><a name="_Toc171524113"></a>5.1.2.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Null (State N0)</h5>
+<p>No call exists.</p>
+<h5><a name="_Toc171524114"></a>5.1.2.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MM connection pending (N0.1)</h5>
+<p>This state exists for a mobile terminating call, when the network requests the establishment of a MM connection.</p>
+<h5><a name="_Toc171524115"></a>5.1.2.2.2a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CC connection pending (N0.2) $(CCBS)$</h5>
+<p>This state exists for a mobile originating call when the network has requested the mobile station to establish a CC connection.</p>
+<h5><a name="_Toc171524116"></a>5.1.2.2.2b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Network answer pending (N0.3) $(CCBS)$</h5>
+<p>This state exists for a mobile originating call when the mobile station has established a CC connection upon the request of the network, but the network has not yet informed the mobile station of the reason for the network's action.</p>
+<h5><a name="_Toc171524117"></a>5.1.2.2.2c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CC-Establishment present (N0.4) $(CCBS)$</h5>
+<p>This state exists for a mobile originating call when the network has sent a CC establishment request but has not yet received a satisfactory response.</p>
+<h5><a name="_Toc171524118"></a>5.1.2.2.2d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CC-Establishment confirmed (N0.5) $(CCBS)$</h5>
+<p>This state exists for a mobile originating call when the network has received acknowledgement that the mobile station has received all call information necessary to effect call establishment.</p>
+<h5><a name="_Toc171524119"></a>5.1.2.2.2e&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Recall present (N0.6) $(CCBS)$</h5>
+<p>This state exists for a mobile originating call when the network has sent a recall request but has not yet received a satisfactory response.</p>
+<h5><a name="_Toc171524120"></a>5.1.2.2.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call initiated (N1)</h5>
+<p>This state exists for a mobile originating call when the network has received a call establishment request but has not yet responded.</p>
+<h5><a name="_Toc171524121"></a>5.1.2.2.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile originating call proceeding (N3)</h5>
+<p>This state exists for a mobile originating call when the network has sent acknowledgement that the network has received all call information necessary to effect call establishment.</p>
+<h5><a name="_Toc171524122"></a>5.1.2.2.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call delivered (N4)</h5>
+<p>This state exists for a mobile originating call when the network has indicated that remote user alerting has been initiated.</p>
+<h5><a name="_Toc171524123"></a>5.1.2.2.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call present (N6)</h5>
+<p>This state exists for a mobile terminating call when the network has sent a call establishment request but has not yet received a satisfactory response.</p>
+<h5><a name="_Toc171524124"></a>5.1.2.2.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call received (N7)</h5>
+<p>This state exists for a mobile terminating call when the network has received an indication that the mobile station is alerting but has not yet received an answer.</p>
+<h5><a name="_Toc171524125"></a>5.1.2.2.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Connect request (N8)</h5>
+<p>This state exists for a mobile terminating call when the network has received an answer but the network has not yet awarded the call.</p>
+<h5><a name="_Toc171524126"></a>5.1.2.2.9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile terminating call confirmed (N9)</h5>
+<p>This state exists for a mobile terminating call when the network has received acknowledgement that the mobile station has received all call information necessary to effect call establishment.</p>
+<h5><a name="_Toc171524127"></a>5.1.2.2.10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Active (N10)</h5>
+<p>This state exists for a mobile terminating call when the network has awarded the call to the called mobile station. This state exists for a mobile originating call when the network has indicated that the remote user has answered the call.</p>
+<h5><a name="_Toc171524128"></a>5.1.2.2.11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Not used</h5>
+<h5><a name="_Toc171524129"></a>5.1.2.2.12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Disconnect indication (N12)</h5>
+<p>This state exists when the network has disconnected the end- to-end connection (if any) and has sent an invitation to disconnect the mobile station to network connection.</p>
+<h5><a name="_Toc171524130"></a>5.1.2.2.13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Release request (N19)</h5>
+<p>This state exists when the network has requested the MS to release and is waiting for a response.</p>
+<h5><a name="_Toc171524131"></a>5.1.2.2.14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile originating modify (N26)</h5>
+<p>This state exists when the network has received a request from the mobile station for a new mode but has not yet sent a response.</p>
+<h5><a name="_Toc171524132"></a>5.1.2.2.15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile terminating modify (N27)</h5>
+<p>This state exists when the network has sent a request to the mobile station for a new mode but has not yet received an answer.</p>
+<h5><a name="_Toc171524133"></a>5.1.2.2.16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Connect Indication (N28)</h5>
+<p>This state exists for a mobile originating call when the network has indicated that the remote user has answered the call and the network is waiting for acknowledgement by the mobile station.</p>
+<h2><a name="_Toc171524134"></a>5.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call establishment procedures</h2>
+<p>Establishment of a call is initiated by request of upper layer in either the mobile station or the network; it consists of:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the establishment of a CC connection between the mobile station and the network;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the activation of the codec or interworking function.</p>
+<p>Whenever it is specified in the present document clause 5 that the mobile station shall attach the user connection, this means that the mobile station shall activate the codec or interworking function as soon as an appropriate channel is available. The mobile station shall de-activate the codec or interworking function whenever an appropriate channel is no longer available. As soon as an appropriate channel is (again) available, the codec or interworking function shall be re-activated. If a new order to attach the user connection is received, the new order shall supersede the previous one.</p>
+<p>A channel shall be considered as appropriate if it is consistent with the possibly negotiated bearer capability applicable for the actual phase of the call. The mobile station shall not consider a channel as not appropriate because the type of the channel (full rate/half rate) is not the preferred one. If:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the user connection has to be attached but no appropriate channel is available for a contiguous time of 30 seconds; or if</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the codec or interworking function is de-activated for a contiguous time of 30 seconds;</p>
+<p>then the mobile station may initiate call clearing.</p>
+<p>Upon request of upper layers to establish a call, restricting conditions for the establishment of the call are examined. These restricting conditions concern the states of parallel CC entities and are defined elsewhere. If these restricting conditions are fulfilled, the call establishment is rejected. Otherwise a CC entity in state U0, "null", is selected to establish the call. It initiates the establishment by requesting the MM sublayer to establish an MM connection.</p>
+<p>In Iu mode, if the lower layers indicate the release of a radio access bearer, whereas the corresponding call is still active, the MS shall not automatically initiate the release of that call.</p>
+<h3><a name="_Toc171524135"></a>5.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile originating call establishment</h3>
+<p>The call control entity of the mobile station initiates establishment of a CC connection by requesting the MM sublayer to establish a mobile originating MM connection and entering the "MM connection pending" state. There are two kinds of a mobile originating call: basic call and emergency call. The request to establish an MM connection shall contain a parameter to specify whether the call is a basic or an emergency call. This information may lead to specific qualities of services to be provided by the MM sublayers. Timer T303 is started when the CM SERVICE REQUEST message is sent.</p>
+<p>For mobile stations supporting eMLPP basic calls may optionally have an associated priority level as defined in 3GPP&nbsp;TS 23.067 [88]. This information may also lead to specified qualities of service to be provided by the MM sublayers.</p>
+<p>While being in the "MM connection pending" state, the call entity of the mobile station may cancel the call prior to sending the first call control message according to the rules given in subclause&nbsp;4.5.1.7.</p>
+<p>The mobile station supporting multicall that is initiating an emergency call shall release one or more existing call to ensure the emergency call can be established if the multicall supported information stored in the mobile station described in subclauses 5.2.1.2 and 5.2.2.1 indicates the network does not support multicall and some ongoing calls exists.</p>
+<p>Having entered the "MM connection pending" state, upon MM connection establishment, the call control entity of the mobile station sends a setup message to its peer entity. This setup message is:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a SETUP message, if the call to be established is a basic call, and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; an EMERGENCY SETUP message, if the call to be established is an emergency call.</p>
+<p>NOTE&nbsp;1:&nbsp; The Extended Local Emergency Numbers List (see 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]) does not apply in this specification.</p>
+<p>The mobile station then enters the "call initiated" state. Timer T303 is not stopped.</p>
+<p>The setup message shall contain all the information required by the network to process the call. In particular, the:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; SETUP message shall contain the called party address information;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; EMERGENCY SETUP message shall contain the emergency category, if the emergency category is available at the MS.</p>
+<p>If the mobile station supports multicall, it shall include the Stream Identifier (SI) information element. For the first call i.e. when there are no other ongoing calls the SI value shall be 1.</p>
+<p>For speech calls the mobile station shall indicate all codecs that it supports for UTRAN in the <em>Supported Codec List</em> information element. Codecs for GERAN shall be indicated in the <em>Bearer Capability </em>information element, if this information element is included. Additionally, if the mobile station supports codecs for GERAN and UTRAN, it shall indicate the codecs for GERAN also in the <em>Supported Codec List</em> information element.</p>
+<p>If the call is a redial attempt to switch from speech to multimedia or vice-versa, the SETUP message shall include the Redial information element.</p>
+<p>NOTE&nbsp;2: Redial attempt is defined in 3GPP TR 23.903: "Redial solution for voice-video switching"[115].</p>
+<p>If the MS supports the enhanced network-initiated in-call modification procedure as specified in subclause&nbsp;5.3.4.3, the MS shall indicate this in the <em>Call Control Capabilities</em> IE in the SETUP message.</p>
+<p>If timer T303 elapses in the "MM connection pending" state, the MM connection in progress shall be aborted and the user shall be informed about the rejection of the call.</p>
+<h4><a name="_Toc171524136"></a>5.2.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call initiation</h4>
+<p>The "call initiated" state is supervised by timer T303.For normal MO calls, this timer will have already been started after entering the "MM connection pending" state. For network-initiated MO calls this timer will be started in the recall present state as defined in subclause&nbsp;5.2.3.4</p>
+<p>When the call control entity of the mobile station is in the "call initiated" state and if it receives:</p>
+<ol start="5">
+<li>i) a CALL PROCEEDING message, it shall proceed as described in subclause&nbsp;5.2.1.3;</li>
+<li>ii) an ALERTING message, it shall proceed as described in subclause&nbsp;5.2.1.5;</li>
+</ol>
+<p>iii) a CONNECT message, it shall proceed as described in subclause&nbsp;5.2.1.6;</p>
+<ol start="5">
+<li>iv) a RELEASE COMPLETE message it shall proceed as described in subclause&nbsp;5.2.1.2.</li>
+</ol>
+<p>Abnormal case:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; If timer T303 elapses in the "call initiated" state before any of the CALL PROCEEDING, ALERTING, CONNECT or RELEASE COMPLETE messages has been received, the clearing procedure described in subclause&nbsp;5.4 is performed.</p>
+<h4><a name="_Toc171524137"></a>5.2.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receipt of a setup message</h4>
+<p>In the "null" or "recall present" states, upon receipt of a setup message (a SETUP message or an EMERGENCY SETUP message, see subclause&nbsp;5.2.1.1), the call control entity of the network enters the "call initiated" state. It shall then analyse the call information contained in the setup message.</p>
+<p>In Iu mode, network shall include the SI received in the SETUP message into the RABid and send it back to the mobile station. For RABid see 3GPP&nbsp;TS&nbsp;25.413&nbsp;[19c] and 3GPP&nbsp;TS&nbsp;44.118&nbsp;[111]. If the network receives the SETUP message with no SI, the network shall set the SI value to 1.</p>
+<ol start="5">
+<li>i) If, following the receipt of the setup message, the call control entity of the network determines that the call information received from the mobile station is invalid (e.g. invalid number), then the network shall initiate call clearing as defined in subclause&nbsp;5.4 with one of the following cause values:</li>
+</ol>
+<p># 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "unassigned (unallocated) number",</p>
+<p># 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "no route to destination",</p>
+<p># 22&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "number changed",</p>
+<p># 28&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "invalid number format (incomplete number)".</p>
+<ol start="5">
+<li>ii) If, following the receipt of the setup message, the call control entity of the network determines that a requested service is not authorized or is not available, it shall initiate call clearing in accordance with subclause&nbsp;5.4.2 with one of the following cause values:</li>
+</ol>
+<p># 8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "operator determined barring",</p>
+<p># 57&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "bearer capability not authorized",</p>
+<p># 58&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "bearer capability not presently available",</p>
+<p># 63&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "service or option not available, unspecified", or</p>
+<p># 65&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "bearer service not implemented".</p>
+<p>iii) Otherwise, the call control entity of the network shall either:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send a CALL PROCEEDING message to its peer entity to indicate that the call is being processed; and enter the "mobile originating call proceeding" state;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; or: send an ALERTING message to its peer entity to indicate that alerting has been started at the called user side; and enter the "call received" state;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; or: send a CONNECT message to its peer entity to indicate that the call has been accepted at the called user side; and enter the "connect request" state.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The call control entity of the network may insert bearer capability information element(s) in the CALL PROCEEDING message to select options presented by the mobile station in the Bearer Capability information element(s) of the SETUP message. The bearer capability information element(s) shall contain the same parameters as received in the SETUP except those presenting a choice. Where choices were offered, appropriate parameters indicating the results of those choices shall be included.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The CALL_PROCEEDING message shall also contain the priority of the call in the case where the network supports eMLPP. Mobile stations supporting eMLPP shall indicate this priority level to higher sublayers and store this information for the duration of the call for further action. Mobile stations not supporting eMLPP shall ignore this information element if provided in a CALL PROCEEDING message.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If the network supports only R98 or older versions of this protocol and the priority is not included in the CALL PROCEEDING message, this does not imply that the network does not support eMLPP.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The CALL_PROCEEDING message shall contain the multicall supported information in the network call control capabilities in the case where the network supports multicall and there are no other ongoing calls to the MS. Mobile stations supporting multicall shall store this information until the call control state for all calls returns to null. Mobile stations not supporting multicall shall ignore this information if provided in a CALL PROCEEDING message. If the multicall supported information is not sent in the CALL_PROCEEDING message, the mobile station supporting multicall shall regard that the network doesn't support multicall.</p>
+<p>The call control entity of the network having entered the "mobile originating call proceeding" state, the network may initiate the assignment of a traffic channel according to subclause&nbsp;5.2.1.9 (early assignment).</p>
+<p>For speech calls, if the SETUP message or EMERGENCY SETUP message contains a <em>Supported Codec List </em>information element, the network shall use this list to select the codec for UTRAN. If no <em>Supported Codec List </em>information element is received, then for UTRAN the network shall select the default UMTS speech codec according to subclause&nbsp;5.2.1.11.</p>
+<p>Codecs for GERAN shall be selected from the codecs indicated in the <em>Supported Codec List </em>information element or in the <em>Bearer Capability </em>information element. If neither a <em>Supported Codec List </em>information element nor a <em>Bearer Capability </em>information element is received, then for GERAN the network shall select GSM full rate speech version 1.</p>
+<p>Codec information that does not apply to the currently serving radio access shall be used by the network if an inter-system change occurs.</p>
+<p>Figure 5.2/3GPP TS 24.008 Mobile originated call initiation and possible subsequent responses.</p>
+<h4><a name="_Toc171524138"></a>5.2.1.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receipt of a CALL PROCEEDING message</h4>
+<p>Having entered the "call initiated" state, when the call control entity of the mobile station receives a CALL PROCEEDING message, it shall stop timer T303; start timer T310 unless</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the CALL PROCEEDING message contains a <em>progress indicator</em> IE specifying progress description #1, #2, or #64; or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; it has received a PROGRESS message containing a <em>progress indicator</em> IE specifying progress description #1, #2, or #64 prior to the CALL PROCEEDING message</p>
+<p>and enter the "mobile originating call proceeding" state.</p>
+<p>Abnormal case:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If timer T310 elapses before any of the ALERTING, CONNECT or DISCONNECT messages has been received, the mobile station shall perform the clearing procedure described in subclause&nbsp;5.4.</p>
+<p>Figure 5.3/3GPP TS 24.008 Call proceeding sequence at mobile originating call establishment</p>
+<h4><a name="_Toc171524139"></a>5.2.1.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Notification of progressing mobile originated call</h4>
+<p>In this subclause, the term "interworking" is used only in the meaning of interworking with a network other than PLMN or ISDN, not as interworking between PLMN and ISDN since this is the normal case. In this sense, PLMN and ISDN are seen within the same environment, called the PLMN/ISDN environment.</p>
+<h5><a name="_Toc171524140"></a>5.2.1.4.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Notification of interworking in connection with mobile originated call establishment</h5>
+<p>During call establishment, the call may leave a PLMN/ISDN environment; e.g., because of interworking with another network, with a non-PLMN/ISDN user, or with non-PLMN/ISDN equipment within the called user's premises; the call may also return to a PLMN/ISDN environment. When such situations occur, the network may send a <em>progress indicator</em> information element to the calling mobile station either:</p>
+<ol>
+<li>a) in an appropriate call control message, if a state change is required (e.g. ALERTING or CONNECT); or,</li>
+<li>b) in the PROGRESS message, if no state change is appropriate.</li>
+</ol>
+<p>This <em>progress indicator</em> information element shall contain one of the following progress description values:</p>
+<ol>
+<li>a) #1 "call is not end-to-end PLMN/ISDN; further call progress information may be available in-band".</li>
+<li>b) #2 "destination address is non-PLMN/ISDN".</li>
+<li>c) #4 "call has returned to PLMN/ISDN.</li>
+</ol>
+<p>See also subclauses 5.5.1 and 5.5.6 for further reactions of the mobile station.</p>
+<h5><a name="_Toc171524141"></a>5.2.1.4.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call progress in the PLMN/ISDN environment</h5>
+<p>In order to inform the mobile station that the call is progressing in the PLMN/ISDN environment the network may send a <em>progress indicator</em> information element to the calling mobile station either:</p>
+<ol>
+<li>a) in an appropriate call control message, if a state change is required (e.g., ALERTING or CONNECT); or</li>
+<li>b) in the PROGRESS message, if no state change is appropriate.</li>
+</ol>
+<p>This <em>progress indicator</em> information element shall contain progress description value #32 "Call is end-to-end ISDN/PLMN". See also subclause&nbsp;5.5.6 for further reactions of the mobile station.</p>
+<h4><a name="_Toc171524142"></a>5.2.1.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Alerting</h4>
+<p>Having entered the "mobile originating call proceeding" state, upon receiving an indication that user alerting has been initiated at the called address, the call control entity of the network shall: send an ALERTING message to its peer entity at the calling mobile station and enter the "call delivered" state.</p>
+<p>When the call control entity of the mobile station in the "call initiated" state or "mobile originating call proceeding" state receives an ALERTING message then, the call control entity of the mobile station shall stop timer T303 and T310 (if running) and shall enter the "call delivered" state. In this state:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; for speech calls: an alerting indication should be given to the user. If the mobile station has not attached the user connection then the mobile station shall internally generate an alerting indication. If the mobile station has attached the user connection then the network is responsible for generating the alerting indication and the mobile station need not generate one; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; for multimedia calls: if the mobile station has not attached the user connection then the mobile station may internally generate an alerting indication. If the mobile station supports multimedia CAT during the alerting phase of a mobile originated multimedia call establishment, the network may request the mobile station to attach the user connection and setup a H.324 call and generate multimedia CAT as specified in subclause&nbsp;5.3.6.4, in which case the mobile station need not generatean alerting tone.</p>
+<p>Abnormal cases:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the mobile station side, if timer T303 or T310 expires, the call control entity of the mobile station shall initiate call clearing as described in subclause&nbsp;5.4.</p>
+<p>Figure 5.4/3GPP TS 24.008 Call confirmation at mobile originating call establishment</p>
+<h4><a name="_Toc171524143"></a>5.2.1.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call connected</h4>
+<p>Upon receiving an indication that the call has been accepted, the call control entity of the network shall: through connect the traffic channel (including the connection of an interworking function, if required) and send a CONNECT message to its peer entity at the calling mobile station; start timer T313 and enter the "connect indication" state.</p>
+<p>This message indicates to the call control entity of the calling mobile station that a connection has been established through the network.</p>
+<p>The call control entity of the mobile station in the "call initiated" state, in the "mobile originating call proceeding" state or in the "call delivered" state, shall, upon receipt of a CONNECT message:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; attach the user connection;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; return a CONNECT ACKNOWLEDGE message;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; stop any locally generated alerting indication (if applied);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; clear any H.324 call established to receive multimedia CAT during the alerting phase (if applied) , as specified in subclause&nbsp;5.3.6.4</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; stop timer T303 and T310 (if running);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; enter the "active" state.</p>
+<p>Abnormal cases:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the mobile station side, if timer T303 or T310 expires, the call control entity of the mobile station shall initiate call clearing as described in subclause&nbsp;5.4.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The mobile station may have applied an additional internal alerting supervision which causes initiation of call clearing prior to the expiry of T303 or T310.</p>
+<p>The call control of the network in the "connect indication" state, shall, upon receipt of a CONNECT ACKNOWLEDGE message:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; stop timer T313 and enter the "active" state.</p>
+<p>Abnormal cases:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; On the network side, if timer T313 elapses before a CONNECT ACKNOWLEDGE message has been received, the network shall perform the clearing procedure as described in subclause&nbsp;5.4.</p>
+<p>Figure 5.5/3GPP TS 24.008 Call acceptance sequence at mobile originating call establishment</p>
+<h4><a name="_Toc171524144"></a>5.2.1.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call rejection</h4>
+<p>Upon receiving an indication that the network or the called user is unable to accept the call, the network shall initiate call clearing at the radio interface to the mobile which originated the call, as described in subclause&nbsp;5.4 using the cause provided by the terminating network or the called user.</p>
+<h4><a name="_Toc171524145"></a>5.2.1.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Transit network selection</h4>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For further study.</p>
+<h4><a name="_Toc171524146"></a>5.2.1.9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Traffic channel assignment at mobile originating call establishment</h4>
+<p>The mobile station supporting multicall includes the Stream Identifier (SI) in the SETUP message. The multicall supporting network shall interprets the SI value as follows:</p>
+<ol>
+<li>a) Mobile station generates a new SI value at the initiation of an originating call, then a new traffic channel shall be assigned to the mobile originating call.</li>
+<li>b) Mobile station indicates an existing SI value, then the indicated traffic channel shall be used for the mobile originating call.</li>
+</ol>
+<p>Mobile station supporting multicall shall never send an additional SETUP with indication that a new traffic channel is requested to a network that does not support multicall.</p>
+<p>It is a network dependent decision when to initiate the assignment of an appropriate traffic channel during the mobile originating call establishment phase. Initiation of a suitable RR procedure to assign an appropriate traffic channel does neither change the state of a call control entity nor affect any call control timer.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; During certain phases of such an RR procedure, transmission of CC and MM messages may be suspended, see 3GPP&nbsp;TS&nbsp;44.018&nbsp;[84], clause&nbsp;3 and 3GPP&nbsp;TS&nbsp;48.008&nbsp;[85].</p>
+<p>The assignment procedure does not affect any call control timer.</p>
+<h4><a name="_Toc171524147"></a>5.2.1.10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call queuing at mobile originating call establishment</h4>
+<p>If an idle traffic channel is not available at the assignment instant, the network may place the traffic channel request in a queue. Calls arriving when all positions in the queue are occupied shall be cleared by the network using the cause #34 "no circuit/channel available".</p>
+<p>The maximum queuing interval is supervised by the network. The limit is a network dependent choice. In case the network is not able to allocate a traffic channel within the queuing limit, the network will release the call using cause #34 "no circuit/channel available".</p>
+<p>Optionally, e.g. if eMLPP is used, the network may decide to pre-empt existing calls or to place the traffic channel request at some preferential position within the queue.</p>
+<p>Specific indications provided in the network to the remote user are a network dependent choice.</p>
+<h4><a name="_Toc171524148"></a>5.2.1.11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Speech Codec Selection</h4>
+<p>For speech calls, a mobile station implementing this version of the protocol shall indicate all codecs that it supports for UTRAN in the <em>Supported Codec List</em> information element. Codecs for GERAN shall be indicated in the <em>Bearer Capability </em>information element, if this information element is included. Additionally, if the mobile station supports codecs for GERAN and UTRAN, it shall indicate the codecs for GERAN also in the <em>Supported Codec List</em> information element.</p>
+<p>If the network does not receive a <em>Supported Codec List </em>information element then for speech calls in UTRAN it shall select the default UMTS speech codec.</p>
+<p>For speech calls in GERAN, if the network does not receive a <em>Supported Codec List </em>information element nor a <em>Bearer Capability </em>information element, the network shall select GSM full rate speech version 1.</p>
+<p>The network shall determine the default UMTS speech codec by the following:</p>
+<ol>
+<li>i) If no GSM Speech Version codepoints are received in the<em> Supported Codec List </em>IE or in octet 3a etc. of the <em>Bearer Capabilities</em> IE then a "UMTS only" terminal is assumed and the default UMTS speech codec shall be UMTS_AMR.</li>
+<li>ii) If at least one GSM Speech Version codepoint is received in the<em> Supported Codec List </em>IE or in octet 3a etc. of the <em>Bearer Capabilities</em> IE then the ME supports GSM and UMTS and the default UMTS speech codec shall be UMTS_AMR_2.</li>
+</ol>
+<p>NOTE 1:&nbsp; In case (ii), if the call is set up in A/Gb or GERAN Iu mode by a R99 ME, call control in the core network may treat the ME as a "GSM only" ME. The default UMTS speech codec will only become relevant when an intersystem handover to UTRAN Iu mode is initiated by the radio access network, and can be determined when this procedure is started.</p>
+<p>If the <em>Supported Codec List</em> IE is received, then the network shall use this list to select the codec for Iu mode and indicate the selected codec to the ME via RANAP and RRC protocol in the NAS Synchronisation Indicator IE. See 3GPP&nbsp;TS&nbsp;25.413&nbsp;[19c], 3GPP&nbsp;TS&nbsp;25.331&nbsp;[23c] and 3GPP&nbsp;TS&nbsp;44.118&nbsp;[111].</p>
+<p>The NAS Synchronisation Indicator IE shall be coded as the 4 least significant bits of the selected codec type (CoID) defined in 3GPP&nbsp;TS&nbsp;26.103&nbsp;[83], subclause&nbsp;6.3.</p>
+<p>The network shall determine the preference for the selected codec type; codec type prioritisation is not provided by the ME.</p>
+<p>The ME shall activate the codec type received in the NAS Synchronisation Indicator IE.</p>
+<p>If the mobile station does not receive the NAS Synchronisation Indicator IE (RRC protocol)</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; during setup of a speech call;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; during inter-system handover of a speech call from A/Gb or GERAN Iu mode to UTRAN Iu mode;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; during an in-call modification from data to speech;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; during a SRVCC handover to UTRAN Iu mode; or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; during a 5G-SRVCC handover from NG-RAN to UTRAN Iu mode,</p>
+<p>then it shall select the UMTS_AMR_2 speech codec.</p>
+<p>NOTE&nbsp;2:&nbsp; If the network does not support UMTS_AMR_2, it may activate the UMTS_AMR codec and indicate to the mobile station that it shall select UMTS_AMR_2. According to 3GPP&nbsp;TS&nbsp;26.103&nbsp;[83], subclause&nbsp;5.4, no interworking problem will occur in this case.</p>
+<p>If the mobile station has selected a speech codec for UTRAN Iu mode, it shall keep this codec until</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a new codec is requested by the network by sending a NAS Synchronisation Indicator IE (RRC protocol);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a new codec is requested by the network during inter-system handover from UTRAN Iu mode to A/Gb or GERAN Iu mode; or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; an in-call modification from speech to data is performed.</p>
+<p>For adaptive multirate codec types no indication of subsets of modes is supported in this protocol, from the mobile station or to the mobile station. It is a pre-condition that the support of such codec types by the mobile station implicitly includes all modes defined for that codec type.</p>
+<h4><a name="_Toc171524149"></a>5.2.1.12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Cellular Text telephone Modem (CTM) selection</h4>
+<p>The mobile station can send a CTM support indication in the <em>Bearer Capability</em> IE in call establishment messages to inform the network of the use of CTM text in the call.</p>
+<p>When the mobile station indicates speech and support of CTM text telephony, the network shall select a speech codec and additionally CTM text telephony detection/conversion functions as specified in 3GPP&nbsp;TS&nbsp;23.226&nbsp;[92] and 3GPP&nbsp;TS&nbsp;26.226&nbsp;[93], if such functions are available.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If CTM support is indicated by the mobile station, then it supports CTM text telephony together with any supported speech codec and for any supported radio access.</p>
+<h3><a name="_Toc171524150"></a>5.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile terminating call establishment</h3>
+<p>Before call establishment can be initiated in the mobile station, the MM connection must be established by the network.</p>
+<h4><a name="_Toc171524151"></a>5.2.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call indication</h4>
+<p>After the arrival of a call from a remote user, the corresponding call control entity in the network shall: initiate the MM connection establishment according to clause 4 and enter the "MM connection pending" state. The request to establish the MM connection is passed from the CM sublayer to the MM sublayer. It contains the necessary routing information derived from the SETUP message.</p>
+<p>Upon completion of the MM connection, the call control entity of the network shall: send the SETUP message to its peer entity at the mobile station, start timer T303 and enter the "call present" state.</p>
+<p>The SETUP message shall contain the multicall supported information in the network call control capabilities in the case where the network supports multicall and there are no other ongoing calls to the MS. Mobile stations supporting multicall shall store this information until the call control state for all calls returns to null. Mobile stations not supporting multicall shall ignore this information if provided in a SETUP message. If the multicall supported information is not sent in the SETUP message, the mobile station supporting multicall shall regard that the network does not support multicall.</p>
+<p>Upon receipt of a SETUP message, the mobile station shall perform compatibility checking as described in subclause&nbsp;5.2.2.2. If the result of the compatibility checking was compatibility, the call control entity of the mobile station shall enter the "call present" state. An incompatible mobile station shall respond with a RELEASE COMPLETE message in accordance with subclause&nbsp;5.2.2.3.4.</p>
+<p>If there are no <em>bearer capability</em> IEs in the SETUP message, the network may provide information about the requested service in the<em> backup bearer capability </em>IE.</p>
+<p>If no response to the SETUP message is received by the call control entity of the network before the expiry of timer T303, the procedures described in subclause&nbsp;5.2.2.3.3 shall apply.</p>
+<p>Figure 5.6/3GPP TS 24.008 Mobile terminating call initiation and possible subsequent responses.</p>
+<h4><a name="_Toc171524152"></a>5.2.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Compatibility checking</h4>
+<p>The mobile station receiving a SETUP message shall perform compatibility checking before responding to that SETUP message. Annex B defines compatibility checking to be performed by the mobile station upon receiving a SETUP message. For a <em>b</em><em>ackup bearer capability</em> IE received with a SETUP message the mobile station shall not perform compatibility checking as described in annex B.</p>
+<h4><a name="_Toc171524153"></a>5.2.2.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call confirmation</h4>
+<h5><a name="_Toc171524154"></a>5.2.2.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Response to SETUP</h5>
+<p>Having entered the "call present state" the call control entity of the mobile station shall - with the exception of the cases described below - acknowledge the SETUP message by a CALL CONFIRMED message, and enter the "mobile terminating call confirmed" state.</p>
+<p>If the mobile station supports multicall, it shall include the Stream Identifier (SI) information element in the CALL CONFIRMED message.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If the mobile station is located in the network supporting multicall, it shall never include the SI that is in use and shall include with either of the following two values:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; SI="no bearer";</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; SI=new value (not used by any of the existing bearers).</p>
+<p>If the mobile station supporting multicall is located in the network not supporting multicall, it shall include the SI with value 1.</p>
+<p>The call control entity of the mobile station may include in the CALL CONFIRMED message to the network one or two bearer capability information elements to the network, either preselected in the mobile station or corresponding to a service dependent directory number (see 3GPP&nbsp;TS&nbsp;29.007&nbsp;[38]). The mobile station may also use the <em>backup bearer capability </em>IE, if provided by the network, to deduce the requested service (see 3GPP&nbsp;TS&nbsp;27.001&nbsp;[36], subclause&nbsp;8.3.3.1). The mobile station may also include one or two bearer capabilities in the CALL CONFIRMED message to define the radio channel requirements. In any case the rules specified in subclause&nbsp;9.3.2.2 shall be followed.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The possibility of alternative responses (e.g., in connection with supplementary services) is for further study.</p>
+<p>For speech calls the mobile station shall indicate all codecs that it supports for UTRAN in the <em>Supported Codec List</em> information element. Codecs for GERAN shall be indicated in the <em>Bearer Capability </em>information element, if this information element is included. Additionally, if the mobile station supports codecs for GERAN and UTRAN, it shall indicate the codecs for GERAN also in the <em>Supported Codec List</em> information element.</p>
+<p>If the MS supports the enhanced network-initiated in-call modification procedure as specified in subclause&nbsp;5.3.4.3, the MS shall indicate this in the <em>Call Control Capabilities</em> IE in the CALL CONFIRMED message.</p>
+<p>A busy MS which satisfies the compatibility requirements indicated in the SETUP message shall respond either with a CALL CONFIRMED message if the call setup is allowed to continue or a RELEASE COMPLETE message if the call setup is not allowed to continue, both with cause #17 "user busy".</p>
+<p>If the mobile user wishes to refuse the call, a RELEASE COMPLETE message shall be sent with the cause #21 "call rejected".</p>
+<p>In the cases where the mobile station responds to a SETUP message with RELEASE COMPLETE message the mobile station shall release the MM connection and enter the "null" state after sending the RELEASE COMPLETE message.</p>
+<p>The network shall process the RELEASE COMPLETE message in accordance with subclause&nbsp;5.4.</p>
+<h5><a name="_Toc171524155"></a>5.2.2.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receipt of CALL CONFIRMED and ALERTING by the network</h5>
+<p>The call control entity of the network in the "call present" state, shall, upon receipt of a CALL CONFIRMED message: stop timer T303, start timer T310 and enter the "mobile terminating call confirmed" state.</p>
+<p>In Iu mode, network shall include the SI received in the CALL CONFIRMED message into the RABid and send it back to the mobile station. For RABid see 3GPP&nbsp;TS&nbsp;25.413&nbsp;[19c] and 3GPP&nbsp;TS&nbsp;44.118&nbsp;[111]. If the network receives the CALL CONFIRMED message with no SI, the network shall set the SI value to 1.</p>
+<p>For speech calls, if the CALL CONFIRMED message contains a <em>Supported Codec List </em>information element, the network shall use this list to select the codec for UTRAN. If no <em>Supported Codec List </em>information element is received, then for UTRAN the network shall select the default UMTS speech codec according to subclause&nbsp;5.2.1.11.</p>
+<p>Codecs for GERAN shall be selected from the codecs indicated in the <em>Supported Codec List </em>information element or in the <em>Bearer Capability </em>information element. If neither a <em>Supported Codec List </em>information element nor a <em>Bearer Capability </em>information element is received, then for GERAN the network shall select GSM full rate speech version 1.</p>
+<p>Codec information that does not apply to the currently serving radio access shall be used by the network if an inter-system change occurs.</p>
+<p>The call control entity of the mobile station having entered the "mobile terminating call confirmed" state, if the call is accepted at the called user side, the mobile station proceeds as described in subclause&nbsp;5.2.2.5. Otherwise, if the signal information element was present in the SETUP message user alerting is initiated at the mobile station side; if the signal information element was not present in the SETUP message, user alerting is initiated when an appropriate channel is available.</p>
+<p>Here, initiation of user alerting means:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the generation of an appropriate tone or indication at the mobile station; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; sending of an ALERTING message by the call control entity of the MS to its peer entity in the network and entering the "call received" state.</p>
+<p>The call control entity of the network in the "mobile terminated call confirmed" state shall, upon receipt of an ALERTING message: send a corresponding ALERTING indication to the calling user; stop timer T310; start timer T301, and enter the "call received" state.</p>
+<p>In the "mobile terminating call confirmed" state or the "call received" state, if the user of a mobile station is User Determined User Busy then a DISCONNECT message shall be sent with cause #17 "user busy". In the "mobile terminating call confirmed" state, if the user of a mobile station wishes to reject the call then a DISCONNECT message shall be sent with cause #21 "call rejected".</p>
+<h5><a name="_Toc171524156"></a>5.2.2.3.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call failure procedures</h5>
+<p>In case of abnormal behaviour the following call failure procedures apply:</p>
+<ol start="5">
+<li>If the network does not receive any response to the SETUP message prior to the expiration of timer T303, then the network shall: initiate clearing procedures towards the calling user with cause #18 "no user responding"; and initiate clearing procedures towards the called mobile station in accordance with subclause&nbsp;5.4.4 using cause #102 "recovery on timer expiry".</li>
+<li>If the network has received a CALL CONFIRMED message, but does not receive an ALERTING, CONNECT or DISCONNECT message prior to the expiration of timer T310, then the network shall:</li>
+</ol>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; initiate clearing procedures towards the calling user with cause #18 "no user responding"; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; initiate clearing procedures towards the called MS in accordance with subclause&nbsp;5.4.4 using cause #102 "recovery on timer expiry".</p>
+<p>iii.&nbsp; If the network has received an ALERTING message, but does not receive a CONNECT or DISCONNECT message prior to the expiry of timer T301 (or a corresponding internal alerting supervision timing function), then the network shall: initiate clearing procedures towards the calling user with cause #19 "user alerting, no answer"; and initiate clearing procedures towards the called mobile station in accordance with subclause&nbsp;5.4.4, using cause #102 "recovery on timer expiry" or using cause #31 "normal, unspecified".</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The choice between cause #31 and cause #102 may have consequences on indications generated by the mobile station, see 3GPP TS 22.001 [8a].</p>
+<h5><a name="_Toc171524157"></a>5.2.2.3.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Called mobile station clearing during mobile terminating call establishment</h5>
+<p>See subclause&nbsp;5.4.2.</p>
+<h4><a name="_Toc171524158"></a>5.2.2.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Notification of interworking in connection with mobile terminating call establishment</h4>
+<p>In this subclause, the term "interworking" is used only in the meaning of interworking with a network other than PLMN or ISDN, not as interworking between PLMN and ISDN since this is the normal case. In this sense, PLMN and ISDN are seen within the same environment, called the PLMN/ISDN environment.</p>
+<p>During call establishment the call may enter an PLMN/ISDN environment, e.g., because of interworking with another network, with a non-PLMN/ISDN user, or with non-PLMN/ISDN equipment within the calling or called user's premises. When this occurs, the network may include a <em>progress indicator</em> information element to be included in the SETUP message to be sent to the called mobile station specifying progress description value:</p>
+<ol>
+<li>a) #1 "call is not end-to-end PLMN/ISDN; further call progress information may be available in-band" or</li>
+<li>b) #3 "origination address is non-PLMN/ISDN".</li>
+</ol>
+<p>See also subclause&nbsp;5.5.1 for further reactions of the mobile station.</p>
+<h4><a name="_Toc171524159"></a>5.2.2.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call accept</h4>
+<p>In the "mobile terminating call confirmed" state or the "call received" state, the call control entity in the mobile station indicates acceptance of a mobile terminating call by:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; sending a CONNECT message to its peer entity in the network;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; starting Timer T313; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; entering the "connect request" state.</p>
+<p>If the call control entity of the mobile station has indicated "No Bearer" as the SI value in the CALL CONFIRMED message, it shall assign the SI value and include the SI information element in the CONNECT message. Otherwise the SI information element shall not be included in the CONNECT message.</p>
+<h4><a name="_Toc171524160"></a>5.2.2.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Active indication</h4>
+<p>In the "mobile terminated call confirmed" state or in the "call received" state, the call control entity of the network shall, upon receipt of a CONNECT message: through connect the traffic channel (including the connection of an interworking function, if required), stop timers T310, T303 or T301 (if running); send a CONNECT ACKNOWLEDGE message to its peer entity at the mobile station of the called user; initiate procedures to send a CONNECT message towards the calling user and enter the "active" state.</p>
+<p>In the "connect request" state, the call control entity of the mobile station shall, upon receipt of a CONNECT ACKNOWLEDGE message: stop timer T313 and enter the "active" state.</p>
+<p>When timer T313 expires prior to the receipt of a CONNECT ACKNOWLEDGE message, the mobile station shall initiate clearing in accordance with subclause&nbsp;5.4.3.</p>
+<p>Figure 5.7/3GPP TS 24.008 Call acceptance and active indication at mobile terminating call establishment</p>
+<h4><a name="_Toc171524161"></a>5.2.2.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Traffic channel assignment at mobile terminating call establishment</h4>
+<p>After receiving the SETUP message, the mobile station supporting multicall may either require a new traffic channel or reuse an existing traffic channel.</p>
+<p>If a mobile station in the network supporting multicall requires a new traffic channel, it shall:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send a CALL CONFIRMED message including the SI indicating a new value, not used by any of the existing traffic channels.</p>
+<p>If a mobile station in the network supporting multicall does not require a new traffic channel, it shall:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send a CALL CONFIRMED message including the SI equal to "no bearer".</p>
+<p>After the mobile station has send the CALL CONFIRMED with SI="no bearer", the SI value in the CONNECT message will tell to the network if a user requests a new traffic channel or one of the existing ones will be re-uesd.</p>
+<p>If a new traffic channel is requested by the user, the mobile station in the network supporting multicall shall:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send a CONNECT message containing the SI with a new value, not used by any existing traffic channel.</p>
+<p>If the user decides that an existing traffic channel will be reused, the mobile station in the network supporting multicall shall:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send a CONNECT message with an SI indicating an existing value used by an existing traffic channel.</p>
+<p>It is a network dependent decision when to initiate the assignment of a traffic channel during the mobile terminating call establishment phase.</p>
+<p>Initiation of the assignment phase does not directly change the state of a CC entity nor affect any call control timer, but may have some secondary effects (see e.g. subclause&nbsp;5.2.2.3.2).</p>
+<h4><a name="_Toc171524162"></a>5.2.2.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call queuing at mobile terminating call establishment</h4>
+<p>The principles described in subclause&nbsp;5.2.1.10 apply accordingly.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The interworking to the fixed network has to fulfil the network specific requirements.</p>
+<h4><a name="_Toc171524163"></a>5.2.2.9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; User connection attachment during a mobile terminating call</h4>
+<p>For speech calls:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The mobile station shall attach the user connection at latest when sending the connect message.</p>
+<p>For data calls:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The mobile station shall attach the user connection when receiving the CONNECT ACKNOWLEDGE message from the network.</p>
+<h4><a name="_Toc171524164"></a>5.2.2.10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Speech Codec Selection</h4>
+<p>The principles described in subclause&nbsp;5.2.1.11 apply accordingly.</p>
+<h4><a name="_Toc171524165"></a>5.2.2.11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Cellular Text telephone Modem (CTM) selection</h4>
+<p>The principles described in subclause&nbsp;5.2.1.12 apply accordingly.</p>
+<h3><a name="_Toc171524166"></a>5.2.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Network initiated MO call $(CCBS)$</h3>
+<p>The procedures of subclause&nbsp;5.2.3 are mandatory for mobile stations supporting "Network initiated MO call".</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The behaviour of a mobile station that does not support "Network initiated MO call" is described in clause&nbsp;4.</p>
+<h4><a name="_Toc171524167"></a>5.2.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Initiation</h4>
+<p>Before call establishment can be initiated in the mobile station, the MM connection shall be established by the network.</p>
+<p>After the arrival of an appropriate stimulus (for example a Remote User Free Indication), the corresponding call control entity in the network shall initiate the MM connection establishment according to clause 4, enter the "CC connection pending" state and start timer T331. The request to establish the MM connection is passed from the CM sublayer to the MM sublayer. It contains the necessary routing information derived from the received stimulus.</p>
+<p>Upon completion of the MM connection, the call control entity of the mobile station shall send a START CC message to its peer entity in the network. The mobile station shall then enter the "Wait for network information" state and start timer T332.</p>
+<p>If the network receives a START CC message while in the "CC connection pending" state, the network stops T331, sends the CC-ESTABLISHMENT message, starts timer T333 and enters the "CC-establishment present" state.</p>
+<p>The MM connection establishment may be unsuccessful for a variety of reasons, in which case the MM sublayer in the network will inform the CC entity in the network with an indication of the reason for the failure. The CC entity shall then stop all running timers, enter the "Null" state and inform all appropriate entities within the network.</p>
+<p>If timer T331 expires, the network shall abort the MM connection establishment attempt, stop all running CC timers, enter the "Null" state and inform all appropriate entities within the network.</p>
+<h4><a name="_Toc171524168"></a>5.2.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CC-Establishment present</h4>
+<p>In the "CC establishment present" state, the mobile station, upon receipt of the CC-ESTABLISHMENT message, shall stop timer T332.</p>
+<p>The CC-ESTABLISHMENT message contains information which the mobile station shall use for the subsequent SETUP message (if any) related to this CC-ESTABLISHMENT.</p>
+<p>The CC-ESTABLISHMENT message shall contain the<em> Setup Container IE.</em></p>
+<p>If no CC-ESTABLISHMENT message is received by the call control entity of the mobile station before the expiry of timer T332, then the mobile station shall initiate clearing procedures towards the network using a RELEASE COMPLETE message with cause #102 "recovery on timer expiry" and proceed in accordance with subclause&nbsp;5.4.2.</p>
+<p>Upon receipt of a CC-ESTABLISHMENT message the mobile station shall perform checks on the Setup Container IE in order to align the contained information with the mobile's present capabilities and configuration. The "recall alignment procedure" is defined later on in this subclause.</p>
+<p>If the recall alignment procedure has succeeded, the call control entity of the Mobile Station shall:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; form and store the SETUP message for sending later in the "Recall present" state,</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; acknowledge the CC-ESTABLISHMENT message with a CC-ESTABLISHMENT CONFIRMED message,</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; start timer T335, and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; enter the "CC-establishment confirmed" state.</p>
+<p>Exception:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A busy mobile station which has successfully performed the recall alignment procedure shall respond with a CC-ESTABLISHMENT CONFIRMED message with cause #17 "user busy", and proceed as stated above.</p>
+<p>For speech calls the mobile station shall indicate all codecs that it supports for UTRAN in the <em>Supported Codec List</em> information element of the CC-ESTABLISHMENT CONFIRMED message. Codecs for GERAN shall be indicated in the <em>Bearer Capability </em>information element. Additionally, if the mobile station supports codecs for GERAN and UTRAN, it shall indicate the codecs for GERAN also in the <em>Supported Codec List</em> information element.</p>
+<p>A mobile station, for which the recall alignment procedure failed, shall respond with a RELEASE COMPLETE message in accordance with subclause&nbsp;5.4.2 with the appropriate cause code as indicated in the description of the recall alignment procedure.</p>
+<p>The SETUP message is constructed from the <em>Setup Container IE</em> received in the CC ESTABLISHMENT MESSAGE. The mobile station shall assume that the <em>Setup Container IE </em>contains an entire SETUP message with the exception of the Protocol Discriminator, Transaction ID and Message Type elements. The mobile station may assume that the contents of the <em>Setup Container IE </em>are the same as were sent from the subscriber in a previous SETUP message of the mobile originating call establishment attempt. The mobile station shall copy the <em>Setup Container </em>to the SETUP message and not modify the contents except as defined in the recall alignment procedure and as defined in <em>exceptions</em> below. The mobile station shall not add other Information Elements to the end of the SETUP message.</p>
+<p>Exceptions:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>Bearer Capability IE(s), HLC IE(s) and LLC IE(s) </em>(including <em>Repeat Indicator(s), </em>if there are 2 bearer capabilities), and the <em>Supported Codec List</em> <em>IE</em> require handling as described in the recall alignment procedure below.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If the <em>CC Capabilities </em>in the <em>Setup Container IE</em> is different to that supported by the mobile station, the mobile station shall modify the <em>CC Capabilities</em> in the SETUP message to indicate the true capabilities of the mobile station.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>Facility IE(s) and SS Version IE(s)</em> require handling as described in the recall alignment procedure.</p>
+<p><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Stream Identifier IE</em> requires handling as described in the recall alignment procedure.</p>
+<p>If no response to the CC-ESTABLISHMENT message is received by the call control entity of the network before the expiry of timer T333, then the network shall initiate clearing procedures towards the called mobile station using a RELEASE COMPLETE message with cause #102 "recovery on timer expiry" and inform all appropriate entities within the network, proceeding in accordance with subclause&nbsp;5.4.2.</p>
+<p>Figure 5.7a/3GPP TS 24.008 Call initiation and possible subsequent responses.</p>
+<h5><a name="_Toc171524169"></a>5.2.3.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Recall Alignment Procedure</h5>
+<p>The recall alignment procedure consists of three parts:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; basic service group alignment,</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; facility alignment, and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; stream identifier alignment.</p>
+<p>Basic service group alignment:</p>
+<p>The mobile station shall check that the <em>Bearer Capability, HLC</em> and <em>LLC </em>and <em>Repeat Indicator </em>fields, which are embedded in the<em> Setup Container IE, </em>match a basic service group supported by the mobile station.</p>
+<p>If this check fails, then the recall alignment procedure has failed. The mobile station shall use the cause #88 "incompatible destination" afterwards.</p>
+<p>Otherwise, the mobile station is allowed to alter the content within the<em> Bearer Capability, HLC</em> and <em>LLC</em> Information Elements (e.g. the speech codec version(s), the data rate, the radio channel requirement) provided that the basic service group is not changed. Furthermore, for speech calls the mobile station is allowed to add or remove the <em>Supported Codec List</em> Information Element, or to alter the contents of this information element dependent on the codecs supported by the mobile station. The result shall be that the mobile station has derived <em>Bearer Capability, HLC,</em> <em>LLC, and Supported Codec List</em> Information Elements, which it can use for a later call setup according to its configuration and capabilities.</p>
+<p>Facility alignment:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This only applies if the <em>Setup Container </em>contains 1 or more <em>Facility IEs. </em>Each<em> Facility IE</em> within the <em>Setup Container</em> will be associated with the common <em>SS Version IE</em>, if present<em>. </em>The handling for each <em>Facility IE</em> is defined below. The mobile station shall align each facility IE contained in the <em>Setup Container.</em> The rules defined in 3GPP TS 24.010&nbsp;[21] also apply.</p>
+<p>The <em>Facility IE</em> is encoded as 'simple recall alignment', 'advanced recall alignment' or 'recall alignment not essential' (see 3GPP TS 24.010&nbsp;[21]). If the encoding indicates, that</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a simple recall alignment is required, the mobile station shall copy the Facility IE and the common SS version IE from the <em>Setup Container</em> to the SETUP message without modifying the content.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; an advanced recall alignment is required, the mobile station must recognise and support the operation defined in the facility. If the mobile station does not recognise or support the operation, then the recall alignment procedure has failed and the mobile station shall use the cause #29 "facility rejected" in the subsequent rejection of the CC establishment request.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the recall alignment is not essential, then the facility operation is not an essential part of the SETUP. If the MS does not recognise the operation then the SS Version IE and Facility IE are discarded, and NOT copied into the SETUP message.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A mobile station may include a <em>Facility IE </em>without an associated <em>SS Version IE.</em> This would indicate that the SS operation is encoded using Phase 1 protocols.</p>
+<p>Further details on Facility handling are given in 3GPP&nbsp;TS&nbsp;24.010&nbsp;[21].</p>
+<p>Stream identifier alignment:</p>
+<p>The mobile station shall check whether the <em>Stream Identifier</em> field is contained in the<em> Setup Container </em>or no<em>t</em>.</p>
+<p>If the <em>Stream Identifier</em> is contained in the <em>Setup Container</em>, the mobile station shall behave as one of the following.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the mobile station re-assign the <em>Stream Identifier</em> value, and modify the <em>Stream Identifier</em> field.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the mobile station remove the <em>Stream Identifier</em> field.</p>
+<p>If the <em>Stream Identifier</em> is not contained in the <em>Setup Container</em>, the mobile station may behave as follows.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the mobile station assign the <em>Stream Identifier</em> value, and add the <em>Stream Identifier</em> <em>IE</em> to the end of the SETUP message.</p>
+<h4><a name="_Toc171524170"></a>5.2.3.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CC-Establishment confirmation</h4>
+<p>The call control entity of the network in the "CC-establishment present" state, shall, upon receipt of a CC-ESTABLISHMENT CONFIRMED message, stop timer T333 and enter the "CC-establishment confirmed" state.</p>
+<p>For speech calls, if the ESTABLISHMENT CONFIRMED message contains a <em>Supported Codec List </em>information element, the network shall use this list to select the codec for UMTS. If no <em>Supported Codec List </em>information element is received, then for UMTS the network shall select the default UMTS speech codec according to subclause&nbsp;5.2.1.11.</p>
+<p>Codecs for GERAN shall be selected from the codecs indicated in the <em>Supported Codec List </em>information element or in the <em>Bearer Capability </em>information element. If neither a <em>Supported Codec List </em>information element nor a <em>Bearer Capability </em>information element is received, then for GERAN the network shall select GSM full rate speech version 1.</p>
+<p>Codec information that does not apply to the currently serving radio access shall be used by the network if an inter-system change occurs.</p>
+<p>In the "CC-establishment confirmed" state, the network sends a RECALL message. This message initiates user alerting and also shall include the Facility IE (providing additional information to be presented to the user for notification). The network starts timer T334 and enters the 'recall present' state.</p>
+<p>Upon reception of the RECALL message the Mobile station stops T335 and enters the "recall present" state.</p>
+<p>&nbsp;</p>
+<p>Figure 5.7b/3GPP TS 24.008 Recall</p>
+<h4><a name="_Toc171524171"></a>5.2.3.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Recall present</h4>
+<p>In the "recall present" state, the call control entity in the mobile station waits for acceptance of the Recall by the user. Once confirmation is received, the mobile station indicates acceptance of a recall by</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; sending a SETUP message to its peer entity in the network;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; starting Timer T303; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; entering the "call initiated" state and proceeding as described in subclause&nbsp;5.2.1.1.</p>
+<p>The MS shall ensure that the contents of the<em> Bearer Capability IE(s</em>) and <em>Supported Codec List</em> IE sent in the SETUP message are the same as the <em>Bearer Capability IE(s</em>) and <em>Supported Codec List</em> IE in the previous CC-ESTABLISHMENT CONFIRMED message related to this Network Initiated MO Call.</p>
+<p>In the "recall-present" state, if the user of a mobile station is User Determined User Busy then a RELEASE COMPLETE message shall be sent with cause #17 "user busy" In the "recall-present" state. If the user of a mobile station wishes to reject the recall then a RELEASE COMPLETE message shall be sent with cause #21 "call rejected".</p>
+<p>In either case, the mobile shall release the connection in accordance with subclause&nbsp;5.4.2</p>
+<p>On receipt of the SETUP message in the "recall present" state, the network shall stop timer T334 and proceed as specified in subclause&nbsp;5.2.1.2.</p>
+<p>If the call control entity of the network does not receive a SETUP message before the expiry of timer T334, then the network shall send a RELEASE COMPLETE message to the mobile using cause #102 "recovery on timer expiry", release the MM connection, enter the "null" state and shall inform all appropriate entities within the network.</p>
+<p>Figure 5.7b/3GPP TS 24.008 Recall acceptance or rejection by user</p>
+<h4><a name="_Toc171524172"></a>5.2.3.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Traffic channel assignment during network initiated mobile originating call establishment</h4>
+<p>It is a network dependent decision whether or not to initiate the assignment of a traffic channel during the "CC-establishment confirmed" state.</p>
+<h3><a name="_Toc171524173"></a>5.2.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call establishment for SRVCC or vSRVCC</h3>
+<h4><a name="_Toc171524174"></a>5.2.4.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; General</h4>
+<p>Before call establishment for SRVCC or vSRVCC can be initiated in the mobile station, the MM connection must be established by the network.</p>
+<p>At PS to CS domain change from S1 mode or Iu mode due to SRVCC handover or vSRVCC handover (see 3GPP&nbsp;TS&nbsp;23.216&nbsp;[126]), the RR sublayer in the MS indicates to the MM layer if a voice only SRVCC handover or a voice and video SRVCC handover was completed successfully. At reception of this indication, the MS that supports SRVCC or vSRVCC shall establish an MM connection as specified in subclause&nbsp;4.5.1.8 and either proceeds with subclause&nbsp;5.2.4.2 if the indication is that voice only SRVCC was completed successfully or proceeds with subclause&nbsp;5.2.4.2a if the indication is that voice and video SRVCC was completed successfully.</p>
+<p>At 5G-SRVCC handover from NG-RAN to UTRAN (see 3GPP&nbsp;TS&nbsp;23.216&nbsp;[126]), the RR sublayer in the MS indicates to the MM layer if 5G-SRVCC handover from NG-RAN to UTRAN was completed successfully. At reception of this indication, the MS that supports 5G-SRVCC handover from NG-RAN to UTRAN shall establish an MM connection as specified in subclause&nbsp;4.5.1.8 and proceeds with subclause&nbsp;5.2.4.2 if the indication is that 5G-SRVCC handover from NG-RAN to UTRAN was completed successfully.</p>
+<h4><a name="_Toc171524175"></a>5.2.4.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call activation for SRVCC</h4>
+<p>If the MS</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; supports SRVCC and the MS has a voice media stream previously carried over the PS domain that is handed over to the CS domain via SRVCC;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; supports SRVCC or vSRVCC and the MS has a voice media stream and a video media stream of a single session previously in S1 mode carried over the PS domain and only the voice media stream is handed over to the CS domain via SRVCC; or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; supports 5G-SRVCC handover from NG-RAN to UTRAN and the MS has a voice media stream previously in the N1 mode that is handed over to the CS domain via 5G-SRVCC handover from NG-RAN to UTRAN</p>
+<p>and the session is in the "confirmed" state (defined in IETF&nbsp;RFC&nbsp;3261&nbsp;[137]), and the call control entity in "null" state receives indication "MM connection establishment due to SRVCC handover", the call control entity of the MS shall enter the "active" state, set the auxiliary state (defined in 3GPP&nbsp;TS&nbsp;24.083&nbsp;[27]) to "idle", set the multi party auxiliary state (defined in 3GPP&nbsp;TS&nbsp;24.084&nbsp;[28]) to "idle" and indicate the call establishment to upper layers. The MS and the network shall locally set the TI value of the call to "000" and the TI flag value as in mobile terminated call. If a single voice media stream is handed over and:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the session is on hold, the setting of the auxiliary state (as defined in 3GPP&nbsp;TS&nbsp;24.083&nbsp;[27]) is described in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136]; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the session is a conferencing session, the setting of the multi party auxiliary state (as defined in 3GPP&nbsp;TS&nbsp;24.084&nbsp;[28]) is described in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136].</p>
+<p>If the MS supports single radio PS to CS access transfer for calls in alerting state as specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B, and the MS has a single voice media stream over the PS domain that is handed over to the CS domain via SRVCC, and the call control entity of the MS in the "null" state receives an indication "MM connection establishment due to SRVCC handover" then:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the call control entity shall indicate to the upper layers that call establishment is due to SRVCC handover;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the upper layers indicate that the media stream(s) is/are associated with a mobile originated session in the "early" state (defined in IETF&nbsp;RFC&nbsp;3261&nbsp;[137]) according to the conditions specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B.3.2, the call control entity of the MS shall enter the "call delivered" state for this transaction. The MS and the network shall locally set the TI value of the call to "000" and the TI flag value as in mobile terminated call; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the upper layers indicate that the media stream(s) is/are associated with a mobile terminating session in the "early" state (defined in IETF&nbsp;RFC&nbsp;3261&nbsp;[137]) according to the conditions specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B.3.1, the call control entity of the MS shall enter the "call received" state for this transaction. The MS and the network shall locally set the TI value of the call to "000" and the TI flag value as in mobile terminated call.</p>
+<p>If the MS supports single radio PS to CS SRVCC for originating calls in pre-alerting phase as specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B, and the MS has a single voice media stream over the PS domain that is handed over to the CS domain via SRVCC, and the call control entity of the MS in the "null" state receives an indication "MM connection establishment due to SRVCC handover" then:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the call control entity shall indicate to the upper layers that call establishment is due to SRVCC handover; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the upper layers indicate that the media stream(s) is/are associated with a mobile originated session in the "early" state (defined in IETF&nbsp;RFC&nbsp;3261&nbsp;[137]) according to the conditions specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B.3.3, the call control entity of the MS shall enter the "mobile originating call proceeding" state for this transaction. The MS and the network shall locally set the TI value of the call to "000" and the TI flag value as in mobile terminated call.</p>
+<p>If the MS supports single radio PS to CS SRVCC for terminating calls in pre-alerting phase as specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B, and the MS has a single voice media stream over the PS domain that is handed over to the CS domain via SRVCC, and the call control entity of the MS in the "null" state receives an indication "MM connection establishment due to SRVCC handover" then:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the call control entity shall indicate to the upper layers that call establishment is due to SRVCC handover; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the upper layers indicate that the media stream(s) is/are associated with a mobile terminated session in the "early" state (defined in IETF&nbsp;RFC&nbsp;3261&nbsp;[137]) according to the conditions specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B.3.2, the call control entity of the MS shall enter the "call present" state for this transaction. The MS and the network shall locally set the TI value of the call to "000" and the TI flag value as in mobile terminated call.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; As the MS is entering "call present" state, it must send a CALL CONFIRMED message to the network, even even the call context (including codecs) is already available at the MSC in order to enter "mobile terminating call confirmed" state.</p>
+<p>If the MS has additional voice media streams carried over the PS domain that are handed over to the CS domain via SRVCC, the call states for the transactions and the setting of the TI value and TI flag for these additional media streams are described in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136].</p>
+<p>If the MS supports multicall, the MS shall locally set SI value to "1" and the MS shall assume that the network does not support multicall. The network shall also locally set SI value to "1".</p>
+<p>If the MS has a mobile originating session in the "early" state (as defined in IETF&nbsp;RFC&nbsp;3261&nbsp;[137]) and is providing an internally generated alerting indication to the user prior to the SRVCC handover, then after transitioning from the PS domain, the MS shall continue to provide the internal alerting indication to the user. The alerting indication is stopped when the user connection is attached.</p>
+<p>If the MS has a mobile originated session established upon a request from the upper layers to establish an eCall over IMS, then after transitioning from the PS domain, the MS shall support inband transfer of the updated MSD according to 3GPP&nbsp;TS&nbsp;26.267&nbsp;[161].</p>
+<h4><a name="_Toc171524176"></a>5.2.4.2a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call activation for vSRVCC</h4>
+<p>If the MS supports vSRVCC, the MS has a voice media stream and a video media stream of a single session previously in S1 mode carried over the PS domain that are handed over to the CS domain via vSRVCC, the session associated with these media streams is in the "confirmed" state (defined in IETF&nbsp;RFC&nbsp;3261&nbsp;[137]), and the call control entity in "null" state receives indication "MM connection establishment due to vSRVCC handover", then the call control entity of the MS shall enter the "active" state, set the auxiliary state (defined in 3GPP&nbsp;TS&nbsp;24.083&nbsp;[27]) to "idle", set the multi party auxiliary state (defined in 3GPP&nbsp;TS&nbsp;24.084&nbsp;[28]) to "idle" and indicate the call establishment is due to vSRVCC handover to the upper layers. The MS and the network shall locally set the TI value of the call to "000" and the TI flag value as in mobile terminated call.</p>
+<p>If the MS supports single radio PS to CS access transfer for calls in alerting state as specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B, and the MS has a single voice media stream and a single video media stream carried over the PS domain that is handed over to the CS domain via vSRVCC, and the call control entity of the MS in the "null" state receives indication "MM connection establishment due to vSRVCC handover" then:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the call control entity shall indicate to the upper layers that call establishment is due to vSRVCC handover;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the upper layers indicate that the media stream(s) is/are associated with a mobile originated session in the "early" state (defined in IETF&nbsp;RFC&nbsp;3261&nbsp;[137]) according to the conditions specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B.3.2, the call control entity of the MS shall enter the "call delivered" state for this transaction. The MS and the network shall locally set the TI value of the call to "000" and the TI flag value as in mobile terminated call; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the upper layers indicate that the media stream(s) is/are associated with a mobile terminating session in the "early" state (defined in IETF&nbsp;RFC&nbsp;3261&nbsp;[137]) according to the conditions specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B.3.1, the call control entity of the MS shall enter the "call received" state for this transaction. The MS and the network shall locally set the TI value of the call to "000" and the TI flag value as in mobile terminated call.</p>
+<p>If the MS supports single radio PS to CS SRVCC for originating calls in pre-alerting phase as specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B, and the MS has a single voice media stream and a single video media stream carried over the PS domain that is handed over to the CS domain via vSRVCC, and the call control entity of the MS in the "null" state receives indication "MM connection establishment due to vSRVCC handover" then:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the call control entity shall indicate to the upper layers that call establishment is due to vSRVCC handover; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the upper layers indicate that the media stream(s) is/are associated with a mobile originated session in the "early" state (defined in IETF&nbsp;RFC&nbsp;3261&nbsp;[137]) according to the conditions specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B.3.3, the call control entity of the MS shall enter the "mobile originating call proceeding" state for this transaction. The MS and the network shall locally set the TI value of the call to "000" and the TI flag value as in mobile terminated call.</p>
+<p>If the MS supports single radio PS to CS SRVCC for terminating calls in pre-alerting phase as specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B, and the MS has a single voice media stream and a single video media stream carried over the PS domain that is handed over to the CS domain via vSRVCC, and the call control entity of the MS in the "null" state receives indication "MM connection establishment due to vSRVCC handover" then:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the call control entity shall indicate to the upper layers that call establishment is due to vSRVCC handover; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the upper layers indicate that the media stream(s) is/are associated with a mobile originated session in the "early" state (defined in IETF&nbsp;RFC&nbsp;3261&nbsp;[137]) according to the conditions specified in 3GPP&nbsp;TS&nbsp;24.237&nbsp;[136] subclause&nbsp;12.2.3B.3.2, the call control entity of the MS shall enter the "call present" state for this transaction. The MS and the network shall locally set the TI value of the call to "000" and the TI flag value as in mobile terminated call.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; As the MS is entering "call present" state, it must send a CALL CONFIRMED message to the network, even even the call context (including codecs) is already available at the MSC in order to enter "mobile terminating call confirmed" state.</p>
+<p>If the MS supports multicall, the MS shall locally set SI value to "1" and the MS shall assume that the network does not support multicall. The network shall also locally set SI value to "1".If the MS has a mobile originating session in the "early" state (as defined in IETF&nbsp;RFC&nbsp;3261&nbsp;[137]) and is providing an internally generated alerting indication to the user prior to the vSRVCC handover, then after transitioning from the PS domain, the MS shall continue to provide the internal alerting indication to the user. The alerting indication is stopped when the user connection is attached.</p>
+<h4><a name="_Toc171524177"></a>5.2.4.2b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Multimedia CAT and vSRVCC handover</h4>
+<p>If the MS has a mobile originating session in the "early" state (as defined in IETF&nbsp;RFC&nbsp;3261&nbsp;[137]) and is receiving multimedia CAT over the PS domain prior to the vSRVCC handover, then after transitioning from the PS domain, the MS stops providing the early media to the user and may internally generate an alerting indication. The alerting indication is stopped when the user connection is attached.</p>
+<h4><a name="_Toc171524178"></a>5.2.4.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Traffic channel assignment and user connection attachment</h4>
+<p>An appropriate traffic channel for the call is assigned in SRVCC handover, vSRVCC handover or 5G-SRVCC handover from NG-RAN to UTRAN.</p>
+<p>For SRVCC handover or 5G-SRVCC handover from NG-RAN to UTRAN, the mobile station shall attach the user connection:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; when the call control entity enters the "active" state or the "call received" state;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; when the call control entity enters the "call delivered" state, if prior to SRVCC the MS in the PS domain was receiving media for the session subjected to SRVCC handover or 5G-SRVCC handover from NG-RAN to UTRAN; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; when the call control entity enters the "mobile originating call proceeding" state, if prior to SRVCC the MS in the PS domain was receiving media for the session subjected to SRVCC handover5G-SRVCC handover from NG-RAN to UTRAN.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The attachment of the user connection prior to entering the "active" state allows the network to provide in-band tones and announcements to the UE.</p>
+<p>For vSRVCC handover, the mobile station shall attach the user connection when the call control entity enters the "active" state.</p>
+<p>For SRVCC or vSRVCC handover to a speech call, the principles of speech codec selection are described in subclause&nbsp;5.2.1.11.</p>
+<p>For vSRVCC handover to a circuit-switched multimedia call, further requirements are specified in subclause&nbsp;5.3.6.6.</p>
+<h4><a name="_Toc171524179"></a>5.2.4.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; State verification</h4>
+<p>The network may check the call and auxiliary states of its peer entity as specified in subclause&nbsp;5.5.3.1 when the PS to CS access transfer is complete.</p>
+<h2><a name="_Toc171524180"></a>5.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Signalling procedures during the "active" state</h2>
+<h3><a name="_Toc171524181"></a>5.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; User notification procedure</h3>
+<p>The mobile terminating user notification procedure allows the network to notify a mobile station of any appropriate call-related event during the "active" state of a call. The procedure consists in the network sending a NOTIFY message to the mobile station. No state change occurs at any of the interface sides following the sending or the receipt of this message (but an appropriate indication may optionally be generated in the mobile station).</p>
+<p>The mobile originating notification procedure allows the mobile station to notify the remote user of any appropriate call-related event during the "active" state of a call by sending a NOTIFY message containing a notification indicator to the network; upon receipt of this message, the network sends a NOTIFY message containing the same notify indicator to the other user involved in the call. No state change occurs at any of the interface sides following the sending or the receipt of this message.</p>
+<h3><a name="_Toc171524182"></a>5.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call rearrangements</h3>
+<p>Call rearrangements on the radio interface are not supported by explicit messages (e.g. SUSPEND and RESUME messages as defined in ETSI&nbsp;ETS&nbsp;300&nbsp;102-1&nbsp;[70]). However if a remote non-PLMN user initiates call rearrangements, the network shall inform the mobile station by means of a NOTIFY message. In a similar way the mobile station can inform the network about rearrangements by sending a NOTIFY message (e.g. change of user equipment connected to the mobile station).</p>
+<h3><a name="_Toc171524183"></a>5.3.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Codec Change Procedure</h3>
+<p>During a speech call in UMTS, if a mobile station supports more than one UMTS codec, the network can change the UMTS codec via RRC procedures. In order to request the mobile station to change the codec, the network shall send the new selected codec type in the NAS Synchronisation Indicator IE (RRC protocol), see subclause&nbsp;5.2.1.11.</p>
+<h3><a name="_Toc171524184"></a>5.3.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Support of Dual Services</h3>
+<p>The behaviour described in this subclause is used to realize the following required services throughout subclause&nbsp;5.3.4. The mobile station is not obliged to support the network originated in-call modification procedure. In that case, the mobile station shall, when receiving a MODIFY message, treat the message as unknown and react as described in subclause 8.4. If the mobile station is already prepared to support the procedure in both directions, it shall act as described in this subclause.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Alternate Speech/Group 3 fax (Teleservice 61 according to 3GPP&nbsp;TS&nbsp;22.003&nbsp;[4]).</p>
+<h4><a name="_Toc171524185"></a>5.3.4.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service Description</h4>
+<p>This circuit switched service allows the two users on a point-to-point connection to use the connection between them for different information transfer during the same call, but not at the same time.</p>
+<p>If the negotiation during call establishment leads to the recognition of the above mentioned services, the in-call modification procedure is allowed to be executed within the current call by changing from one call mode to the other.</p>
+<p>In some cases the in-call modification procedure makes it necessary to change the channel configuration by allocating a new channel and in other cases to change channel configuration parameters while keeping the previously allocated channel. This change is determined by the network, which initiates either the channel assignment procedure, handover procedure or channel mode modify procedure (see clause 3).</p>
+<p>The capability and the initial mode desired must be identified by the mobile station by identifying each mode of operation with a separate information element during call establishment. Further the type of change between the modes must be identified by means of the repeat indicator:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode 1 "alternate" mode 2.</p>
+<h4><a name="_Toc171524186"></a>5.3.4.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call establishment</h4>
+<p>For both mobile originating and mobile terminating calls, the normal call establishment procedures apply.</p>
+<h5><a name="_Toc171524187"></a>5.3.4.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile Originating Establishment</h5>
+<p>The service is requested by the originating mobile station by transferring a SETUP message to the network containing the <em>BC repeat indicator</em> IE, the <em>bearer capability 1</em> information element, and the <em>bearer capability 2</em> information element. The first mode of operation ("call mode") shall be indicated by the <em>bearer capability 1</em> information element and the second call mode by the <em>bearer capability</em> <em>2</em> information element.</p>
+<p>A low layer compatibility may optionally be specified for each call mode in a <em>low layer compatibility I</em> and <em>low layer compatibility II</em> information element. In that case:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the SETUP message shall contain the <em>LLC repeat indicator</em> IE and both <em>low layer compatibility I</em> and <em>low layer compatibility II</em> information elements. The <em>low layer compatibility I</em> information element then corresponds to the <em>bearer capability 1</em> information element and the <em>low layer compatibility II </em>information element to the <em>bearer capability 2</em> information element;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if no low layer compatibility specification applies for one of the two call modes, the corresponding low layer compatibility IE (<em>low layer compatibility I </em>or <em>low layer compatibility II) </em>shall indicate "not applicable";</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the <em>LLC repeat indicator</em> shall specify the same repeat indication as the <em>BC repeat indicator</em> IE.</p>
+<p>Similarly, a high layer compatibility may optionally be specified for each call mode in a <em>high layer compatibility i</em> and <em>high layer compatibility ii</em> information element. In that case:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the SETUP message shall contain the <em>HLC repeat indicator</em> IE and both <em>high layer compatibility i</em> and <em>high layer compatibility ii</em> information elements. The <em>high layer compatibility i</em> information element then corresponds to the <em>bearer capability 1</em> information element and the <em>high layer compatibility ii </em>information element to the <em>bearer capability 2</em> information element;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if no high layer compatibility specification applies for one of the two call modes, the corresponding high layer compatibility IE (<em>high layer compatibility i </em>or <em>high layer compatibility ii) </em>shall indicate "not applicable";</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the <em>HLC repeat indicator</em> shall specify the same repeat indication as the <em>BC repeat indicator</em> IE.</p>
+<p>The receiving entity shall ignore whether the <em>LLC repeat indicator</em> IE or <em>HLC repeat indicator</em> are contained in the message or not; it shall also ignore the repeat indication of an <em>LLC repeat indicator</em> IE or <em>HLC repeat indicator</em> IE. If the<em> low layer compatibility II</em> IE is not contained in the message and the<em> low layer compatibility I </em>IE is contained in the message, the receiving entity shall relate it to a call mode indicated in the message that does not specify speech (if any). If the<em> high layer compatibility ii</em> IE is not contained in the message and the<em> high layer compatibility i </em>IE is contained in the message, the receiving entity shall relate it to a call mode indicated in the message that does not specify speech (if any).</p>
+<p>The specific part of the network which is sensitive to the call mode shall examine each mode described in the bearer capabilities included in the SETUP message by performing compatibility checking as defined in Annex B. If as a result of this compatibility checking the network decides to reject the call, then the network shall initiate call clearing as specified in subclause&nbsp;5.4 with the following causes:</p>
+<ol>
+<li>a) #57 "bearer capability not authorized";</li>
+<li>b) #58 "bearer capability not presently available";</li>
+<li>c) #65 "bearer service not implemented";</li>
+<li>d) #70 "only restricted digital information bearer capability is available".</li>
+</ol>
+<h5><a name="_Toc171524188"></a>5.3.4.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile Terminating Establishment</h5>
+<p>The service is indicated to the called mobile station by a SETUP message coded in the same manner as in the mobile originating call establishment. As specified for normal terminating call establishment, the service may be indicated by the called mobile station in the CALL CONFIRMED message.</p>
+<p>The destination mobile station shall perform the compatibility checking as defined in Annex B for both required modes if indicated in the SETUP message. If as a result of compatibility checking the mobile station decides to reject the call, the mobile station shall initiate call clearing according to the procedures of subclause&nbsp;5.4 with one of the following causes:</p>
+<ol>
+<li>a) #57 "bearer capability not authorized";</li>
+<li>b) #58 "bearer capability not presently available";</li>
+<li>c) #65 "bearer service not implemented";</li>
+<li>d) #88 "incompatible destination".</li>
+</ol>
+<p>The mobile station may accept the call if the first mode indicated is free irrespective of whether the other mode is free or busy.</p>
+<h4><a name="_Toc171524189"></a>5.3.4.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Changing the Call Mode</h4>
+<p>In order to change the call mode, the following in-call modification procedures shall be used.</p>
+<p>Either side of the radio interface may act as the requesting user to invoke the in-call modification.</p>
+<p>Upon each successful completion of the in-call modification procedure, the call changes to the next mode negotiated and agreed during the establishment phase of the call.</p>
+<p>The in-call modification procedures are completely symmetrical at the radio interface.</p>
+<h5><a name="_Toc171524190"></a>5.3.4.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Initiation of in-call modification</h5>
+<p>The procedure is initiated by the requesting originating side in the "active" state of the call. It shall send a MODIFY message including the new mode to be changed to. The requesting originating side shall also start timer T323 and enter the "mobile originating modify" state (mobile station side) or the "mobile terminating modify" state (network side). The new mode given in the MODIFY message shall be one of those already negotiated and agreed during the establishment phase of the call. If the data call direction is different from the direction of the call setup a reverse call setup direction IE shall be included in the MODIFY message; otherwise this IE shall not be included.</p>
+<p>If the in-call modification is originated by the mobile station, the mobile station shall reserve any internal resources necessary to support the next call mode, stop sending Bm-channel information; and stop interpreting received Bm-channel information according to the old call mode.</p>
+<p>If the in-call modification is originated by the network, the network may reserve any internal resources necessary to support the next call mode. The network shall stop sending Bm-channel information and stop interpreting received Bm-channel information according to the old call mode at the latest when it changes the channel configuration.</p>
+<p>Upon receipt of the MODIFY message, the destination side shall check to ensure that the requested call mode can still be supported and if so, it shall initiate the reservation of any resources necessary to support the next call mode; start T324 (mobile station side only) if the in-call modification procedure is triggered as a result of a service change from speech to UDI/RDI multimedia modes; and enter the "mobile originating modify" (network side) or "mobile terminating modify" state (mobile station side).</p>
+<h5><a name="_Toc171524191"></a>5.3.4.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Successful completion of in-call modification</h5>
+<p>If the destination network/mobile station receives a MODIFY message with a new mode which is already the actual one of the call the network/mobile station shall remain in the "active" state; send a MODIFY COMPLETE message with the actual mode; and shall not initiate anything else.</p>
+<p>If the requested mode is speech and if during call establishment the network received a <em>Supported Codec List </em>IE, the network shall use this list to select the codec for UTRAN. If no <em>Supported Codec List </em>information element is received, then for UTRAN the network shall select the default UMTS speech codec according to subclause&nbsp;5.2.1.11.</p>
+<p>Codecs for GERAN shall be selected from the codecs indicated in the <em>Supported Codec List </em>information element or in the <em>Bearer Capability </em>information element. If neither a <em>Supported Codec List </em>information element nor a <em>Bearer Capability </em>information element is received, then for GERAN the network shall select GSM full rate speech version 1.</p>
+<p>If the <em>Supported Codec List</em> IE is received, then the network shall indicate the codec selected for Iu mode to the mobile station via RANAP and RRC protocol in the NAS Synchronisation Indicator IE (see subclause&nbsp;5.2.1.11).</p>
+<p>If the in-call modification was originated by the mobile station, the mobile station and the network shall proceed as follows:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If the requested mode is not the actual one and can be supported by the network it shall change the channel configuration, if required, and step on to any internal resources necessary to support the next call mode. If the requested mode is a data or facsimile mode, it shall also perform the appropriate means to take the direction of the data call into account. After successful change of the channel configuration it shall start sending user information according to the next call mode and start interpreting received user channel information according to the next call mode; send a MODIFY COMPLETE message with the new call mode included and enter the "active" state (network side). If the MODIFY message had contained a <em>reverse call setup direction</em> IE, the same IE shall be included in the MODIFY COMPLETE message.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Upon receipt of the MODIFY COMPLETE message the mobile station shall: initiate the alternation to those resources necessary to support the next call mode; stop timer T323; and enter the "active" state (mobile station side).</p>
+<p>If the in-call modification was originated by the network, the mobile station and the network shall proceed as follows:</p>
+<p>If the requested mode is not the actual one and can be supported by the mobile station it shall reserve any internal resources necessary to support the next call mode.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For a change from speech to a different call mode, user interaction may be required, before the mobile decides that the requested mode can be supported.</p>
+<p>If the requested mode is a data or facsimile mode, it shall also perform the appropriate means to take the direction of the data call into account. The mobile station shall send a MODIFY COMPLETE message with the new call mode included, stop timer T324 and enter the "active" state (mobile station side). If the MODIFY message had contained a <em>reverse call setup direction</em> IE, the same IE shall be included in the MODIFY COMPLETE message. If the old call mode is speech, the mobile station shall continue sending Bm-channel information and interpreting received Bm-channel information for speech until the network modifies its channel configuration.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; After receipt of the MODIFY COMPLETE message the network shall: reserve any internal resources necessary to support the next call mode, stop sending Bm-channel information, and stop interpreting received Bm-channel information according to the old call mode, unless these actions were already performed earlier. Furthermore, the network shall change the channel configuration, if required; after successful change of the channel configuration initiate the alternation to those resources necessary to support the next call mode; stop timer T323; and enter the "active" state (network side).</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The mobile station shall start sending user information according to the next call mode and start interpreting received user channel information according to the next call mode as soon as a suitable channel for the new mode is available.</p>
+<p>In both cases:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For an alternate speech/facsimile group 3 service (refer to subclause&nbsp;5.3.4) the old resources may still be kept reserved.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The reaction of the originating side if it had included a reverse call setup direction IE in the MODIFY message, but the destination side did not include the IE in the MODIFY COMPLETE message is implementation dependent.</p>
+<h5><a name="_Toc171524192"></a>5.3.4.3.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Change of the channel configuration</h5>
+<p>In case the requested bearer capability cannot be supported by the current channel configuration the network shall initiate the assignment procedure and change the channel configuration accordingly.</p>
+<h5><a name="_Toc171524193"></a>5.3.4.3.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Failure of in-call modification</h5>
+<p>5.3.4.3.4.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Network rejection of in-call modification</p>
+<p>If the network cannot support the change to the requested call mode or if the change of the channel configuration fails the network shall: release the resources which had been reserved for the alternation: send a MODIFY REJECT message with the old bearer capability and with cause # 58 "bearer capability not presently available" to the initiating mobile station; and enter the "active" state. If the change of the channel configuration fails, the network shall return to the internal resources required for the old call mode.</p>
+<p>Upon receipt of the MODIFY REJECT message with the old bearer capability the initiating mobile station shall: stop timer T323; release any resources which had been reserved for the alternation; resume sending user channel information according to the present call mode; resume interpreting received user channel information according to the present call mode; and enter the "active" state.</p>
+<p>5.3.4.3.4.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile station rejection of in-call modification</p>
+<p>If the mobile station cannot support the change to the requested call mode, the mobile station shall: stop timer T324; release any resources which had been reserved for the alternation; send a MODIFY REJECT message with the old bearer capability and cause # 58 "bearer capability not presently available", and enter the "active" state.</p>
+<p>Upon receipt of the MODIFY REJECT message the network shall: stop timer T323, release any resources which had been reserved for the alternation.</p>
+<p>5.3.4.3.4.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time-out recovery</p>
+<p>Upon expiration of T323 in either the mobile station or the network the procedures for call clearing shall be initiated (see subclause&nbsp;5.4) with cause # 102 "recovery on timer expiry".</p>
+<p>Upon expiration of T324 the mobile station shall: release any resources which had been reserved for the alternation; send a MODIFY REJECT message with the old bearer capability and cause #58 "bearer capability not presently available"; and enter the "active" state.</p>
+<h4><a name="_Toc171524194"></a>5.3.4.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Abnormal procedures</h4>
+<p>If a MODIFY, MODIFY COMPLETE or MODIFY REJECT message is received in the "disconnect indication", "disconnect request" (mobile station side only) or "release request" state then the received message shall be discarded and no action shall be taken.</p>
+<p>If a MODIFY COMPLETE message indicating a call mode which does not correspond to the requested one is received or if a MODIFY REJECT message indicating a call mode which does not correspond to the actual one is received then the received message shall be discarded and no action shall be taken.</p>
+<p>If a MODIFY message indicating a call mode which does not belong to those negotiated and agreed during the establishment phase of the call, is received, then a MODIFY REJECT message with the actual call mode and with cause # 57 "bearer capability not authorized" shall be sent back.</p>
+<p>Figure 5.10a/3GPP TS 24.008 In-call modification sequence initiated by MS</p>
+<p>Figure 5.10b/3GPP TS 24.008 In-call modification sequence initiated by network</p>
+<h3><a name="_Toc171524195"></a>5.3.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; User initiated service level up- and downgrading (A/Gb mode and GERAN Iu mode only)</h3>
+<p>The user initiated service level up- and downgrading is applicable for non-transparent multislot data services, only. By means of this procedure the user can request a change of the "maximum number of traffic channels" and/or "wanted air interface user rate" parameters, to be assigned by the network.</p>
+<h4><a name="_Toc171524196"></a>5.3.5.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Initiation of service level up- and downgrading</h4>
+<p>The procedure is initiated by the mobile station in the "active" state of the call. It shall:</p>
+<p>‑&nbsp;&nbsp;&nbsp;&nbsp; send a MODIFY message including the wanted value of the "maximum number of traffic channels" and/or the "wanted air interface user rate" parameters;</p>
+<p>‑&nbsp;&nbsp;&nbsp;&nbsp; not change any of the other, possibly negotiated, parameters of the bearer capability information element;</p>
+<p>‑&nbsp;&nbsp;&nbsp;&nbsp; start timer T323; and</p>
+<p>‑&nbsp;&nbsp;&nbsp;&nbsp; enter the "mobile originating modify" state.</p>
+<p>Any internal resources necessary to support the next service parameters shall be reserved. If a dual service was negotiated at call setup, the mobile station shall initiate the service level up- or down-grading only during the data phase of the dual service.</p>
+<p>Upon receipt of the MODIFY message, the network shall check if the indicated maximum number of traffic channels can be supported and enter the "mobile originating modify" state.</p>
+<h4><a name="_Toc171524197"></a>5.3.5.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Successful completion of service level up- and downgrading</h4>
+<p>The network may upon reception of the MODIFY message initiate a change of the channel configuration assigned to the mobile station.</p>
+<p>As a response to the MODIFY message the network sends a MODIFY COMPLETE message including the bearer capability negotiated at call setup and enters the "active" state.</p>
+<p>Upon receipt of the MODIFY COMPLETE message the mobile station shall stop timer T323 and enter the "active" state.</p>
+<h4><a name="_Toc171524198"></a>5.3.5.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Rejection of service level up- and downgrading</h4>
+<p>If a change of bearer service is requested together with a change of the "maximum number of traffic channels" and/or the "wanted air interface user rate", or if the current used service is not a data service where up- and downgrading is applicable, or if the receiver chooses not to grant the request, the network shall:</p>
+<p>‑&nbsp;&nbsp;&nbsp;&nbsp; send a MODIFY REJECT message with bearer capability negotiated at call setup and with cause&nbsp;#58 "bearer capability not presently available";</p>
+<p>‑&nbsp;&nbsp;&nbsp;&nbsp; enter the "active" state.</p>
+<p>Upon receipt of the MODIFY REJECT message with the bearer capability negotiated at call setup, the mobile station shall: stop timer T323 and enter the "active" state.</p>
+<h4><a name="_Toc171524199"></a>5.3.5.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time-out recovery</h4>
+<p>Upon expiration of T323 in the mobile station the procedures for call clearing shall be initiated with cause&nbsp;#102 "recovery on timer expiry".</p>
+<h3><a name="_Toc171524200"></a>5.3.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Support of multimedia calls</h3>
+<h4><a name="_Toc171524201"></a>5.3.6.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service description</h4>
+<p>The 3GPP circuit-switched multimedia call is based on the 3G-324M (see 3GPP&nbsp;TS&nbsp;26.111&nbsp;[80]), which is a 3GPP-variant of the ITU-T&nbsp;Recommendation&nbsp;H.324&nbsp;[146]. CS Multimedia telephony is a Bearer Service, which utilizes the Synchronous Transparent Data service (BS30), see 3GPP&nbsp;TS&nbsp;22.002&nbsp;[3].</p>
+<p>At the multimedia call setup the required call type, 3G-324M, is indicated, for the network to be able to invoke appropriate interworking functionality. In the peer end the H.324 information is used to invoke the terminal application. In addition to H.324 indication the terminal must select Information Transfer Capability (ITC) for the multimedia call. The 'correct' ITC depends on the peer end and the transporting networks; an all-ISDN call is a UDI/RDI call, and a call, which involves PSTN, is an analog "3.1 kHz audio" call.</p>
+<p>For the case when the setup of a multimedia call is not successful, fallback to speech is specified.</p>
+<p>Users may also request a service change between UDI/RDI multimedia and speech modes during a call (see 3GPP TS 23.172 [97]).</p>
+<h4><a name="_Toc171524202"></a>5.3.6.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call establishment</h4>
+<p>For both mobile originating and mobile terminating calls, the normal call establishment procedures apply, with the exceptions specified in the following subclauses.</p>
+<p>For further description of the function of MSC/IWF in the following clauses, see 3GPP TS 29.007 [38].</p>
+<h5><a name="_Toc171524203"></a>5.3.6.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile originated multimedia call establishment</h5>
+<p>At call setup the required call type, 3G-324M, is indicated by the originating MS in the SETUP message, with the <em>bearer capability IE</em> parameter Other Rate Adaption set to "H.223 and H.245".</p>
+<p>For analogue multimedia, the support of a fallback to speech is requested by including two <em>bearer capability IEs, </em>multimedia first and speech as the second BC in the SETUP message. The MS shall indicate fallback to speech by these two BC IEs and the associated Repeat Indicator set to "support of fallback".</p>
+<p>For UDI/RDI multimedia, the support of a fallback and service change is requested by including two <em>bearer capability IEs</em>, with the first BC as the preferred service in the SETUP message. The MS shall indicate service change and fallback by these two BC IEs and the associated Repeat Indicator set to "support of service change and fallback".</p>
+<p>If the <em>bearer capability IE</em> is received from the MS either in A/Gb or GERAN Iu mode and indicates no A/Gb mode support for the requested bearer service, the network shall consider it as a request to perform an inter-system handover to UTRAN Iu mode, as described in 3GPP&nbsp;TS&nbsp;23.009&nbsp;[114] subclause&nbsp;14.2.</p>
+<p>The bearer compatibility checking in the network is according to subclause&nbsp;5.3.4.2.1.</p>
+<p>If the MS requested for an analogue multimedia call with fallback to speech, or for a UDI/RDI multimedia call with fallback and service change, and the network accepts the call, the network has the following options for the inclusion of <em>bearer capability IEs</em> in the CALL PROCEEDING message:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the network accepts the requested analogue multimedia call and supports fallback to speech, both multimedia and speech <em>bearer capability IEs</em> shall be included;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the network accepts the requested UDI/RDI multimedia call and supports fallback and service change, both multimedia and speech <em>bearer capability IEs</em> shall be included. The order of the <em>bearer capability </em>IEs determines the preferred service, and the network may reverse the order of these IEs (see 3GPP TS 23.172 [97], subclause&nbsp;4.2.1);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the network accepts a multimedia (only) call, a multimedia <em>bearer capability IE </em>shall be included;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the network accepts a speech (only) call, a speech <em>bearer capability IE</em> shall be included;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; for a UDI/RDI multimedia call, if the network accepts the requested speech call and supports service change, both multimedia and speech <em>bearer capability IEs</em> shall be included. The order of the <em>bearer capability </em>IEs determines the preferred service, and the network may reverse the order of these IEs (see 3GPP TS 23.172 [97], subclause&nbsp;4.2.1);</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the network received a UDI/RDI multimedia <em>bearer capability</em> IE with FNUR equal to 32kbit/s and a speech <em>bearer capability </em>IE in the SETUP message, the network shall not release the call, but shall reply with one <em>bearer capability</em> IE only, as specified in 3GPP&nbsp;TS&nbsp;23.172&nbsp;[97].</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Service change and fallback for UDI/RDI multimedia calls is not supported with Fixed Network User Rate set to 32 kbit/s (see 3GPP&nbsp;TS&nbsp;23.172&nbsp;[97]).</p>
+<p>If the MS requested for a multimedia call only, and the network accepts the call, the network shall always include a single multimedia <em>bearer capability IE</em> in the CALL PROCEEDING message.</p>
+<p>The originating user shall determine (possibly by pre-configuration of the terminal) whether a digital connection is required or if the call will be an analog modem call. If the call is expected to be digital the multimedia <em>bearer capability </em>IE parameter ITC is set to UDI/RDI. In an analog call the multimedia <em>bearer capability </em>IE parameter ITC is set to "3,1&nbsp;kHz audio ex PLMN". Additionally required modem type is indicated (Other Modem Type = V.34).</p>
+<p>5.3.6.2.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fallback</p>
+<p>If the network, during the setup of an H.324-call, detects that the transit network or the called end does not support an H.324 call (<em>e.g.</em> because of a failure in the modem handshaking in case of an analogue multimedia call), then the network initiates the in-call modification procedure (see subclause&nbsp;5.3.4.3) towards the MS to modify the call mode to speech, if the MS had included a speech <em>bearer capability</em> <em>IE </em>in the SETUP message.</p>
+<p>In case of a UDI/RDI multimedia call with service change and fallback, if the network detects that the called end does not support speech, then it initiates an in-call modification procedure towards the MS to modify the call mode to multimedia, if the first <em>bearer capability IE</em> was for a speech call.</p>
+<h5><a name="_Toc171524204"></a>5.3.6.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile terminating multimedia call</h5>
+<p>At call setup the required call type, 3G-324M, is indicated by the network in the SETUP message, with the <em>bearer capability IE</em> parameter. Other Rate Adaption set to 'H.223 and H.245'. ITC is either '3,1&nbsp;kHz audio ex PLMN' or 'UDI/RDI'.</p>
+<p>For analogue multimedia, if the network supports fallback to speech and the subscriber has subscription to speech, two <em>bearer capability </em>IEs, multimedia first and speech as the second BC are included in the SETUP message. The network shall indicate fallback to speech by these two BC IEs and the associated Repeat Indicator set to "support of fallback".</p>
+<p>For UDI/RDI multimedia, if the network supports fallback and service change, and the subscriber has subscription to speech, two <em>bearer capability IEs</em>, with the first BC as the preferred service are included in the SETUP message. The network shall indicate service change and fallback by these two BC IEs and the associated Repeat Indicator set to "service change and fallback".</p>
+<p>If the <em>bearer capability IE</em> is received from the MS either in A/Gb or GERAN Iu mode and indicates no A/Gb mode support for the requested bearer service, the network shall consider it as a request to perform an inter-system handover to UTRAN Iu mode, as described in 3GPP&nbsp;TS&nbsp;23.009&nbsp;[114] subclause&nbsp;14.2.</p>
+<p><em>The bearer capability IE(s) </em>may (in the case of the single numbering scheme) be missing from the SETUP message.</p>
+<p>The bearer compatibility checking in the MS is according to subclause&nbsp;5.3.4.2.2.</p>
+<p>The MS shall indicate the supported call type(s) in the CALL CONFIRMED message, which is the acknowledgement to SETUP. If the network offered an analogue multimedia call with fallback to speech, or a UDI/RDI multimedia call with fallback and service change, the MS has the following options for the inclusion of <em>bearer capability IEs</em> in the CALL CONFIRMED message:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the MS/user accepts the offered analogue multimedia call and supports fallback to speech, both multimedia and speech <em>bearer capability IEs</em> shall be included;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the MS/user accepts the offered UDI/RDI multimedia call, and supports fallback and service change, both multimedia and speech <em>bearer capability IEs</em> shall be included. The order of the BC IEs determines the preferred service, and the MS/user may reverse the order of these IEs;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the MS/user accepts the offered multimedia call, but does not support fallback or service change, only a multimedia <em>bearer capability IE</em> shall be included;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the MS/user wishes a speech (only) call a speech <em>bearer capability IE</em> is included;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; for a UDI/RDI multimedia call, if the MS/user accepts the offered speech call and supports service change, both speech and multimedia <em>bearer capability IEs</em> shall be included. The order of the BC IEs determines the preferred service, and the MS/user may reverse the order of these IEs.</p>
+<p>If the network offered a multimedia call only, and the MS/user accepts the call, the MS shall always include a single multimedia <em>bearer capability IE</em> in the CALL CONFIRMED message.</p>
+<p>If the SETUP contained no <em>bearer capability IE </em>the network shall perform compatibility checking of the CALL CONFIRMED message in the same way as the compatibility checking of the SETUP message in the mobile originating call case, described in subclause&nbsp;5.3.6.2.1.</p>
+<h6><a name="_Toc171524205"></a>5.3.6.2.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fallback to speech</h6>
+<p>If modem handshaking fails (in a modem call), the call mode will be modified to speech if a speech <em>bearer capability IE</em> was included. The modem signalling is inband, so the call must have reached the active state, when these conclusions about the presence of modems can be done. The call modifications are realized through the in-call modification procedure, by which the network requests the MS to modify the call mode (see subclause&nbsp;5.3.4.3).</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fallback from digital (UDI) H.324-call to speech after call setup is not a valid case at the terminating side.</p>
+<h4><a name="_Toc171524206"></a>5.3.6.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In-call modification in the "active" state</h4>
+<p>The in-call modification procedure as described in subclause&nbsp;5.3.4.3 shall be used to:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; trigger a service change between speech and UDI/RDI multimedia modes, when service change has been agreed at call setup;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; trigger a network-initiated service upgrade from speech to UDI/RDI multimedia modes (see 3GPP&nbsp;TS&nbsp;23.172&nbsp;[97]). The network shall initiate this procedure only if the mobile station indicated support of the enhanced network-initiated in-call modification procedure in the Call Control Capabilities IE at call establishment. In this case, the MODIFY message shall include the <em>Network-initiated Service Upgrade indicator</em> IE; or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; modify the multimedia bearer capability for an analogue multimedia call (restricted to the network initiated in-call modification only). In this case, the network shall send a MODIFY message including the new Bearer Capability to be changed to. The following bearer capability parameters can be modified with the procedure (see 3GPP TS 29.007 [38]):</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Fixed Network User Rate (analogue multimedia calls only).</p>
+<h5><a name="_Toc171524207"></a>5.3.6.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h5>
+<h5><a name="_Toc171524208"></a>5.3.6.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h5>
+<h5><a name="_Toc171524209"></a>5.3.6.3.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</h5>
+<p>5.3.6.3.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</p>
+<p>5.3.6.3.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Void</p>
+<h4><a name="_Toc171524210"></a>5.3.6.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Multimedia CAT during the alerting phase of a mobile originated call</h4>
+<p>A mobile station supporting multimedia CAT during the alerting phase of a mobile originated multimedia call establishment shall indicate support of this capability to the network in the Call Control Capabilities information element in the SETUP message.</p>
+<p>The network may generate a multimedia CAT to such a mobile station before it has reached the "active" state of a call. To do so, the network shall through connect the traffic channel towards the source of the multimedia CAT and send a <em>progress indicator</em> IE indicating user attachment with progress description #9 "In-band multimedia CAT available" in either an ALERTING message or a PROGRESS message that is sent to the mobile station during call establishment.</p>
+<p>On reception of an ALERTING or a PROGRESS message the mobile station shall proceed as specified elsewhere in clause&nbsp;5; if the <em>progress indicator</em> IE indicated user attachment with progress description #9 "In-band multimedia CAT available", the mobile station shall:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; attach the user connection for multimedia as soon as an appropriate channel in multimedia mode is available; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; set up an H.324 call.</p>
+<p>It is up to the network to ensure that no undesired end-to-end through connection with the called party takes place during the establishment of a mobile terminated call.</p>
+<p>The mobile station shall not abort the call if an error or H.324 call clearing occurs during the setup or the lifetime of the H.324 call during the alerting phase; the call control entity of the calling mobile station shall remain in its current state.</p>
+<p>Upon reception of a new request from the network to attach the user connection with progress description #9 "In-band multimedia CAT available", the mobile station shall release any on-going H.324 call, and set up a new H.324 call.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The network can request the mobile station to restart a new H.324 call during the alerting phase of the call e.g. during call forwarding scenarios to transmit to the calling party the multimedia CAT of the forwarded-to party.</p>
+<p>The network may initiate the in-call modification procedure (see subclause&nbsp;5.3.4.3) towards the MS in the "call delivered" state to modify the call mode to speech, if service change has been agreed at call setup.</p>
+<p>Upon receiving an indication that the call has been accepted, the call control entity of the network shall send a CONNECT message to its peer entity at the calling mobile station; start timer&nbsp;T313 and enter the "connect indication" state. This message indicates to the call control entity of the calling mobile station that a connection has been established through the network.</p>
+<p>On reception of a CONNECT message, the mobile station shall proceed as specified elsewhere in clause 5; the mobile station shall release any on-going H.324 call and set up a new H.324 call towards the called party.</p>
+<p>Mobile stations supporting multimedia CAT during the alerting phase of a mobile originated multimedia call establishment should also support the Media Oriented Negotiation Acceleration procedures specified in ITU-T&nbsp;Recommendation&nbsp;H.324&nbsp;Amendment&nbsp;1&nbsp;[117] and ITU-T&nbsp;Recommendation&nbsp;H.324&nbsp;Amendment&nbsp;2&nbsp;[118].</p>
+<h4><a name="_Toc171524211"></a>5.3.6.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DTMF transmission during a multimedia call</h4>
+<p>A mobile station supporting multimedia CAT during the alerting phase of a mobile originated multimedia call establishment should support transmission of DTMFs during a H.324 call using the H.245 UserInputIndication message (see ITU-T&nbsp;H.245&nbsp;[119]) if it has attached the user connection for multimedia and an appropriate channel is available.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DTMF can be used to convey to the network the end user request to stop or copy an on-going multimedia CAT.</p>
+<h4><a name="_Toc171524212"></a>5.3.6.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vSRVCC handover to a circuit-switched multimedia call</h4>
+<p>Upon vSRVCC handover to a traffic channel suitable for a data call, the MS shall use a single bearer capability IE for multimedia with ITC set to "UDI" and FNUR set to 64 kbit/s for the call.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; After the MS has attached the user connection (see subclause&nbsp;5.2.4.3), the MS initially uses predefined codecs for voice and video as specified in 3GPP&nbsp;TS&nbsp;26.111&nbsp;[80]. Additionally, the MS can perform in-band codec re-negotiation using H.245 signalling according to the procedures defined in 3GPP&nbsp;TS&nbsp;26.111&nbsp;[80].</p>
+<h2><a name="_Toc171524213"></a>5.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call clearing</h2>
+<h3><a name="_Toc171524214"></a>5.4.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Terminology</h3>
+<p>The following terms are used in the present document in the description of clearing procedures:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; A traffic channel (see 3GPP&nbsp;TS&nbsp;44.003&nbsp;[16]) is "connected" when the channel is part of a circuit-switched connection established according to the present document.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; A traffic channel is "disconnected" when the channel is no longer part of a circuit-switched connection, but is not yet available for use in a new connection.</p>
+<h3><a name="_Toc171524215"></a>5.4.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Exception conditions</h3>
+<p>Under normal conditions, the call control entity of the mobile station or of the network initiates call clearing by sending a DISCONNECT message to its peer entity; then both entities follow the procedures defined in subclauses 5.4.3 and 5.4.4 respectively.</p>
+<p>As an exception to the above rule, the call control entity of the mobile station or of the network, in response to a SETUP or START CC or CC-ESTABLISHMENT CC-ESTABLISHMENT CONFIRMED or RECALL message, can reject a call by stopping all running call control timers, responding with a RELEASE COMPLETE message, releasing the MM connection, and returning to the "null" state, provided no other response has previously been sent.</p>
+<p>As a further exception, the call control entity of the network may initiate call clearing by stopping all running call control timers, sending a RELEASE message, starting timer T308, and entering the "release request" state.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This way to initiate call clearing by sending a RELEASE message should not be used by the network:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if in-band tones/announcements are provided and the network decides to use the procedure described in subclause&nbsp;5.4.4.1.1.1 or 5.4.4.2.1;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; if the network wants to have the opportunity to respond to information sent by the mobile station during call clearing, e.g. when the network indicates that "CCBS activation is possible".</p>
+<p>A call control entity shall accept an incoming RELEASE COMPLETE message used to initiate the call clearing even though the cause information element is not included.</p>
+<p>A control entity shall accept an incoming RELEASE message used to initiate the call clearing even though the cause information element is not included.</p>
+<p>Furthermore, a call control entity shall regard an incoming RELEASE COMPLETE message as consistent with any of its states; a call control entity shall regard an incoming RELEASE message as consistent with any of its states except the null state: a call control entity of the mobile station shall regard an incoming DISCONNECT message as consistent with any of its call control states except the "null" state, the "release request" state, and the "disconnect indication" state; a call control entity of the network shall regard an incoming DISCONNECT message as consistent with any of its call control states except the "null" state and the "release request" state.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This allows the introduction of shorter call clearing procedures in the future.</p>
+<h3><a name="_Toc171524216"></a>5.4.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clearing initiated by the mobile station</h3>
+<h4><a name="_Toc171524217"></a>5.4.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Initiation of call clearing</h4>
+<p>Apart from the exceptions identified in subclause&nbsp;5.4.2, the call control entity of the mobile station shall initiate clearing by: stopping all running call control timers, sending a DISCONNECT message; starting timer T305; and entering the "disconnect request" state.</p>
+<h4><a name="_Toc171524218"></a>5.4.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receipt of a DISCONNECT message from the mobile station.</h4>
+<p>The call control entity in the network in any state except the "null" state and the "release request" state shall, upon receipt of a DISCONNECT message:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Stop all running call control timers;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; initiate procedures to clear the network connection and the call to the remote user;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send a RELEASE message to its peer entity;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; start timer T308; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; enter the "release request" state.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The RELEASE message has only local significance and does not imply an acknowledgement of clearing from the remote user.</p>
+<h4><a name="_Toc171524219"></a>5.4.3.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receipt of a RELEASE message from the network</h4>
+<p>The call control entity of the mobile station in any state except the "null" state and the "release request" state, shall, upon receipt of a RELEASE message: stop all running call control timers; send a RELEASE COMPLETE message; release the MM connection; and return to the "null" state.</p>
+<h4><a name="_Toc171524220"></a>5.4.3.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receipt of a RELEASE COMPLETE message from the mobile station</h4>
+<p>A call control entity of the network in any call control state shall, upon receipt of a RELEASE COMPLETE message from its peer entity in the mobile station: stop all running call control timers; release the MM connection; and return to the "null" state.</p>
+<h4><a name="_Toc171524221"></a>5.4.3.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Abnormal cases</h4>
+<p>The call control entity of the mobile station in the "disconnect request" state, shall upon expiry of timer T305: send a RELEASE message to the network with the cause number originally contained in the DISCONNECT message and optionally, a second cause information element with cause #102 "recovery on timer expiry", start timer T308, and enter the "release request" state.</p>
+<p>The call control entity of the network in the "release request" state, shall, at first expiry of timer T308, retransmit the RELEASE message, start timer T308, and stay in the "release request" state. At second expiry of timer T308, the call control entity of the network shall: release the MM connection; and return to the "null" state.</p>
+<h3><a name="_Toc171524222"></a>5.4.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clearing initiated by the network</h3>
+<p>Apart from the exception conditions identified in subclause&nbsp;5.4.2, the call control entity of the network shall initiate clearing by: sending a DISCONNECT message; and entering the "disconnect indication" state. The DISCONNECT message is a local invitation to clear the call.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When the network initiates clearing by sending a RELEASE message, the procedures described in subclauses 5.4.3., 5.4.3.4 and 5.4.3.5 are followed.</p>
+<p>A mobile station that does not support the "Prolonged Clearing Procedure" shall comply with the requirements of subclause&nbsp;5.4.4.1 and shall ignore subclause&nbsp;5.4.4.2. A mobile station that supports the "Prolonged Clearing Procedure" shall comply with the requirements of subclauses 5.4.4.2 and shall ignore subclause&nbsp;5.4.4.1.</p>
+<h4><a name="_Toc171524223"></a>5.4.4.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clearing initiated by the network: mobile does not support "Prolonged Clearing Procedure"</h4>
+<p>Sublause 5.4.4.1 only applies to mobile stations that do not support the "Prolonged Clearing Procedure" option.</p>
+<h4><a name="_Toc171524224"></a>5.4.4.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clearing when tones/announcements provided</h4>
+<p>When in-band tones/announcements are provided (see subclause&nbsp;5.5.1), the call control entity of the network may initiate clearing by sending a DISCONNECT message containing progress indicator #8 "in-band information or appropriate pattern now available", starting timer T306, and entering the "disconnect indication" state.</p>
+<p>5.4.4.1.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receipt of a DISCONNECT message with progress indicator #8 from the network</p>
+<p>The call control entity of the MS in any state except the "null" state, the "disconnect indication" state, and the "release request" state, shall, upon receipt of a DISCONNECT message with progress indicator #8:</p>
+<ol start="5">
+<li>i) if an appropriate speech traffic channel is not connected, continue clearing as defined in subclause&nbsp;5.4.4.1.2.1 without connecting to the in-band tone/announcement;</li>
+<li>ii) if an appropriate speech traffic channel is connected, attach the user connection for speech if it is not yet attached and enter the "disconnect indication" state. In that state, if upper layers request the clearing of the call, the call control entity of the MS shall proceed as defined in subclause&nbsp;5.4.4.1.2.1.</li>
+</ol>
+<p>5.4.4.1.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Expiry of timer T306</p>
+<p>The call control entity of the network, having entered the "disconnect indication" state after sending a disconnect message with the progress indicator #8, shall, upon expiry of timer T306, continue clearing by sending a RELEASE message with the cause number originally contained in the DISCONNECT message; starting timer T308; and entering the "release request" state.</p>
+<h5><a name="_Toc171524225"></a>5.4.4.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clearing when tones/announcements not provided</h5>
+<p>When in-band tones and announcements are not provided, the call control entity of the network shall initiate call clearing by stopping all running call control timers, sending a DISCONNECT message without progress indicator, starting timer T305 and entering the "disconnect indication" state.</p>
+<p>5.4.4.1.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receipt of a DISCONNECT message without progress indicator or with progress indicator different from #8 from the network</p>
+<p>The call control entity of the mobile station in any state except the "null" state, the "disconnect indication" state, and the "release request" state, shall, upon the receipt of a DISCONNECT message without progress indicator information element or with progress indicator different from #8:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; stop all running call control timers;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send a RELEASE message;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; start timer T308; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; enter the "release request" state.</p>
+<p>5.4.4.1.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receipt of a RELEASE message from the mobile station</p>
+<p>The call control entity of the network in any state except the "null" state and the "release request" state, shall, upon receipt of a RELEASE message: stop all running call control timers; send a RELEASE COMPLETE message; release the MM connection; and return to the "null" state.</p>
+<p>5.4.4.1.2.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Abnormal cases</p>
+<p>The call control entity of the network, having entered the "disconnect indication" state after sending a DISCONNECT message without progress indicator or with progress indicator different from #8, shall upon expiry of timer T305: send a RELEASE message to the mobile station with the cause number originally contained in the DISCONNECT message; start timer T308; and enter the "release request" state. In addition to the original clearing cause, the RELEASE message may contain a second cause information element with cause #102 "recovery on timer expiry".</p>
+<h5><a name="_Toc171524226"></a>5.4.4.1.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Completion of clearing</h5>
+<p>A call control entity of the mobile station in any call control state shall, upon receipt of a RELEASE COMPLETE message from its peer entity in the network: stop all running call control timers; release the MM connection; and return to the "null" state.</p>
+<p>5.4.4.1.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Abnormal cases</p>
+<p>The call control entity of the mobile station in the "release request" state shall at first expiry of timer T308 retransmit the RELEASE message and restart timer T308. At second expiry of timer T308, the call control entity of the mobile station shall: release the MM connection; and return to the "null" state.</p>
+<h4><a name="_Toc171524227"></a>5.4.4.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clearing initiated by the network: mobile supports "Prolonged Clearing Procedure"</h4>
+<p>Sublause 5.4.4.2 only applies to mobile stations that support the "Prolonged Clearing Procedure" option.</p>
+<h5><a name="_Toc171524228"></a>5.4.4.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clearing when tones/announcements provided and the network does not indicate that "CCBS activation is possible"</h5>
+<p>When in-band tones/announcements are provided (see subclause&nbsp;5.5.1) and CCBS is not applicable, the call control entity of the network may initiate clearing by sending a DISCONNECT message containing progress indicator #8 "in-band information or appropriate pattern now available", either not containing an <em>Allowed Actions</em> IE or containing an <em>Allowed Actions</em> IE indicating "CCBS activation is not possible", starting timer T306, and entering the "disconnect indication" state.</p>
+<p>5.4.4.2.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receipt of a DISCONNECT message</p>
+<p>The call control entity of the MS in any state except the "null" state, the "disconnect indication" state, and the "release request" state, shall, upon receipt of a DISCONNECT message with progress indicator #8 and, either not containing an <em>Allowed Actions</em> IE or containing an <em>Allowed Actions</em> IE indicating "CCBS activation is not possible":</p>
+<ol>
+<li>i) if an appropriate speech traffic channel is not connected,</li>
+</ol>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; stop all running call control timers;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send a RELEASE message;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; start timer T308;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; enter the "release request" state; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; not connect to the in-band tone/announcement.</p>
+<ol>
+<li>ii) if an appropriate speech traffic channel is connected, attach the user connection for speech if it is not yet attached and enter the "disconnect indication" state. In that state, if upper layers request the clearing of the call, the call control entity of the MS shall:</li>
+</ol>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; stop all running call control timers;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send a RELEASE message;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; start timer T308; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; enter the "release request" state.</p>
+<p>5.4.4.2.1.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Expiry of timer T306</p>
+<p>The call control entity of the network, having entered the "disconnect indication, shall, upon expiry of timer T306, continue clearing by sending a RELEASE message with the cause number originally contained in the DISCONNECT message; starting timer T308; and entering the "release request" state.</p>
+<h5><a name="_Toc171524229"></a>5.4.4.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clearing when the network indicates that "CCBS activation is possible"</h5>
+<p>When Activation of CCBS is possible, the call control entity of the network may initiate clearing by sending a DISCONNECT message containing the <em>Allowed Actions</em> IE with an indication that "Activation of CCBS is possible" and starting T338. Optionally, progress indicator #8 "in-band information or appropriate pattern now available" may also be contained in the DISCONNECT message (in which case, T338 shall not be greater than T306).</p>
+<p>5.4.4.2.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receipt of a DISCONNECT</p>
+<p>Relative to the current state the following procedures apply:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The call control entity of the MS in the "null" state, the "disconnect indication" state and the "release request" state, shall, upon receipt of a DISCONNECT message react as described in clause 8.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The call control entity of the MS in the "disconnect request" state, shall, upon receipt of a DISCONNECT message:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; stop all running call control timers;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send a RELEASE message;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; start timer T308; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; enter the "release request" state.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; The call control entity of the MS in any other states, shall, upon receipt of a DISCONNECT message with an<em> Allowed Actions</em> IE indicating "Activation of CCBS is possible" pass the "Activation of CCBS is possible" indication to the upper layer, enter the "disconnect indication" state, stop all running call control timers and await a response from the upper layers.</p>
+<p>If the DISCONNECT message contained the progress indicator #8 "in-band information or appropriate pattern now available" and an appropriate speech traffic channel is connected, then the MS shall attach the user connection for speech if it is not yet attached. If the DISCONNECT message did not contain the progress indicator #8 "in-band information or appropriate pattern now available" any connected speech traffic channel shall be disconnected.</p>
+<p>Response from the upper layers:</p>
+<ol>
+<li>i) If the upper layers request the clearing of the call, the call control entity of the MS shall:</li>
+</ol>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; stop all running call control timers;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send a RELEASE message;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; start timer T308; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; enter the "release request" state.</p>
+<ol>
+<li>ii) If the upper layers request that the "CCBS activation is to be attempted" then the MS shall</li>
+</ol>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send a RELEASE message containing a <em>Facility</em> IE including an</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Invoke=CCBSRequest to the network;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; stop all running call control timers;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; start timer T308; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; enter the "release request" state.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If an appropriate speech traffic channel is connected, transmission of this RELEASE message shall not cause it to be disconnected.</p>
+<p>5.4.4.2.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Expiry of timer T338</p>
+<p>The call control entity of the network, having entered the "disconnect indication" state after sending a DISCONNECT message with an<em> Allowed Actions</em> IE indicating "Activation of CCBS is possible" shall, upon expiry of timer T338, continue clearing by sending a RELEASE message with the cause number originally contained in the DISCONNECT message; starting timer T308; and entering the "release request" state.</p>
+<h5><a name="_Toc171524230"></a>5.4.4.2.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clearing when tones/announcements are not provided and the network does not indicate that "CCBS activation is possible"</h5>
+<p>When in-band tones and announcements are not provided, and, the network does not wish to indicate in the <em>Allowed Actions</em> IE that "CCBS is possible", the call control entity of the network shall initiate call clearing by stopping all running call control timers, sending a DISCONNECT message without progress indicator, either without the<em> Allowed Actions</em> IE or with the<em> Allowed Actions</em> IE indicating that "CCBS is not possible", starting timer T305 and entering the "disconnect indication" state.</p>
+<p>5.4.4.2.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receipt of a DISCONNECT message</p>
+<p>The call control entity of the mobile station in any state except the "null" state, the "disconnect indication" state, and the "release request" state, shall, upon the receipt of a DISCONNECT message either without progress indicator information element or with progress indicator different from #8, and, either without the<em> Allowed Actions</em> IE or with the<em> Allowed Actions</em> IE indicating that "CCBS is not possible":</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; stop all running call control timers;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send a RELEASE message;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; start timer T308; and</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; enter the "release request" state.</p>
+<p>5.4.4.2.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Abnormal cases</p>
+<p>The call control entity of the network, having entered the "disconnect indication", shall upon expiry of timer T305: send a RELEASE message to the mobile station with the cause number originally contained in the DISCONNECT message; start timer T308; and enter the "release request" state.</p>
+<h5><a name="_Toc171524231"></a>5.4.4.2.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Receipt of a RELEASE message from the mobile station</h5>
+<p>5.4.4.2.4.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Release, CCBS not requested</p>
+<p>For a network that does not support the "CCBS activation" option:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The call control entity of the network in any state except the "null" state and the "release request" state, shall, upon receipt of a RELEASE message: stop all running call control timers; send a RELEASE COMPLETE message; release the MM connection; and return to the "null" state.</p>
+<p>For a network that does support the "CCBS activation" option:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The call control entity of the network in any state except the "null" state and the "release request" state, shall, upon receipt of a RELEASE message without a <em>Facility</em> IE including an Invoke=CCBSRequest: stop all running call control timers; send a RELEASE COMPLETE message; release the MM connection; and return to the "null" state.</p>
+<p>5.4.4.2.4.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Release, CCBS Requested</p>
+<p>For a network that does not support the "CCBS activation" option:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The call control entity of the network in any state except the "null" state and the "release request" state, shall, upon receipt of a RELEASE message: stop all running call control timers; send a RELEASE COMPLETE message; release the MM connection; and return to the "null" state.</p>
+<p>For a network that does support the "CCBS activation" option:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The call control entity of the network in any state except the "null" state and the "release request" state, shall, upon receipt of a RELEASE message containing a <em>Facility</em> IE including an Invoke=CCBSRequest: stop all running call control timers; then attempt to activate the recall; then send a RELEASE COMPLETE message indicating the success or failure of the recall activation attempt; release the MM connection; and return to the "null" state.</p>
+<h5><a name="_Toc171524232"></a>5.4.4.2.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Completion of clearing</h5>
+<p>A call control entity of the mobile station in any call control state shall, upon receipt of a RELEASE COMPLETE message from its peer entity in the network: stop all running call control timers; release the MM connection; and return to the "null" state.</p>
+<p>5.4.4.2.5.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Abnormal cases</p>
+<p>The call control entity of the mobile station in the "release request" state shall at first expiry of timer T308 retransmit the RELEASE message and restart timer T308. At second expiry of timer T308, the call control entity of the mobile station shall: release the MM connection; and return to the "null" state.</p>
+<p>The retransmitted RELEASE message need not contain the <em>Facility</em> IE including an Invoke=CCBSRequest, even if the original RELEASE message did contain this IE.5.4.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Clear collision</p>
+<p>Clear collision occurs when both the mobile station and the network simultaneously transfer DISCONNECT messages specifying the same call.</p>
+<p>The behaviour of the network call control entity receiving a DISCONNECT message whilst in the "disconnect indication" state is specified in subclause&nbsp;5.4.3. The behaviour of the MS call control entity receiving a DISCONNECT message whilst in the "disconnect request" state is defined in subclause&nbsp;5.4.4.</p>
+<p>Clear collision can also occur when both sides simultaneously transfer RELEASE messages related to the same call. The entity receiving such a RELEASE message whilst within the "release request" state shall: stop timer T308; release the MM connection; and enter the "null" state (without sending a RELEASE COMPLETE message).</p>
+<h3><a name="_Toc171524233"></a>5.4.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call clearing for SRVCC from CS to PS</h3>
+<p>If the MS receives the request from upper layers to release the call locally, the call control entity of the MS shall detach the user connection, if connected, and enter the NULL state.</p>
+<h2><a name="_Toc171524234"></a>5.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Miscellaneous procedures</h2>
+<h3><a name="_Toc171524235"></a>5.5.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In-band tones and announcements</h3>
+<p>When the network wants to make the mobile station attach the user connection (e.g. in order to provide in-band tones/announcement) before the mobile station has reached the "active" state of a call, the network may include a <em>progress indicator</em> IE indicating user attachment in a suitable CC message:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; Either it includes the IE in a SETUP, CALL PROCEEDING, ALERTING, or CONNECT message that is send during call establishment</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; it sends a PROGRESS message containing the IE.</p>
+<p>A <em>progress indicator</em> IE indicates user attachment if it specifies a progress description in the set {1, 2, 3} or in the set {6, 7, 8, ..., 20}.</p>
+<p>On reception of a SETUP, CALL PROCEEDING, ALERTING, CONNECT, or PROGRESS message the mobile station shall proceed as specified elsewhere in clause 5; if the <em>progress indicator</em> IE indicated user attachment and a speech mode traffic channel is appropriate for the call the mobile station shall in addition: attach the user connection for speech as soon as an appropriate channel in speech mode is available. (If a new order to attach the user connection is received before the attachment has been performed, the new order shall supersede the previous one.)</p>
+<p>Under certain conditions the MS will have to attach the user connection before the CONNECT message. It is up to the network to ensure that no undesired end-to-end through connection takes place during the establishment of a MT call.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This allows the use of <em>progress indicator</em> IEs independently from the channel modes appropriate for the call.</p>
+<p>The network may generate multimedia CAT to a mobile station supporting multimedia CAT during the alerting phase of a mobile originated multimedia call establishment as specified in subclause&nbsp;5.3.6.4.</p>
+<h3><a name="_Toc171524236"></a>5.5.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call collisions</h3>
+<p>Call collisions as such cannot occur at the network. Any simultaneous mobile originating or mobile terminating calls are dealt with separately assigned and different transaction identifiers.</p>
+<h3><a name="_Toc171524237"></a>5.5.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Status procedures</h3>
+<h4><a name="_Toc171524238"></a>5.5.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Status enquiry procedure</h4>
+<p>Whenever a call control entity wishes to check the call state of its peer entity, it may initiate the status enquiry procedure.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This may, in particular, apply to procedural error conditions described in clause&nbsp;8.</p>
+<p>A call control entity initiates the status enquiry procedure by sending the STATUS ENQUIRY message and starting timer T322. The value of T322 is implementation dependent in the MS and set in the network by the network operator. While timer T322 is running, the call control entity shall not send further STATUS ENQUIRY messages.</p>
+<p>Upon receipt of a STATUS ENQUIRY message, the receiver shall respond with a STATUS message, reporting the current call state and cause value #30 "response to STATUS ENQUIRY". Receipt of the STATUS ENQUIRY shall not result in a state change relating to any protocol and connection of the receiver.</p>
+<p>If a STATUS message is received that contains cause value #30 "response to status enquiry", timer T322 shall be stopped and further appropriate actions taken, based on the information in that STATUS message, relative to the current state of the receiver of the STATUS message. These further "appropriate actions" are implementation dependent. However, the actions prescribed in subclause&nbsp;5.5.3.2 shall apply.</p>
+<p>If a clearing message is received while timer T322 is running, timer T322 shall be stopped, and call clearing shall continue.</p>
+<p>If timer T322 expires, the STATUS ENQUIRY message may be retransmitted maximally once. If T322 expires after the STATUS ENQUIRY has been transmitted the maximum number of times, clearing of the call shall be initiated with cause value #41, "temporary failure", in the first call clearing message.</p>
+<h4><a name="_Toc171524239"></a>5.5.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Reception of a STATUS message by a CC entity</h4>
+<h5><a name="_Toc171524240"></a>5.5.3.2.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; STATUS message with incompatible state</h5>
+<p>On receipt of a STATUS message reporting an incompatible call control state, the receiving entity shall clear the call by sending a RELEASE COMPLETE message with cause # 101 "message not compatible with protocol state". The reported call control state is incompatible if the combination of call control states at the sender and receiver side cannot occur, do not match or cannot be aligned by actions of the receiver; the exact definition is implementation dependent.</p>
+<h5><a name="_Toc171524241"></a>5.5.3.2.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; STATUS message with compatible state</h5>
+<p>A STATUS message may be received indicating a compatible call state but containing one of the following causes:</p>
+<p>#&nbsp; 95 "semantically incorrect message"; or</p>
+<p>#&nbsp; 96 "invalid mandatory information"; or</p>
+<p>#&nbsp; 97 "message type non-existent or not implemented"; or</p>
+<p>#&nbsp; 98 "message type not compatible with protocol state"; or</p>
+<p>#&nbsp; 99 "information element non-existent or not implemented"; or</p>
+<p># 100&nbsp; "conditional IE error".</p>
+<p>This indicates that the transmitter of the STATUS message was unable to accept some information sent by the recipient of the STATUS message. This allow the recipient to retransmit some or all of the information. Other actions are possible and are implementation dependent; they may include releasing the call.</p>
+<p>In the case the MS receives a STATUS message with the cause #100 due to the presence of a Repeat Indicator with the value "service change and fallback" in a SETUP message, it may then resend a new SETUP message with a single BC-IE (no Repeat Indicator is included). The actual behaviour is dependent on the implementation.</p>
+<p>In the case the network receives a STATUS message with the cause #100 due to the presence of a Repeat Indicator with the value "service change and fallback" in a SETUP message, it shall then resend a new SETUP message, with either the BC-IE of the preferred service or the speech BC-IE (fallback to speech) as the only BC (no Repeat Indicator is included). The preferred behaviour is decided by configuration.</p>
+<h3><a name="_Toc171524242"></a>5.5.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call re-establishment, mobile station side</h3>
+<p>This subclause describes the internal handling in the mobile station as far as call control is concerned.</p>
+<h4><a name="_Toc171524243"></a>5.5.4.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Indication from the mobility management sublayer</h4>
+<p>When a MM connection is active, an indication may be given by the MM sublayer to the call control entity to announce that the current MM connection has been interrupted but might be re-established on request of call control.</p>
+<h4><a name="_Toc171524244"></a>5.5.4.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Reaction of call control</h4>
+<p>Depending whether call re-establishment is allowed or not and on its actual state, call control shall decide to either request re-establishment or to release the MM connection.</p>
+<ol>
+<li>a) Re-establishment not required</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If the call is in the call establishment or call clearing phase, i.e. any state other than the "active" state or the "mobile originating modify" state, call control shall release the MM connection</p>
+<ol>
+<li>b) Re-establishment required</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If the call is in the "active" state or "mobile originating modify" state, the indication from MM that re-establishment is possible shall cause call control to request re-establishment from the MM connection, suspend any further message to be sent and await the completion of the re-establishment procedure.</p>
+<h4><a name="_Toc171524245"></a>5.5.4.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Completion of re-establishment</h4>
+<p>Call Control is notified when the MM connection is re-established and shall then resume the transmission of possibly suspended messages and resume user data exchange when an appropriate channel is available.</p>
+<h4><a name="_Toc171524246"></a>5.5.4.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unsuccessful outcome</h4>
+<p>If the attempt to re-establish the connection was unsuccessful, the MM connection will be released and a release indication will be given to call control, see subclause&nbsp;4.5.1.6.</p>
+<h3><a name="_Toc171524247"></a>5.5.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call re-establishment, network side</h3>
+<p>This subclause describes the handling in the network as far as call control is concerned.</p>
+<h4><a name="_Toc171524248"></a>5.5.5.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; State alignment</h4>
+<p>After a successful call re-establishment it is a network responsibility to identify (e.g. by using the status enquiry procedure, if needed, and resolve, if possible, any call state or auxiliary state mismatch between the network and the mobile station.</p>
+<h3><a name="_Toc171524249"></a>5.5.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Progress</h3>
+<p>At any time during the establishment or release of a call and during an active call the network may send a PROGRESS message to the mobile station.</p>
+<p>On receipt of a PROGRESS message during the establishment or release of a call the mobile station shall stop all call control timers related to that call.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If the PROGRESS has been received before the receipt of a CALL PROCEEDING message, the mobile station will not start timer T310 on receipt of a CALL PROCEEDING message, see subclause&nbsp;5.2.1.1.3.</p>
+<p>Figure 5.11/3GPP TS 24.008 Progress</p>
+<h3><a name="_Toc171524250"></a>5.5.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DTMF protocol control procedure</h3>
+<p>Dual Tone Multi Frequency (DTMF) is an inband one out of four plus one out of four signalling system primarily used from terminal instruments in telecommunication networks. The support of DTMF in the network is described in 3GPP&nbsp;TS&nbsp;23.014&nbsp;[12].</p>
+<p>The mobile station shall be capable of transmitting DTMF messages as specified in this subclause if and only if the mobile station has the user connection for speech attached and an appropriate channel is available.</p>
+<p>The transaction identifier used by the DTMF messages shall be that of the attached speech call.</p>
+<p>NOTE 1:&nbsp; The present document means that DTMF messages can generally be sent in the active state of a call in speech transmission mode or when a traffic channel is available during setup or release and the <em>progress indicator</em> IE has been received.</p>
+<p>NOTE 2:&nbsp; Since the DTMF protocol messages are sent in a store and forward mode on the signalling channels the control of the device at the far end may be delayed dependent on the load or quality of the channels.</p>
+<p>NOTE 3:&nbsp; The procedures described in this paragraph support DTMF only in the direction mobile station to network.</p>
+<p>A mobile station supporting multimedia CAT during the alerting phase of a mobile originated multimedia call establishment should also be capable of transmitting DTMFs during a multimedia call as specified in subclause&nbsp;5.3.6.5.</p>
+<h4><a name="_Toc171524251"></a>5.5.7.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Start DTMF request by the mobile station</h4>
+<p>A user may cause a DTMF tone to be generated e.g. by depression of a key in the mobile station. The relevant action is interpreted by the mobile station as a requirement for a DTMF digit to be sent in a START DTMF message on an established FACCH. This message contains the value of the digit to be transmitted (0, 1, ..., 9, A, B, C, D, *, #).</p>
+<p>Only a single digit will be transferred in each START DTMF message.</p>
+<p>On sending a START DTMF message the MS shall start timer T336.</p>
+<p>Where a previous START DTMF message has been sent, another START DTMF message shall only be sent by the MS following receipt of its STOP DTMF ACKNOWLEDGE message (see subclause&nbsp;5.5.7.4) or a START DTMF REJECT message from the network (see subclause&nbsp;5.5.7.2) or following the expiry of timers T336 and T337.</p>
+<p>If timer T336 expires, the MS shall terminate the ongoing DTMF procedure without any retransmissions, and is free to begin another DTMF procedure (e.g. another START DTMF message).</p>
+<h4><a name="_Toc171524252"></a>5.5.7.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Start DTMF response by the network</h4>
+<p>Upon receiving the START DTMF message the network shall either:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; convert the received digit into a DTMF tone which is applied toward the remote user, or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; send the DTMF digit as an out-of-band message (see 3GPP&nbsp;TS&nbsp;23.205&nbsp;[96])</p>
+<p>and return a START DTMF ACKNOWLEDGE message to the mobile station. This acknowledgement may be used in the mobile station to generate an indication as a feedback for a successful transmission.</p>
+<p>If the network cannot accept the START DTMF message a START DTMF REJECT message will be sent to the mobile station. Upon receipt of a START DTMF ACK message or a START DTMF REJECT message, the MS shall stop timer T336.</p>
+<h4><a name="_Toc171524253"></a>5.5.7.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Stop DTMF request by the mobile station</h4>
+<p>When the user indicates that the DTMF sending should cease e.g. by releasing the key the mobile station will send a STOP DTMF message to the network.</p>
+<p>On sending a STOP DTMF message the MS shall start timer T337.</p>
+<p>The MS shall only send a STOP DTMF message if a START DTMF ACKNOWLEDGE message has been received from the network (see subclause&nbsp;5.5.7.2).</p>
+<p>If timer T337 expires, the MS shall terminate the ongoing DTMF procedure without any retransmissions, and is free to begin another DTMF procedure. (e.g. another START DTMF message).</p>
+<h4><a name="_Toc171524254"></a>5.5.7.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Stop DTMF response by the network</h4>
+<p>Upon receiving the STOP DTMF message the network shall either:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; stop sending the DTMF tone if applied by the network, or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; initiate a suitable out-of-band message (see 3GPP&nbsp;TS&nbsp;23.205&nbsp;[96])</p>
+<p>and return a STOP DTMF ACKNOWLEDGE message to the mobile station. Upon receipt of a STOP DTMF ACKNOWLEDGE message, the MS shall stop timer T337.</p>
+<h4><a name="_Toc171524255"></a>5.5.7.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sequencing of subsequent start DTMF requests by the mobile station</h4>
+<p>If the network is generating DTMF tones it shall ensure that the minimum length of tone and the minimum gap between two subsequent tones (according to ETSI ES&nbsp;201&nbsp;235-2 [12a]) is achieved.</p>
+<p>NOTE 1:&nbsp; In ETSI ES&nbsp;201&nbsp;235-2 [12a] the minimum duration of a DTMF tone is 65ms.</p>
+<p>NOTE 2:&nbsp; In ETSI ES&nbsp;201&nbsp;235-2 [12a] the minimum gap between DTMF tones is 65ms.</p>
+<p>There is no defined maximum length to the tone, which will normally cease when a STOP DTMF message is received from the MS. However, the operator may choose to put a pre-defined time limit on the duration of tones sent.</p>
+<p>The appropriate sequencing of DTMF control messages is shown in figures&nbsp;5.8 and 5.9.</p>
+<p>NOTE 3:&nbsp; The network may implement the time limit option where the DTMF tone duration is controlled by the network irrespective of the receipt of a STOP DTMF message from the mobile station.</p>
+<p>Figure 5.8/3GPP TS 24.008 Single DTMF transmission</p>
+<p>Figure 5.9/3GPP TS 24.008 Multiple DTMF transmission</p>

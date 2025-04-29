@@ -1,0 +1,131 @@
+<h1><a name="_Toc171524346"></a>8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Handling of unknown, unforeseen, and erroneous protocol data</h1>
+<h2><a name="_Toc171524347"></a>8.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; General</h2>
+<p>The procedures specified in 3GPP TS 24.008 and call-related supplementary service handling in 3GPP TS 24.010 [21] apply to those messages which pass the checks described in this subclause.</p>
+<p>This subclause also specifies procedures for the handling of unknown, unforeseen, and erroneous protocol data by the receiving entity. These procedures are called "error handling procedures", but in addition to providing recovery mechanisms for error situations they define a compatibility mechanism for future extensions of the protocols.</p>
+<p>Error handling concerning the value part of the Facility IE and of the SS Version Indicator IE are not in the scope of the present document. It is defined in 3GPP TS 24.010 [21] and the 3GPP TS 24.08x series.</p>
+<p>Sub subclauses 8.1 to 8.8 shall be applied in order of precedence.</p>
+<p>Most error handling procedures are mandatory for the mobile station.</p>
+<p>Detailed error handling procedures in the network are implementation dependent and may vary from PLMN to PLMN. However, when extensions of this protocol are developed, networks will be assumed to have the error handling that is indicated in this subclause as mandatory ("shall") and that is indicated as strongly recommended ("should"). Subclauses&nbsp;8.2, 8.3, 8.4, 8.5 and 8.7.2 do not apply to the error handling in the network applied to the receipt of initial layer 3 message: If the network diagnoses an error described in one of these subclauses in the initial layer 3 message received from the mobile station, it shall either:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; try to recognize the classmark and then take further implementation dependent actions; or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; release the RR-connection.</p>
+<p>Also, the error handling of the network is only considered as mandatory or strongly recommended when certain thresholds for errors are not reached during a dedicated connection.</p>
+<p>For definition of semantical and syntactical errors see 3GPP TS 24.007 [20], subclause&nbsp;11.4.2.</p>
+<h2><a name="_Toc171524348"></a>8.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Message too short</h2>
+<p>When a message is received that is too short to contain a complete message type information element, that message shall be ignored, cf. 3GPP TS 24.007 [20].</p>
+<h2><a name="_Toc171524349"></a>8.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unknown or unforeseen transaction identifier</h2>
+<h3><a name="_Toc171524350"></a>8.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call Control</h3>
+<p>The mobile station and the network shall ignore a Call Control message received with TI EXT bit = 0. Otherwise, if the TI EXT bit =1 or no extension is used, the behaviour described below shall be followed.</p>
+<p>The mobile station and network shall reject a SETUP, EMERGENCY SETUP or START CC message received with octet 1 part of the TI value coded as "111" by sending RELEASE COMPLETE with cause #81 "Invalid transaction identifier value" The TI value in RELEASE COMPLETE shall be the complete TI value including the extension octet from the message that caused the rejection.</p>
+<p>Any message other than SETUP, EMERGENCY SETUP or START CC received with octet 1 part of the TI value coded as "111" shall be ignored.</p>
+<p>For a call control message received with octet 1 part of the TI value not coded as "111", the following procedures shall apply:</p>
+<ol>
+<li>a) For a network that does not support the "Network initiated MO call" option and for all mobile stations:</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Whenever any call control message except EMERGENCY SETUP, SETUP or RELEASE COMPLETE is received specifying a transaction identifier which is not recognized as relating to an active call or to a call in progress, the receiving entity shall send a RELEASE COMPLETE message with cause #81 "invalid transaction identifier value" using the received transaction identifier value and remain in the Null state.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For a network that does support the "Network initiated MO call" option $(CCBS)$:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Whenever any call control message except EMERGENCY SETUP, SETUP, START CC or RELEASE COMPLETE is received specifying a transaction identifier which is not recognized as relating to an active call or to a call in progress, the receiving entity shall send a RELEASE COMPLETE message with cause #81 "invalid transaction identifier value" using the received transaction identifier value and remain in the Null state.</p>
+<ol>
+<li>b) When a RELEASE COMPLETE message is received specifying a transaction identifier which is not recognized as relating to an active call or to a call in progress, the MM connection associated with that transaction identifier shall be released.</li>
+<li>c) For a network that does not support the "Network initiated MO call" option and for all mobile stations:</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When an EMERGENCY SETUP or, a SETUP message is received specifying a transaction identifier which is not recognized as relating to an active call or to a call in progress, and with a transaction identifier flag incorrectly set to "1", this message shall be ignored.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For a network that does support the "Network initiated MO call" option $(CCBS)$:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When an EMERGENCY SETUP, a START CC or, a SETUP message is received specifying a transaction identifier which is not recognised as relating to an active call or to a call in progress, and with a transaction identifier flag incorrectly set to "1", this message shall be ignored.</p>
+<ol>
+<li>d) When a SETUP message is received by the mobile station specifying a transaction identifier which is recognized as relating to an active call or to a call in progress, this SETUP message shall be ignored.</li>
+<li>e) For a network that does not support the "Network initiated MO call" option:</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When an EMERGENCY SETUP message or a SETUP message is received by the network specifying a transaction identifier which is recognized as relating to an active call or to a call in progress, this message need not be treated and the network may perform other actions.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For a network that does support the "Network initiated MO call" option $(CCBS)$:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When an EMERGENCY SETUP message or a START CC message is received by the network specifying a transaction identifier which is recognised as relating to an active call or to a call in progress, this message need not be treated and the network may perform other actions.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The same applies to a SETUP message unless the transaction has been established by a START_CC message and the network is in the "recall present" state (N0.6).</p>
+<h3><a name="_Toc171524351"></a>8.3.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session Management</h3>
+<p>The mobile station and network shall ignore a session management message with TI EXT bit = 0. Otherwise, the following procedures shall apply:</p>
+<ol>
+<li>a) Whenever any session management message except ACTIVATE PDP CONTEXT REQUEST, ACTIVATE SECONDARY PDP CONTEXT REQUEST, or SM-STATUS is received by the network specifying a transaction identifier which is not recognized as relating to an active PDP context or MBMS context,or to a PDP context or MBMS context that is in the process of activation or deactivation, the network shall send a SM-STATUS message with cause #81 "invalid transaction identifier value" using the received transaction identifier value including the extension octet and remain in the PDP-INACTIVE state.</li>
+<li>b) Whenever any session management message except REQUEST PDP CONTEXT ACTIVATION, REQUEST SECONDARY PDP CONTEXT ACTIVATION, REQUEST MBMS CONTEXT ACTIVATION, or SM-STATUS is received by the MS specifying a transaction identifier which is not recognized as relating to an active context or to a context that is in the process of activation or deactivation, the MS shall send a SM-STATUS message with cause #81 "invalid transaction identifier value" using the received transaction identifier value including the extension octet and remain in the PDP-INACTIVE state.</li>
+<li>c) When a REQUEST PDP CONTEXT ACTIVATION message, REQUEST SECONDARY PDP CONTEXT ACTIVATION message or REQUEST MBMS CONTEXT ACTIVATION message is received by the MS with a transaction identifier flag set to "1", this message shall be ignored.</li>
+<li>d) When an ACTIVATE PDP CONTEXT REQUEST message is received by the network specifying a transaction identifier which is not recognized as relating to a PDP context that is in the process of activation, and with a transaction identifier flag set to "1", this message shall be ignored.</li>
+<li>e) Whenever an ACTIVATE PDP CONTEXT REQUEST or ACTIVATE SECONDARY PDP CONTEXT REQUEST message is received by the network specifying a transaction identifier relating to a PDP context or MBMS context not in state PDP-INACTIVE, the network shall deactivate the old PDP context or MBMS context relating to the received transaction identifier without notifying the MS. Furthermore, the network shall continue with the activation procedure of a new PDP context as indicated in the received message. Whenever an ACTIVATE MBMS CONTEXT REQUEST message is received by the network specifying a transaction identifier relating to an MBMS context not in state PDP-INACTIVE, the network shall deactivate the old MBMS context relating to the received transaction identifier without notifying the MS. Furthermore, the network shall continue with the activation procedure of a new MBMS context as indicated in the received message.</li>
+<li>f) Whenever a REQUEST PDP CONTEXT ACTIVATION message or REQUEST SECONDARY PDP CONTEXT ACTIVATION message is received by the MS specifying a transaction identifier relating to a PDP context or MBMS context not in state PDP-INACTIVE, the MS shall locally deactivate the old PDP context or MBMS context relating to the received transaction identifier. Furthermore, the MS shall continue with the activation procedure of a new PDP context as indicated in the received message.</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Whenever a REQUEST MBMS CONTEXT ACTIVATION message is received by the MS specifying a transaction identifier relating to a PDP context or MBMS context not in state PDP-INACTIVE, the MS shall locally deactivate the old PDP context or MBMS context relating to the received transaction identifier. Furthermore, the MS shall continue with the activation procedure of a new MBMS context as indicated in the received message.</p>
+<ol>
+<li>g) When an ACTIVATE SECONDARY PDP CONTEXT REQUEST message is received by the network specifying a transaction identifier which is not recognized as relating to a PDP context that is in the process of activation and with a transaction identifier flag set to "1", this message shall be ignored.</li>
+</ol>
+<h2><a name="_Toc171524352"></a>8.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unknown or unforeseen message type</h2>
+<p>If a mobile station receives an RR, MM or CC message with message type not defined for the PD or not implemented by the receiver in unacknowledged mode, it shall ignore the message.</p>
+<p>If a mobile station receives an RR, MM or CC message with message type not defined for the PD or not implemented by the receiver in acknowledged mode, it shall return a status message (STATUS, MM STATUS depending on the protocol discriminator) with cause # 97 "message type non-existent or not implemented".</p>
+<p>If a mobile station receives a GMM message or SM message with message type not defined for the PD or not implemented by the receiver, it shall return a status message (GMM STATUS or SM STATUS depending on the protocol discriminator) with cause # 97 "message type non-existent or not implemented".</p>
+<p>If the network receives an MM message with message type not defined for the PD or not implemented by the receiver in a protocol state where reception of an unsolicited message with the given PD from the mobile station is not foreseen in the protocol, the network actions are implementation dependent. Otherwise, if the network receives a message with message type not defined for the PD or not implemented by the receiver, it shall ignore the message except that it should return a status message (STATUS, MM STATUS, GMM STATUS or SM STATUS depending on the protocol discriminator) with cause #97 "message type non-existent or not implemented".</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A message type not defined for the PD in the given direction is regarded by the receiver as a message type not defined for the PD, see 3GPP TS 24.007 [20].</p>
+<p>If the mobile station receives a message not compatible with the protocol state, the mobile station shall ignore the message except for the fact that, if an RR connection exists, it returns a status message (STATUS, MM STATUS depending on the protocol discriminator) with cause #98 "Message type not compatible with protocol state". When the message was a GMM message the GMM-STATUS message with cause #98 "Message type not compatible with protocol state" shall be returned. When the message was a SM message the SM-STATUS message with cause #98 "Message type not compatible with protocol state" shall be returned.</p>
+<p>If the network receives a message not compatible with the protocol state, the network actions are implementation dependent.</p>
+<p>NOTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The use by GMM and SM of unacknowledged LLC may lead to messages "not compatible with the protocol state".</p>
+<h2><a name="_Toc171524353"></a>8.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Non-semantical mandatory information element errors</h2>
+<p>When on receipt of a message,</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; an "imperative message part" error; or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a "missing mandatory IE" error;</p>
+<p>is diagnosed or when a message containing:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a syntactically incorrect mandatory IE; or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; an IE unknown in the message, but encoded as "comprehension required" (see 3GPP TS 24.007&nbsp;[20]); or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; an out of sequence IE encoded as "comprehension required" (see 3GPP TS 24.007&nbsp;[20]) is received,</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the mobile station shall proceed as follows:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If the message is not one of the messages listed in subclauses 8.5.1, 8.5.2, 8.5.3, 8.5.4 and 8.5.5 a), b) , f) or h), the mobile station shall ignore the message except for the fact that, if an RR connection exists, it shall return a status message (STATUS, MM STATUS depending on the protocol discriminator) with cause # 96 "Invalid mandatory information". If the message was a GMM message the GMM-STATUS message with cause #96 " Invalid mandatory information" shall be returned. If the message was an SM message the SM-STATUS message with cause # 96 "invalid mandatory information" shall be returned.</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the network shall proceed as follows:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When the message is not one of the messages listed in subclause&nbsp;8.5.3 b), c), d) or e) and 8.5.5 a), c), d), e) or g), the network shall either:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; try to treat the message (the exact further actions are implementation dependent), or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; ignore the message except that it should return a status message (STATUS, or MM STATUS (depending on the protocol discriminator), GMM STATUS, or SM STATUS) with cause # 96 "Invalid mandatory information".</p>
+<h3><a name="_Toc171524354"></a>8.5.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Radio resource management</h3>
+<p>See 3GPP TS 44.018 [84].</p>
+<h3><a name="_Toc171524355"></a>8.5.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobility management</h3>
+<p>No exceptional cases are described for mobility management messages.</p>
+<h3><a name="_Toc171524356"></a>8.5.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Call control</h3>
+<ol>
+<li>a) If the message is a SETUP message, a RELEASE COMPLETE message with cause # 96 "invalid mandatory information" shall be returned.</li>
+<li>b) If the message is a DISCONNECT message, a RELEASE message shall be returned with cause value # 96 "invalid mandatory information" and subclause&nbsp;5.4. "call clearing" applies as normal.</li>
+<li>c) If the message is a RELEASE message, a RELEASE COMPLETE message shall be returned with cause value # 96 "invalid mandatory information".</li>
+<li>d) If the message is a RELEASE COMPLETE message, it shall be treated as a normal RELEASE COMPLETE message.</li>
+<li>e) If the message is a HOLD REJECT or RETRIEVE REJECT message, it shall be treated as a normal HOLD REJECT or RETRIEVE REJECT message.</li>
+<li>f) If the message is a STATUS message and received by the network, a RELEASE COMPLETE message may be returned with cause value # 96 "invalid mandatory information".</li>
+</ol>
+<h3><a name="_Toc171524357"></a>8.5.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GMM mobility management</h3>
+<p>No exceptional cases are described for mobility management messages.</p>
+<h3><a name="_Toc171524358"></a>8.5.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Session management</h3>
+<ol>
+<li>a) If the message is a DEACTIVATE PDP CONTEXT REQUEST, a DEACTIVATE PDP CONTEXT ACCEPT message shall be returned. All resources allocated for that context shall be released.</li>
+<li>b) If the message is a REQUEST PDP CONTEXT ACTIVATION, a REQUEST PDP CONTEXT ACTIVATION REJECT message with cause # 96 "Invalid mandatory information" shall be returned.</li>
+<li>c) If the message is an ACTIVATE PDP CONTEXT REQUEST, an ACTIVATE PDP CONTEXT REJECT message with cause # 96 "Invalid mandatory information" shall be returned.</li>
+<li>d) If the message is an ACTIVATE SECONDARY PDP CONTEXT REQUEST, an ACTIVATE SECONDARY PDP CONTEXT REJECT message with cause # 96 "Invalid mandatory information" shall be returned.</li>
+<li>e) If the message is a MODIFY PDP CONTEXT REQUEST, a MODIFY PDP CONTEXT REJECT message with cause # 96 "Invalid mandatory information" shall be returned.</li>
+<li>f) If the message is a REQUEST MBMS CONTEXT ACTIVATION, a REQUEST MBMS CONTEXT ACTIVATION REJECT message with cause # 96 "Invalid mandatory information" shall be returned.</li>
+<li>g) If the message is an ACTIVATE MBMS CONTEXT REQUEST, an ACTIVATE MBMS CONTEXT REJECT message with cause # 96 "Invalid mandatory information" shall be returned.</li>
+<li>h) If the message is a REQUEST SECONDARY PDP CONTEXT ACTIVATION, a REQUEST SECONDARY PDP CONTEXT ACTIVATION REJECT message with cause # 96 "Invalid mandatory information" shall be returned.</li>
+</ol>
+<h2><a name="_Toc171524359"></a>8.6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unknown and unforeseen IEs in the non-imperative message part</h2>
+<h3><a name="_Toc171524360"></a>8.6.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IEIs unknown in the message</h3>
+<p>The MS shall ignore all IEs unknown in a message which are not encoded as "comprehension required" (see 3GPP&nbsp;TS&nbsp;24.007&nbsp;[20]).</p>
+<p>The network shall take the same approach.</p>
+<h3><a name="_Toc171524361"></a>8.6.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Out of sequence IEs</h3>
+<p>The MS shall ignore all out of sequence IEs in a message which are not encoded as "comprehension required" (see 3GPP TS 24.007&nbsp;[20]).</p>
+<p>The network should take the same approach.</p>
+<h3><a name="_Toc171524362"></a>8.6.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Repeated IEs</h3>
+<p>If an information element with format T, TV, or TLV is repeated in a message in which repetition of the information element is not specified in clause 9 of the present document, only the contents of the information element appearing first shall be handled and all subsequent repetitions of the information element shall be ignored. When repetition of information elements is specified, only the contents of specified repeated information elements shall be handled. If the limit on repetition of information elements is exceeded, the contents of information elements appearing first up to the limit of repetitions shall be handled and all subsequent repetitions of the information element shall be ignored.</p>
+<p>The network should follow the same procedures.</p>
+<h2><a name="_Toc171524363"></a>8.7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Non-imperative message part errors</h2>
+<p>This category includes:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; syntactically incorrect optional IEs;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; conditional IE errors.</p>
+<h3><a name="_Toc171524364"></a>8.7.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Syntactically incorrect optional IEs</h3>
+<p>The MS shall treat all optional IEs that are syntactically incorrect in a message as not present in the message.</p>
+<p>The network shall take the same approach.</p>
+<h3><a name="_Toc171524365"></a>8.7.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Conditional IE errors</h3>
+<p>When the MS upon receipt of an RR, MM or CC message diagnoses a "missing conditional IE" error or an "unexpected conditional IE" error or when it receives an RR, MM or CC message containing at least one syntactically incorrect conditional IE, it shall ignore the message except for the fact that, if an RR connection exists, it shall return a status message (STATUS, or MM STATUS depending on the PD) with cause value #&nbsp;100 "conditional IE error".</p>
+<p>When the MS upon receipt of a GMM or SM message diagnoses a "missing conditional IE" error or an "unexpected conditional IE" error or when it receives a GMM or SM message containing at least one syntactically incorrect conditional IE, it shall ignore the message and it shall return a status message (GMM STATUS or SM STATUS depending on the PD) with cause value #&nbsp;100 "conditional IE error".</p>
+<p>When the network receives a message and diagnose a "missing conditional IE" error or an "unexpected conditional IE" error or when it receives a message containing at least one syntactically incorrect conditional IE, the network shall either</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; try to treat the message (the exact further actions are implementation dependent), or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; ignore the message except that it should return a status message (STATUS, MM STATUS, GMM STATUS or SM STATUS depending on the protocol discriminator) with cause # 100 "conditional IE error".</p>
+<h2><a name="_Toc171524366"></a>8.8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Messages with semantically incorrect contents</h2>
+<p>When a message with semantically incorrect contents is received, the foreseen reactions of the procedural part of 3GPP TS 24.008 (i.e. of clauses 3, 4, 5, 6) are performed. If however no such reactions are specified, the MS shall ignore the message except for the fact that, if an RR connection exists, it returns a status message (STATUS, or MM STATUS depending on the PD) with cause value # 95 "semantically incorrect message". If the message was a GMM message the GMM-STATUS message with cause #95 "semantically incorrect message" shall be returned. If the message was an SM message the SM-STATUS message with cause # 95 "semantically incorrect message" shall be returned.</p>
+<p>The network should follow the same procedure except that a status message is not normally transmitted.</p>
+<p>Semantic checking of the Facility information element value part (defined in 3GPP TS 24.080 [24]) is the subject of the technical specifications 3GPP TS 24.010 [21] and the 3GPP TS 24.08x series.</p>

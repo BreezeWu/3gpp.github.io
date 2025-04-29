@@ -1,0 +1,2640 @@
+<h1><a name="_Toc171525077"></a>11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; List of system parameters</h1>
+<p>The description of timers in the following table should be considered a brief summary. The precise details are found in clauses 3 to 6, which should be considered the definitive descriptions.</p>
+<h2><a name="_Toc171525078"></a>11.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Timers and counters for radio resource management</h2>
+<p>See 3GPP TS 44.018 [84].</p>
+<h2><a name="_Toc171525079"></a>11.2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Timers of mobility management</h2>
+<p>Table 11.1/3GPP TS 24.008: Mobility management timers - MS-side</p>
+<table>
+<thead>
+<tr>
+<td width="52">
+<p>TIMER</p>
+<p>NUM.</p>
+</td>
+<td width="153">
+<p>MM<br /> STATE<br /> </p>
+</td>
+<td width="47">
+<p>TIME<br /> OUT<br /> VAL.</p>
+</td>
+<td width="130">
+<p>CAUSE FOR START</p>
+</td>
+<td width="147">
+<p>NORMAL STOP</p>
+</td>
+<td width="108">
+<p>AT THE EXPIRY</p>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width="52">
+<p>T3210</p>
+</td>
+<td width="153">
+<p>&nbsp;</p>
+<p>LOCATION UPDATING INITIATED</p>
+</td>
+<td width="47">
+<p>20s</p>
+</td>
+<td width="130">
+<p>-&nbsp; LOCATION UPDATING REQUEST sent</p>
+</td>
+<td width="147">
+<p>-&nbsp; LOCATION UPDATING ACCEPT</p>
+<p>-&nbsp; LOCATIONG UPDATING_REJECT</p>
+<p>-&nbsp; AUTHTICATION _REJECT</p>
+<p>-&nbsp; Lower layer failure</p>
+</td>
+<td width="108">
+<p><br /> <br /> Start T3211</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3211</p>
+</td>
+<td width="153">
+<p>&nbsp;</p>
+<p>MM IDLE,</p>
+</td>
+<td width="47">
+<p>15s</p>
+</td>
+<td width="130">
+<p>-&nbsp; LOCATION UPDATING REJECT with &nbsp;other cause values as described in section 4.4.4.9</p>
+<p>-&nbsp; lower layer failure or RR connection released after RR connection abort during location updating procedure</p>
+</td>
+<td width="147">
+<p>-&nbsp; cell change</p>
+<p>-&nbsp; request for MM connection establishment</p>
+<p>-&nbsp; change of LA</p>
+<p>&nbsp;</p>
+</td>
+<td width="108">
+<p>Restart the location updating procedure.</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3212</p>
+</td>
+<td width="153">
+<p>&nbsp;</p>
+<p>MM IDLE</p>
+</td>
+<td width="47">
+<p>Note 1</p>
+</td>
+<td width="130">
+<p>-&nbsp; termination of MM service or MM signalling</p>
+</td>
+<td width="147">
+<p>-&nbsp; initiation of MM service or MM signalling</p>
+</td>
+<td width="108">
+<p>initiate periodic updating</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3213</p>
+</td>
+<td width="153">
+<p>&nbsp;</p>
+<p>LOCATION UPDATING INITIATED</p>
+</td>
+<td width="47">
+<p>4s</p>
+</td>
+<td width="130">
+<p>-&nbsp; location updating failure</p>
+</td>
+<td width="147">
+<p>-&nbsp; change of BCCH parameter</p>
+</td>
+<td width="108">
+<p>new random attempt</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3214</p>
+</td>
+<td width="153">
+<p>&nbsp;</p>
+<p>LOCATION UPDATING INITIATED</p>
+<p>&nbsp;</p>
+<p>WAIT FOR OUTGOING MM CONNECTION</p>
+<p>&nbsp;</p>
+<p>IMSI DETACH INITIATED</p>
+</td>
+<td width="47">
+<p>20s</p>
+</td>
+<td width="130">
+<p>AUTHENTICATION FAILURE</p>
+<p>Cause = 'MAC failure&rsquo; or 'GSM authentication unacceptable&rsquo; sent</p>
+<p>&nbsp;</p>
+</td>
+<td width="147">
+<p>-&nbsp; AUTHENTICATION REQUEST received</p>
+<p>-&nbsp; AUTHENTICATION REJECT received</p>
+<p>-&nbsp; Lower layer failure</p>
+</td>
+<td width="108">
+<p>Consider the network as &rsquo;false&rsquo; (see 4.3.2.6.1)</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3216</p>
+</td>
+<td width="153">
+<p>&nbsp;</p>
+<p>LOCATION UPDATING INITIATED</p>
+<p>&nbsp;</p>
+<p>WAIT FOR OUTGOING MM CONNECTION</p>
+<p>&nbsp;</p>
+<p>IMSI DETACH INITIATED</p>
+</td>
+<td width="47">
+<p>15s</p>
+</td>
+<td width="130">
+<p>AUTHENTICATION FAILURE</p>
+<p>Cause = Synch failure sent</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</td>
+<td width="147">
+<p>-&nbsp; AUTHENT REQUEST received</p>
+<p>-&nbsp; AUTHENTICATION REJECT received</p>
+<p>-&nbsp; Lower layer failure</p>
+</td>
+<td width="108">
+<p>Consider the network as &rsquo;false&rsquo; (see 4.3.2.6.1)</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3218</p>
+</td>
+<td width="153">
+<p>&nbsp;</p>
+<p>LOCATION UPDATING INITIATED</p>
+<p>&nbsp;</p>
+<p>WAIT FOR OUTGOING MM CONNECTION</p>
+<p>&nbsp;</p>
+<p>IMSI DETACH INITIATED</p>
+</td>
+<td width="47">
+<p>20s</p>
+</td>
+<td width="130">
+<p>-&nbsp; RAND and RES stored as a result of of a UMTS authentication challenge</p>
+<p>-&nbsp; RAND and SRES stored as a result of of a GSM authentication challenge</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</td>
+<td width="147">
+<p>-&nbsp; CIPHERING MODE COMMAND received (A/Gb mode only)</p>
+<p>-&nbsp; SECURITY MODE COMMAND received (Iu mode only)</p>
+<p>&nbsp;&nbsp; CM SERVICE ACCEPT received</p>
+<p>&nbsp;&nbsp; CM SERVICE REJECT received</p>
+<p>-&nbsp; LOCATION UPDATING ACCEPT received</p>
+<p>-&nbsp; AUTHENTICATION REJECT received</p>
+<p>-&nbsp; AUTHENTICATION FAILURE sent</p>
+<p>-&nbsp; enter MM IDLE or NULL</p>
+</td>
+<td width="108">
+<p>Delete the stored RAND and either RES (if it was a UMTS authentication challenge) or SRES (if it was a GSM authentication challenge)</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3220</p>
+</td>
+<td width="153">
+<p>&nbsp;</p>
+<p>IMSI DETACH INITIATED</p>
+</td>
+<td width="47">
+<p>5s</p>
+</td>
+<td width="130">
+<p>-&nbsp; IMSI DETACH</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</td>
+<td width="147">
+<p>-&nbsp; release from RM-sublayer</p>
+</td>
+<td width="108">
+<p>enter Null or Idle, ATTEMPTING TO UPDATE</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3230</p>
+</td>
+<td width="153">
+<p>&nbsp;</p>
+<p>WAIT FOR OUTGOING MM CONNECTION</p>
+<p>&nbsp;</p>
+<p>WAIT FOR ADDITIONAL OUTGOING MM CONNECTION</p>
+<p>&nbsp;</p>
+<p>WAIT FOR REESTABLISH</p>
+</td>
+<td width="47">
+<p>15s</p>
+</td>
+<td width="130">
+<p>-&nbsp; CM SERVICE REQUEST</p>
+<p>&nbsp;</p>
+<p>CM RE-ESTABLISHMENT REQUEST</p>
+<p>&nbsp;</p>
+</td>
+<td width="147">
+<p>-&nbsp; Cipher mode setting</p>
+<p>-&nbsp; CM SERVICE REJECT received</p>
+<p>-&nbsp; CM SERVICE ACCEPT received</p>
+<p>-&nbsp; CM SERVICE ABORT sent</p>
+<p>&nbsp;</p>
+</td>
+<td width="108">
+<p>provide release ind.</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3240</p>
+</td>
+<td width="153">
+<p>&nbsp;</p>
+<p>WAIT FOR NETWORK COMMAND</p>
+<p>&nbsp;</p>
+<p>LOCATION UPDATE REJECTED</p>
+</td>
+<td width="47">
+<p>10s</p>
+</td>
+<td width="130">
+<p>see subclause 11.2.1</p>
+<p>&nbsp;</p>
+</td>
+<td width="147">
+<p>see subclause 11.2.1</p>
+</td>
+<td width="108">
+<p>abort the RR connection</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3241</p>
+</td>
+<td width="153">
+<p>RR CONNECTION RELEASE NOT ALLOWED</p>
+</td>
+<td width="47">
+<p>300s</p>
+</td>
+<td width="130">
+<p>see subclause 11.2.1</p>
+<p>&nbsp;</p>
+</td>
+<td width="147">
+<p>see subclause 11.2.1</p>
+</td>
+<td width="108">
+<p>abort the RR connection</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3242</p>
+</td>
+<td width="153">
+<p>All except NULL</p>
+</td>
+<td width="47">
+<p>Note&nbsp;5</p>
+</td>
+<td width="130">
+<p>eCall only MS enters MM IDLE state after an emergency call</p>
+<p>- eCall only MS capable of eCall over IMS performs intersystem change from S1 or N1 mode to Iu or A/Gb mode while timer T3444 (see 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]) is running</p>
+</td>
+<td width="147">
+<p>-&nbsp; Removal of eCall only restriction</p>
+<p>- Intersystem change from Iu or A/Gb mode to S1 or N1 mode for MS capable of eCall over IMS</p>
+</td>
+<td width="108">
+<p>Perform eCall Inactivity procedure in subclause 4.4.7 or GMM eCall inactivity procedure in subclause 4.7.15</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3243</p>
+</td>
+<td width="153">
+<p>All except NULL</p>
+</td>
+<td width="47">
+<p>Note&nbsp;6</p>
+</td>
+<td width="130">
+<p>eCall only MS enters MM IDLE state after a test/reconfiguration call</p>
+<p>- eCall only MS capable of eCall over IMS enters PMM-IDLE (Iu mode) state after a test/reconfiguration call</p>
+<p>- return to packet idle mode at eCall only MS capable of eCall over IMS after a test/reconfiguration call (A/Gb mode)</p>
+<p>- eCall only MS capabable of eCall over IMS performs intersystem change from S1 or N1 mode to Iu or A/Gb mode while timer T3445 (see 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]) is running</p>
+</td>
+<td width="147">
+<p>-&nbsp; Removal of eCall only restriction</p>
+<p>- Intersystem change from Iu or A/Gb mode to S1 or N1 mode for MS capable of eCall over IMS</p>
+</td>
+<td width="108">
+<p>Perform eCall Inactivity procedure in subclause 4.4.7 or GMM eCall inactivity procedure in subclause 4.7.15</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3245</p>
+</td>
+<td width="153">
+<p>All except NULL</p>
+</td>
+<td width="47">
+<p>Note 2</p>
+</td>
+<td width="130">
+<p>see subclause 4.1.1.6 (A/Gb or Iu mode only)</p>
+<p>see subclause 5.3.7a in 3GPP TS 24.301[120] (S1 mode only)</p>
+<p>see subclause&nbsp;5.3.19a in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167] (N1 mode only)</p>
+<p>see subclause&nbsp;4.6 in 3GPP&nbsp;TS&nbsp;24.502&nbsp;[178] (N1 mode only)</p>
+</td>
+<td width="147">
+<p>- SIM/USIM is removed</p>
+<p>&nbsp;</p>
+</td>
+<td width="108">
+<p>see subclause 4.1.1.6 (A/Gb or Iu mode only)</p>
+<p>see subclause 5.3.7a in 3GPP TS 24.301[120] (S1 mode only)</p>
+<p>see subclause&nbsp;5.3.19a in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167] (N1 mode only)</p>
+<p>see subclause&nbsp;4.6 in 3GPP&nbsp;TS&nbsp;24.502&nbsp;[178] (N1 mode only)</p>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3246</p>
+</td>
+<td width="153">
+<p>LOCATION UPDATING INITIATED</p>
+<p>&nbsp;</p>
+<p>WAIT FOR OUTGOING MM CONNECTION</p>
+<p>&nbsp;</p>
+<p>WAIT FOR ADDITIONAL OUTGOING MM CONNECTION</p>
+<p>&nbsp;</p>
+<p>WAIT FOR REESTABLISH</p>
+</td>
+<td width="47">
+<p>Note 3</p>
+</td>
+<td width="130">
+<p>LOCATION UPDATING REJECT or CM SERVICE REJECT received with a timer value for T3246; "Extended wait time" for CS domain from the lower layers</p>
+</td>
+<td width="147">
+<p>-&nbsp; paging</p>
+<p>-&nbsp; see subclause 4.1.1.7</p>
+<p>&nbsp;</p>
+</td>
+<td width="108">
+<p>Restart the Location update procedure or CM service request procedure, dependent on MM state and update status</p>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="52">
+<p>T3247</p>
+</td>
+<td width="153">
+<p>All except NULL</p>
+</td>
+<td width="47">
+<p>Note&nbsp;4</p>
+</td>
+<td width="130">
+<p>see subclauses 4.1.1.6A, 4.3.2.5 and 4.7.7.5 (A/Gb or Iu mode only)</p>
+<p>see subclauses 5.3.7B and 5.4.2.5 in 3GPP TS 24.301&nbsp;[120] (S1 mode only)</p>
+<p>see subclauses&nbsp;5.3.20, 5.4.1.2.2.11, 5.4.1.2.3.1, 5.4.1.2.3A.1, 5.4.1.2.3B.1 and 5.4.1.3.5 in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167] (N1 mode only)</p>
+</td>
+<td width="147">
+<p>-&nbsp; SIM/USIM is removed or the entry of the "list of subscriber data" with the SNPN identity of the current SNPN is updated (see 3GPP&nbsp;TS&nbsp;23.122&nbsp;[14] and 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167]); or</p>
+<p>-&nbsp; the MS is switched off</p>
+</td>
+<td width="108">
+<p>see subclause 4.1.1.6A (A/Gb or Iu mode only)</p>
+<p>see subclause 5.3.7B in 3GPP TS 24.301&nbsp;[120] (S1 mode only)</p>
+<p>see subclauses&nbsp;5.3.20 in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167] (N1 mode only)</p>
+</td>
+</tr>
+<tr>
+<td colspan="6" width="638">
+<p>NOTE 1:&nbsp;&nbsp; The timeout value is broadcasted in a SYSTEM INFORMATION message or received in a LOCATION UPDATING ACCEPT message.</p>
+<p>NOTE 2:&nbsp;&nbsp; The MS starts the timer with a random value, uniformly drawn from the range between 12h and 24h.</p>
+<p>NOTE 3:&nbsp;&nbsp; The timer value is provided by the network in a LOCATION UPDATING REJECT or a CM SERVICE REJECT message or as an "Extended wait time" value by the lower layers, or chosen randomly from a default value range of 15 &ndash; 30 minutes.</p>
+<p>NOTE&nbsp;4:&nbsp;&nbsp; The MS starts the timer with a random value, uniformly drawn from the range between 15 minutes and 30 minutes for 5GMM cause value #74 as specified in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167] or between 30 minutes and 60 minutes for other cause values.</p>
+<p>NOTE&nbsp;5:&nbsp;&nbsp; If the timer is started by an eCall only MS capable of eCall over IMS due to performing intersystem change from S1 or N1 mode to Iu or A/Gb mode while timer T3444 (see 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]) is running, the MS starts the timer with a value set to the time left on timer T3444. Otherwise the MS starts the timer with a value set to 12 hours.</p>
+<p>NOTE&nbsp;6:&nbsp;&nbsp; If the timer is started by an eCall only MS capable of eCall over IMS due to performing intersystem change from S1 or N1 mode to Iu or A/Gb mode while timer T3445 (see 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]) is running, the MS starts the timer with a value set to the time left on timer T3445. Otherwise the MS starts the timer with a value set to 12 hours.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Table 11.2/3GPP TS 24.008: Mobility management timers - network-side</p>
+<table>
+<tbody>
+<tr>
+<td width="47">
+<p>TIMER</p>
+<p>NUM.</p>
+</td>
+<td width="120">
+<p>MM<br /> STATE</p>
+</td>
+<td width="42">
+<p>TIME<br /> OUT<br /> VAL.</p>
+</td>
+<td width="108">
+<p>CAUSE FOR START</p>
+</td>
+<td width="118">
+<p>NORMAL STOP</p>
+</td>
+<td width="98">
+<p>AT THE EXPIRY</p>
+</td>
+<td width="72">
+<p>AT THE SECOND EXPIRY</p>
+</td>
+</tr>
+<tr>
+<td width="47">
+<p>T3250</p>
+</td>
+<td width="120">
+<p>TMSI REALLOCATION INITIATED</p>
+</td>
+<td width="42">
+<p>12s</p>
+</td>
+<td width="108">
+<p>TMSI REALLOCATION COMMAND or LOCATION UPDATING ACCEPT with new TMSI sent</p>
+</td>
+<td width="118">
+<p>TMSI REALLOCATION COMPLETE received</p>
+</td>
+<td width="98">
+<p>Optionally Release RR connection</p>
+</td>
+<td width="72">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="47">
+<p>T3255</p>
+</td>
+<td width="120">
+<p>&nbsp;</p>
+</td>
+<td width="42">
+<p>Note 2</p>
+</td>
+<td width="108">
+<p>LOCATION UPDATING ACCEPT sent with"Follow on Proceed"</p>
+</td>
+<td width="118">
+<p>CM SERVICE REQUEST</p>
+</td>
+<td width="98">
+<p>Release RR Connection or use for mobile station terminating call</p>
+</td>
+<td width="72">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="47">
+<p>T3260</p>
+</td>
+<td width="120">
+<p>AUTHENTICATION INITIATED</p>
+</td>
+<td width="42">
+<p>12s</p>
+</td>
+<td width="108">
+<p>AUTHENTICATION REQUEST sent</p>
+</td>
+<td width="118">
+<p>AUTHENTICATION RESPONSE received</p>
+<p>&nbsp;</p>
+<p>AUTHENTICATION FAILURE received</p>
+</td>
+<td width="98">
+<p>Optionally Release RR connection</p>
+<p>&nbsp;</p>
+</td>
+<td width="72">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="47">
+<p>T3270</p>
+</td>
+<td width="120">
+<p>IDENTIFICATION INITIATED</p>
+</td>
+<td width="42">
+<p>12s</p>
+</td>
+<td width="108">
+<p>IDENTITY REQUEST sent</p>
+</td>
+<td width="118">
+<p>IDENTITY RESPONSE received</p>
+</td>
+<td width="98">
+<p>Optionally Release RR connection</p>
+</td>
+<td width="72">
+<p>&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>NOTE 2:&nbsp; The value of this timer is not specified by this recommendation.</p>
+<h3><a name="_Toc171525080"></a>11.2.1&nbsp;&nbsp;&nbsp;&nbsp; Timer T3240 and Timer T3241</h3>
+<p>Timer T3240 is started in the mobile station when:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the mobile station receives a LOCATION UPDATING ACCEPT message completing a location updating procedure in the cases specified in subclauses 4.4.4.6 and 4.4.4.8;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the mobile station receives a LOCATION UPDATING REJECT message in the cases specified in subclause&nbsp;4.4.4.7;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the mobile station has sent a CM SERVICE ABORT message as specified in subclause&nbsp;4.5.1.7;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the mobile station has released or aborted all MM connections in the cases specified in 4.3.2.5, 4.3.5.2, 4.5.1.1, and 4.5.3.1;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; the mobile station receives the paging message from network and enter the MM state 9 (WAIT FOR NETWORK COMMAND).</p>
+<p>Timer T3240 is stopped, reset, and started again at receipt of an MM message.</p>
+<p>Timer T3240 is stopped and reset (but not started) at receipt of a CM message that initiates establishment of an CM connection (an appropriate SETUP, REGISTER, or CP-DATA message as defined in 3GPP TS 24.008, 3GPP TS 24.010 [21] or 3GPP TS 24.011 [22]).</p>
+<p>If timer T3240 expires, the MS shall abort the RR connection and enter the MM state MM IDLE.</p>
+<p>Timer T3241 is started in the mobile station when entering MM state RR CONNECTION RELEASE NOT ALLOWED.</p>
+<p>Timer T3241 is stopped and reset (but not started) when the MM state RR CONNECTION RELEASE NOT ALLOWED is left.</p>
+<p>If timer T3241 expires, the MS shall abort the RR connection and enter the MM state MM IDLE.</p>
+<p>&nbsp;</p>
+<h3><a name="_Toc171525081"></a>11.2.2&nbsp;&nbsp;&nbsp;&nbsp; Timers of GPRS mobility management</h3>
+<p>Table 11.3/3GPP TS 24.008: GPRS Mobility management timers - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="66">
+<p>TIMER NUM.</p>
+</td>
+<td width="66">
+<p>TIMER VALUE</p>
+</td>
+<td width="95">
+<p>STATE</p>
+</td>
+<td width="189">
+<p>CAUSE OF START</p>
+</td>
+<td width="113">
+<p>NORMAL STOP</p>
+</td>
+<td width="113">
+<p>ON THE<br /> &nbsp;1st, 2nd, 3rd, 4<sup>th</sup>&nbsp;EXPIRY Note 3</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3310</p>
+</td>
+<td width="66">
+<p>15s</p>
+<p>NOTE&nbsp;2</p>
+</td>
+<td width="95">
+<p>GMM-<br /> REG-INIT</p>
+</td>
+<td width="189">
+<p>ATTACH REQUEST sent</p>
+</td>
+<td width="113">
+<p>ATTACH ACCEPT received</p>
+<p>ATTACH REJECT received</p>
+</td>
+<td width="113">
+<p>Retransmission of ATTACH REQUEST</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3311</p>
+</td>
+<td width="66">
+<p>15s</p>
+</td>
+<td width="95">
+<p>GMM-DEREG ATTEMPTING TO ATTACH or</p>
+<p>GMM-REG ATTEMPTING TO UPDATE</p>
+<p>GMM-REG NORMAL SERVICE</p>
+</td>
+<td width="189">
+<p>ATTACH REJECT with other cause values as described in chapter 'GPRS Attach'</p>
+<p>ROUTING AREA UPDATE REJECT with other cause values as described in chapter 'Routing Area Update'</p>
+<p>Low layer failure</p>
+</td>
+<td width="113">
+<p>Change of the routing area</p>
+<p>GPRS attach procedure initiated</p>
+<p>RAU procedure initiated</p>
+<p>Iu mode - PMM CONNECTED mode entered (NOTE&nbsp;1)</p>
+<p>A/Gb mode - READY timer is started (Note&nbsp;1)</p>
+</td>
+<td width="113">
+<p>Restart of the GPRS attach or the RAU procedure with updating of the relevant attempt counter</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3316</p>
+</td>
+<td width="66">
+<p>30s</p>
+<p>NOTE&nbsp;2</p>
+</td>
+<td width="95">
+<p>GMM-<br /> REG-INIT</p>
+<p>GMM-REG</p>
+<p>GMM-DEREG-INIT</p>
+<p>GMM-RA-UPDATING-INT</p>
+<p>GMM-SERV-REQ-INIT<br /> (Iu mode only)</p>
+</td>
+<td width="189">
+<p>RAND and RES stored as a result of a UMTS authentication challenge</p>
+<p>RAND and SRES stored as a result of a GSM authentication challenge</p>
+</td>
+<td width="113">
+<p>Security mode setting<br /> (Iu mode only)</p>
+<p>SERVICE ACCEPT received. (Iu mode only)</p>
+<p>SERVICE REJECT<br /> received<br /> (Iu mode only)</p>
+<p>ROUTING AREA UPDATE ACCEPT received</p>
+<p>AUTHENTICATION AND CIPHERING REJECT received</p>
+<p>AUTHENTICATION AND CIPHERING FAILURE sent</p>
+<p>&nbsp;</p>
+<p>Enter GMM-DEREGISTERED, <br /> GMM-NULL or PMM-IDLE mode (Iu mode only)</p>
+</td>
+<td width="113">
+<p>Delete the stored RAND, and either RES (if it was a UMTS authentication challenge) or SRES (if it was a GSM authentication challenge)</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3318</p>
+</td>
+<td width="66">
+<p>20s</p>
+<p>NOTE&nbsp;2</p>
+</td>
+<td width="95">
+<p>GMM-<br /> REG-INIT</p>
+<p>GMM-REG</p>
+<p>GMM-DEREG-INIT</p>
+<p>GMM-RA-UPDATING-INT</p>
+<p>GMM-SERV-REQ-INIT (Iu mode only)</p>
+</td>
+<td width="189">
+<p>AUTHENTICATION AND CIPHERING FAILURE (cause=&rsquo;MAC failure&rsquo; or 'GSM authentication unacceptable&rsquo;) sent</p>
+</td>
+<td width="113">
+<p>AUTHENTICATION AND CIPHERING REQUEST received</p>
+<p>AUTHENTICATION AND CIPHERING REJECT received</p>
+<p>Lower layer failure</p>
+<p>PS signalling connection released (Iu mode only)</p>
+<p>Inter-system change to S1 mode performed</p>
+<p>GPRS services suspended (Gb&nbsp;mode only)</p>
+</td>
+<td width="113">
+<p>On first expiry, the MS should consider the network as false and will follow subclause 4.7.7.6.1, if the MS is not attached for emergency bearer services.</p>
+<p>On the first expiry, the MS will follow subclause&nbsp;4.7.7.6, under "for items f and g", if the MS is attached for emergency bearer services.</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3320</p>
+</td>
+<td width="66">
+<p>15s</p>
+<p>NOTE&nbsp;2</p>
+</td>
+<td width="95">
+<p>GMM-<br /> REG-INIT</p>
+<p>GMM-REG</p>
+<p>GMM-DEREG-INIT</p>
+<p>GMM-RA-UPDATING-INT</p>
+<p>GMM-SERV-REQ-INIT (Iu mode only)</p>
+</td>
+<td width="189">
+<p>AUTHENTICATION AND CIPHERING FAILURE (cause=synch failure) sent</p>
+</td>
+<td width="113">
+<p>AUTHENTICATION AND CIPHERING REQUEST received</p>
+<p>AUTHENTICATION AND CIPHERING REJECT received</p>
+<p>Lower layer failure</p>
+<p>PS signalling connection released (Iu mode only)</p>
+<p>Inter-system change to S1 mode performed</p>
+<p>GPRS services suspended (Gb&nbsp;mode only)</p>
+</td>
+<td width="113">
+<p>On first expiry, the MS should consider the network as false and will follow the subclause 4.7.7.6.1, if the MS is not attached for emergency bearer services.</p>
+<p>On the first expiry, the MS will follow subclause&nbsp;4.7.7.6, under "for items f and g", if the MS is attached for emergency bearer services.</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3321</p>
+</td>
+<td width="66">
+<p>15s</p>
+<p>NOTE&nbsp;2</p>
+</td>
+<td width="95">
+<p>GMM-</p>
+<p>DEREG-INIT</p>
+<p>GMM-REG.<br /> IMSI-DETACH-INITIATED</p>
+</td>
+<td width="189">
+<p>DETACH REQUEST sent</p>
+</td>
+<td width="113">
+<p>DETACH ACCEPT received</p>
+</td>
+<td width="113">
+<p>Retransmission of the DETACH REQUEST</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3330</p>
+</td>
+<td width="66">
+<p>15s</p>
+<p>NOTE&nbsp;2</p>
+</td>
+<td width="95">
+<p>GMM-ROUTING-UPDATING-INITIATED</p>
+</td>
+<td width="189">
+<p>ROUTING AREA UPDATE REQUEST sent</p>
+</td>
+<td width="113">
+<p>ROUTING AREA UPDATE ACCEPT received</p>
+<p>&nbsp;</p>
+<p>ROUTING AREA UPDATE REJECT received</p>
+</td>
+<td width="113">
+<p>Retransmission of the ROUTING AREA UPDATE REQUEST<br /> message</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3340</p>
+<p>(Iu mode only)</p>
+</td>
+<td width="66">
+<p>10s</p>
+</td>
+<td width="95">
+<p>GMM-DEREG</p>
+<p>GMM-REG</p>
+</td>
+<td width="189">
+<p>ATTACH REJECT, DETACH REQUEST, ROUTING AREA UPDATE REJECT or SERVICE REJECT with any of the causes #3, #6, #7, #8, #11, #12, #13, #15, or #25.</p>
+<p>ATTACH ACCEPT or ROUTING AREA UPDATE ACCEPT is received with "no follow-on proceed" indication and user plane radio access bearers have not been setup.</p>
+<p>DETACH ACCEPT received after the MS sent DETACH REQUEST with detach type to "IMSI detach"</p>
+<p>AUTHENTICATION AND CIPHERING REJECT received</p>
+</td>
+<td width="113">
+<p>PS signalling connection released</p>
+</td>
+<td width="113">
+<p>Release the PS signalling connection and proceed as described in subclause 4.7.1.9</p>
+</td>
+</tr>
+<tr>
+<td colspan="6" width="643">
+<p>NOTE&nbsp;1:&nbsp;&nbsp; The conditions for which this applies are described in subclause 4.7.5.1.5.</p>
+<p>NOTE&nbsp;2:&nbsp;&nbsp; If the MS is using EC-GSM-IoT, the timer value shall be calculated as described in subclause&nbsp;4.7.2.12.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Table 11.3a/3GPP TS 24.008: GPRS Mobility management timers &ndash; MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="2">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="66">
+<p>TIMER NUM.</p>
+</td>
+<td colspan="2" width="66">
+<p>TIMER VALUE</p>
+</td>
+<td colspan="2" width="95">
+<p>STATE</p>
+</td>
+<td colspan="2" width="189">
+<p>CAUSE OF START</p>
+</td>
+<td colspan="2" width="113">
+<p>NORMAL STOP</p>
+</td>
+<td colspan="2" width="113">
+<p>ON <br /> EXPIRY</p>
+</td>
+</tr>
+<tr>
+<td width="2">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="66">
+<p>T3302</p>
+</td>
+<td colspan="2" width="66">
+<p>Default 12 min</p>
+<p>&nbsp;</p>
+<p>NOTE&nbsp;5</p>
+</td>
+<td colspan="2" width="95">
+<p>GMM-DEREG</p>
+<p>or</p>
+<p>GMM-REG</p>
+</td>
+<td colspan="2" width="189">
+<p>At attach failure and the attempt counter is greater than or equal<br /> to 5.</p>
+<p>At routing area updating failure and the attempt counter is greater than or equal to 5.</p>
+<p>ATTACH ACCEPT with MM cause #16 or #17 and the attempt counter is equal to 5, or ATTACH ACCEPT with MM cause #22, as described in subclause&nbsp;4.7.3.2.3.2.</p>
+<p>ROUTING AREA UPDATE ACCEPT with MM cause #16 or #17 and the attempt counter is equal to 5, or ROUTING AREA UPDATE ACCEPT with MM cause #22, as described in subclause&nbsp;4.7.5.2.3.2.</p>
+<p>DETACH REQUEST received with no cause code and detach type IE indicates "re-attach not required", as described in subclause&nbsp;4.7.4.2.2.</p>
+</td>
+<td colspan="2" width="113">
+<p>GPRS attach procedure initiated</p>
+<p><br /> RAU procedure initiated</p>
+</td>
+<td colspan="2" width="113">
+<p>On every expiry, initiation of the</p>
+<p>GPRS attach procedure</p>
+<p>or</p>
+<p>RAU procedure</p>
+</td>
+</tr>
+<tr>
+<td width="2">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="66">
+<p>T3312</p>
+</td>
+<td colspan="2" width="66">
+<p>Default <br /> 54 min</p>
+<p>NOTE&nbsp;8</p>
+</td>
+<td colspan="2" width="95">
+<p>GMM-REG</p>
+</td>
+<td colspan="2" width="189">
+<p>In A/Gb mode, when READY state is left.</p>
+<p>In Iu mode, when PMM-CONNECTED mode is left.</p>
+</td>
+<td colspan="2" width="113">
+<p>When entering state GMM-DEREG,READY state in A/Gb mode, or PMM-CONNECTED mode in Iu mode.</p>
+</td>
+<td colspan="2" width="113">
+<p>Initiation of the Periodic RAU procedure if the MS is not attached for emergency bearer services or T3323 started under the conditions as specified in subclause&nbsp;4.7.2.2.</p>
+<p>Implicit detach from network if the MS is attached for emergency bearer services.</p>
+</td>
+</tr>
+<tr>
+<td width="2">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="66">
+<p>T3314</p>
+<p>READY</p>
+<p>(A/Gb mode only)</p>
+</td>
+<td colspan="2" width="66">
+<p>Default <br /> 44 sec<br /> NOTE&nbsp;2</p>
+</td>
+<td colspan="2" width="95">
+<p>All except GMM-DEREG</p>
+</td>
+<td colspan="2" width="189">
+<p>Transmission of a PTP PDU</p>
+</td>
+<td colspan="2" width="113">
+<p>Forced to Standby</p>
+</td>
+<td colspan="2" width="113">
+<p>No cell-updates are performed</p>
+</td>
+</tr>
+<tr>
+<td colspan="2" width="66">
+<p>T3317</p>
+<p>(Iu mode only)</p>
+</td>
+<td colspan="2" width="66">
+<p>15s</p>
+</td>
+<td colspan="2" width="95">
+<p>GMM-SERVICE-REQUEST-INITIATED</p>
+</td>
+<td colspan="2" width="189">
+<p>SERVICE REQUEST sent</p>
+</td>
+<td colspan="2" width="113">
+<p>Security mode control procedure is completed,</p>
+<p>SERVICE ACCEPT received, or</p>
+<p>SERVICE REJECT received</p>
+</td>
+<td colspan="2" width="113">
+<p>Abort the procedure</p>
+</td>
+<td width="2">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td colspan="2" width="66">
+<p>T3319</p>
+<p>(Iu mode only)</p>
+</td>
+<td colspan="2" width="66">
+<p>Default 30s</p>
+<p>NOTE&nbsp;1</p>
+<p>NOTE&nbsp;4</p>
+</td>
+<td colspan="2" width="95">
+<p>GMM-REG</p>
+</td>
+<td colspan="2" width="189">
+<p>Completion of the Security Mode Control procedure after sending a SERVICE REQUEST with service type "data".</p>
+<p>Reception of a SERVICE ACCEPT message.</p>
+</td>
+<td colspan="2" width="113">
+<p>When entering PMM-IDLE mode.</p>
+<p>When the radio access bearer is released for any active PDP context.</p>
+<p>When entering state GMM-DEREG</p>
+</td>
+<td colspan="2" width="113">
+<p>SERVICE REQUEST with service type "data" may be invoked again, if required.</p>
+</td>
+<td width="2">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td colspan="2" width="66">
+<p>T3323</p>
+</td>
+<td colspan="2" width="66">
+<p>NOTE&nbsp;6</p>
+</td>
+<td colspan="2" width="95">
+<p>GMM-REGISTERED</p>
+</td>
+<td colspan="2" width="189">
+<p>T3312 expires while ISR is activated and either T3346 is running or the MS is in one of the following states:</p>
+<p>-GMM-REGISTERED.NO-CELL-AVAILABLE;</p>
+<p>-GMM-REGISTERED.PLMN-SEARCH;</p>
+<p>-GMM-REGISTERED.UPDATE-NEEDED;or</p>
+<p>-GMM-REGISTERED.LIMITED-SERVICE.</p>
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="113">
+<p>When entering state GMM-DEREGISTERED or when entering PMM-CONNECTED mode.</p>
+</td>
+<td colspan="2" width="113">
+<p>Deactivation of ISR by setting TIN to "GUTI"</p>
+<p>&nbsp;</p>
+</td>
+<td width="2">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td colspan="2" width="66">
+<p>T3324</p>
+</td>
+<td colspan="2" width="66">
+<p>NOTE&nbsp;9</p>
+</td>
+<td colspan="2" width="95">
+<p>GMM-REGISTERED.NORMAL-SERVICE</p>
+<p>EMM-REGISTERED.NORMAL-SERVICE (defined in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120])</p>
+<p>5GMM-REGISTERED.NORMAL-SERVICE over 3GPP access&nbsp; (defined in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167])</p>
+</td>
+<td colspan="2" width="189">
+<p>In A/Gb mode, when READY state is left.</p>
+<p>In Iu mode, when PMM-CONNECTED mode is left.</p>
+<p>In S1 mode, when the EMM-CONNECTED mode is left (defined in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]).</p>
+<p>In N1 mode, when the 5GMM-CONNECTED mode over 3GPP acess is left (defined in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167])</p>
+</td>
+<td colspan="2" width="113">
+<p>When entering state GMM-DEREGISTERED,</p>
+<p>READY state in A/Gb mode, or</p>
+<p>PMM-CONNECTED mode in Iu mode,</p>
+<p>When entering state EMM-DEREGISTERED, or</p>
+<p>EMM-CONNECTED mode in S1 mode (defined in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]).</p>
+<p>When entering state 5GMM-DEREGISTERED over 3GPP access, or</p>
+<p>5GMM-CONNECTED mode in N1 mode over 3GPP access (defined in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167])</p>
+</td>
+<td colspan="2" width="113">
+<p>The MS may activate PSM if in GMM-REGISTERED.NORMAL-SERVICE.</p>
+<p>The MS may activate PSM if in EMM-REGISTERED.NORMAL-SERVICE (defined in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]).</p>
+<p>The MS may activate MICO mode if in 5GMM-REGISTERED.NORMAL-SERVICE over 3GPP access (defined in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167])</p>
+</td>
+<td width="2">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="2">
+<p>&nbsp;</p>
+</td>
+<td colspan="2" width="66">
+<p>T3325</p>
+</td>
+<td colspan="2" width="66">
+<p>Default 60s</p>
+<p>NOTE&nbsp;10</p>
+</td>
+<td colspan="2" width="95">
+<p>GMM-REGISTERED.NORMAL-SERVICE</p>
+<p>&nbsp;</p>
+<p>EMM-REGISTERED.NORMAL-SERVICE (defined in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120])</p>
+</td>
+<td colspan="2" width="189">
+<p>In A/Gb mode and Iu mode when T3317 expires and service request attempt counter is greater than or equal to 5</p>
+<p>&nbsp;</p>
+<p>In S1 mode when T3417 expires and service request attempt counter is greater than or equal to 5</p>
+</td>
+<td colspan="2" width="113">
+<p>When entering state other than GMM-REGISTERED.</p>
+<p>NORMAL-SERVICE state, or.</p>
+<p>When entering state other than EMM-REGISTERED.</p>
+<p>NORMAL-SERVICE state, or.</p>
+<p>MS camped to a new PLMN other than the PLMN on which timer started, or DRB established from network.</p>
+</td>
+<td colspan="2" width="113">
+<p>The MS may initiate SERVICE REQUEST procedure</p>
+</td>
+</tr>
+<tr>
+<td colspan="2" width="66">
+<p>T3346</p>
+</td>
+<td colspan="2" width="66">
+<p>NOTE&nbsp;7</p>
+</td>
+<td colspan="2" width="95">
+<p>GMM-DEREGISTERED. ATTEMPTING-TO-ATTACH</p>
+<p>GMM-REGISTERED. ATTEMPTING-TO-UPDATE</p>
+<p>GMM-REGISTERED</p>
+<p>EMM-DEREGISTERED. ATTEMPTING-TO-ATTACH</p>
+<p>EMM-REGISTERED. ATTEMPTING-TO-UPDATE</p>
+<p>EMM-REGISTERED (defined in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]).</p>
+<p>5GMM-DEREGISTERED. ATTEMPTING-REGISTRATION</p>
+<p>5GMM-REGISTERED. ATTEMPTING-REGISTRATION-UPDATE</p>
+<p>5GMM-REGISTERED (defined in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167]).</p>
+</td>
+<td colspan="2" width="189">
+<p>ATTACH REJECT, ROUTING AREA UPDATE REJECT or SERVICE REJECT received with a timer value for T3346; "Extended wait time" for PS domain from the lower layers (defined in 3GPP&nbsp;TS&nbsp;25.331&nbsp;[23c]).</p>
+<p>ATTACH REJECT, TRACKING AREA UPDATE REJECT or SERVICE REJECT (defined in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]) received with a timer value for T3346; "Extended wait time" from the lower layers. (defined in 3GPP&nbsp;TS&nbsp;36.331&nbsp;[129]).</p>
+<p>REGISTRATION REJECT, DE-REGISTRATION REQUEST or SERVICE REJECT (defined in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167]) received with a timer value for T3346.</p>
+</td>
+<td colspan="2" width="113">
+<p>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Paging received or DETACH REQUEST with the detach type "re-attach required" received</p>
+<p>- see subclause 4.1.1.7 (A/Gb mode or Iu mode only)</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; see subclause 5.3.9, subclause&nbsp;5.5.1.2.5, subclause&nbsp;5.5.1.3.5, subclause&nbsp;5.5.3.2.5, subclause&nbsp;5.5.3.3.5, subclause&nbsp;5.6.1.5, and subclause&nbsp;5.6.2.2.2 in 3GPP TS 24.301 [122] (S1 mode only)</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; see subclause 5.3.9, subclause&nbsp;5.4.4.3, subclause&nbsp;5.4.7.2.1, subclause&nbsp;5.5.1.2.5, subclause&nbsp;5.5.1.3.5, subclause&nbsp;5.5.2.3.2 and subclause&nbsp;5.6.1.5 in 3GPP TS 24.501 [167] (N1 mode only)</p>
+</td>
+<td colspan="2" width="113">
+<p>Initiation of GPRS attach procedure, routing area updating procedure or service request procedure, dependent on GMM state and GPRS update status.</p>
+<p>Initiation of EPS attach procedure, tracking area updating procedure or service request procedure, dependent on EMM state and EPS update status. (defined in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120])</p>
+<p>Initiation of registration procedure or service request procedure, dependent on 5GMM state and 5GS update status. (defined in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167])</p>
+</td>
+<td width="2">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td colspan="12" width="643">
+<p>NOTE&nbsp;1:&nbsp;&nbsp; The default value of this timer is used if the network does not indicate another value in a GMM signalling procedure.</p>
+<p>NOTE&nbsp;2:&nbsp;&nbsp; The default value of this timer is used if neither the MS nor the Network send another value, or if the Network sends this value, in a signalling procedure.</p>
+<p>NOTE&nbsp;3:&nbsp;&nbsp; Typically, the procedures are aborted on the fifth expiry of the relevant timer. Exceptions are described in the corresponding procedure description.</p>
+<p>NOTE&nbsp;4:&nbsp;&nbsp; The purpose of this timer is to prevent the MS from repeating the SERVICE REQUEST message with service type "data" too early in case the request to setup the radio access bearer is queued by the radio access network.</p>
+<p>NOTE&nbsp;5:&nbsp;&nbsp; The cases in which the default value of this timer is used are described in subclause&nbsp;4.7.2.7.</p>
+<p>NOTE&nbsp;6:&nbsp;&nbsp; The value of this timer may be provided by the network to the MS in the ATTACH ACCEPT message and ROUTING AREA UPDATE ACCEPT message. The default value of this timer is identical to the value of timer&nbsp;T3312.</p>
+<p>NOTE&nbsp;7:&nbsp;&nbsp; The timer value is provided by the network in an ATTACH REJECT, ROUTING AREA UPDATE REJECT, TRACKING AREA UPDATE REJECT, REGISTRATION REJECT, DE-REGISTRATION REQUEST or SERVICE REJECT message or as a "Extended wait time" value by the lower layers, or chosen randomly from a default value range of 15 &ndash; 30 minutes. In this release, receipt of the "Extended wait time" as part of 5GMM from the lower layers is not defined.</p>
+<p>NOTE&nbsp;8:&nbsp;&nbsp; The cases in which the default value of this timer is used are described in subclause&nbsp;4.7.2.2.</p>
+<p>NOTE&nbsp;9:&nbsp;&nbsp; The timer value is provided by the network in an ATTACH ACCEPT, ROUTING AREA UPDATE ACCEPT, TRACKING AREA UPDATE ACCEPT or REGISTRATION ACCEPT message.</p>
+<p>NOTE&nbsp;10: The value of this timer is UE implementation specific, with a minimum value of 60 seconds.</p>
+</td>
+<td width="2">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="0">&nbsp;</td>
+<td width="44">&nbsp;</td>
+<td width="1">&nbsp;</td>
+<td width="53">&nbsp;</td>
+<td width="3">&nbsp;</td>
+<td width="141">&nbsp;</td>
+<td width="2">&nbsp;</td>
+<td width="138">&nbsp;</td>
+<td width="2">&nbsp;</td>
+<td width="132">&nbsp;</td>
+<td width="2">&nbsp;</td>
+<td width="140">&nbsp;</td>
+<td width="1">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Table 11.4/3GPP TS 24.008: GPRS Mobility management timers - network side</p>
+<table>
+<tbody>
+<tr>
+<td width="66">
+<p>TIMER NUM.</p>
+</td>
+<td width="66">
+<p>TIMER VALUE</p>
+</td>
+<td width="95">
+<p>STATE</p>
+</td>
+<td width="189">
+<p>CAUSE OF START</p>
+</td>
+<td width="113">
+<p>NORMAL STOP</p>
+</td>
+<td width="113">
+<p>ON THE<br /> &nbsp;1st, 2nd, 3rd, 4th&nbsp;EXPIRY Note 3</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3322</p>
+</td>
+<td width="66">
+<p>6s<br /> NOTE&nbsp;1</p>
+</td>
+<td width="95">
+<p>GMM-<br /> DEREG-INIT</p>
+</td>
+<td width="189">
+<p>DETACH REQUEST sent</p>
+</td>
+<td width="113">
+<p>DETACH ACCEPT received</p>
+</td>
+<td width="113">
+<p>Retransmission of DETACH REQUEST</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3350</p>
+</td>
+<td width="66">
+<p>6s<br /> NOTE&nbsp;1</p>
+</td>
+<td width="95">
+<p>GMM-COMMON-PROC-INIT</p>
+</td>
+<td width="189">
+<p>ATTACH ACCEPT<br /> sent with P-TMSI and/or TMSI<br /> </p>
+<p>RAU ACCEPT sent with P-TMSI and/or TMSI</p>
+<p>P-TMSI REALLOCATION COMMAND<br /> sent</p>
+</td>
+<td width="113">
+<p>ATTACH COMPLETE received</p>
+<p>RAU COMPLETE received</p>
+<p>P-TMSI REALLOCATION COMPLETE received</p>
+</td>
+<td width="113">
+<p>Retransmission of the same message type, i.e. ATTACH ACCEPT, RAU ACCEPT or REALLOCATION COMMAND</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3360</p>
+</td>
+<td width="66">
+<p>6s<br /> NOTE&nbsp;1</p>
+</td>
+<td width="95">
+<p>GMM- COMMON-PROC-INIT</p>
+</td>
+<td width="189">
+<p>AUTHENTICATION AND CIPHERING REQUEST<br /> sent</p>
+</td>
+<td width="113">
+<p>AUTHENTICATION AND CIPHERING RESPONSE received</p>
+<p>AUTHENTICATION-AND CIPHERING-FAILURE received</p>
+</td>
+<td width="113">
+<p>Retransmission of AUTHENTICATION AND CIPHERING REQUEST</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3370</p>
+</td>
+<td width="66">
+<p>6s<br /> NOTE&nbsp;1</p>
+</td>
+<td width="95">
+<p>GMM-COMMON-PROC-INIT</p>
+</td>
+<td width="189">
+<p>IDENTITY REQUEST sent</p>
+</td>
+<td width="113">
+<p>IDENTITY RESPONSE received</p>
+</td>
+<td width="113">
+<p>Retransmission of IDENTITY REQUEST</p>
+</td>
+</tr>
+<tr>
+<td colspan="6" width="643">
+<p>NOTE&nbsp;1&nbsp;&nbsp;&nbsp; If the SGSN supports EC-GSM-IoT and if the MS is using EC-GSM-IoT, the timer value is calculated as described in subclause 4.7.2.12.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Table 11.4a/3GPP TS 24.008: GPRS Mobility management timers - network side</p>
+<table>
+<tbody>
+<tr>
+<td width="66">
+<p>TIMER NUM.</p>
+</td>
+<td width="66">
+<p>TIMER VALUE</p>
+</td>
+<td width="95">
+<p>STATE</p>
+</td>
+<td width="189">
+<p>CAUSE OF START</p>
+</td>
+<td width="113">
+<p>NORMAL STOP</p>
+</td>
+<td width="113">
+<p>ON <br /> EXPIRY</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3313</p>
+</td>
+<td width="66">
+<p>NOTE&nbsp;1 <br /> NOTE&nbsp;9</p>
+</td>
+<td width="95">
+<p>GMM-REGISTERED</p>
+</td>
+<td width="189">
+<p>Paging procedure initiated</p>
+</td>
+<td width="113">
+<p>Paging procedure completed</p>
+</td>
+<td width="113">
+<p>Network dependent</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3314</p>
+<p>READY</p>
+<p>(A/Gb mode only)</p>
+</td>
+<td width="66">
+<p>Default <br /> 44 sec<br /> NOTE&nbsp;2</p>
+</td>
+<td width="95">
+<p>All except GMM-DEREGISTERED</p>
+</td>
+<td width="189">
+<p>Receipt of a PTP PDU</p>
+</td>
+<td width="113">
+<p>Forced to Standby</p>
+<p>Completion of a successful GPRS attach or routing area updating procedure in Iu mode.</p>
+<p>Indication received from HLR/HSS that the MS performed an EPS attach or indication received from the MME that the MS is performing a tracking area updating procedure.</p>
+</td>
+<td width="113">
+<p>The network shall page the MS if a PTP PDU has to be sent to the MS</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3315</p>
+</td>
+<td width="66">
+<p>NOTE&nbsp;7</p>
+</td>
+<td width="95">
+<p>GMM-REGISTERED</p>
+</td>
+<td width="189">
+<p>Paging procedure initiated for an MS which the network accepted the request to use eDRX</p>
+</td>
+<td width="113">
+<p>Paging procedure completed</p>
+<p>Paging procedure is aborted</p>
+</td>
+<td width="113">
+<p>Paging procedure is aborted and the network proceeds as specified in 3GPP&nbsp;TS&nbsp;23.060&nbsp;[74]</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>mobile reachable</p>
+</td>
+<td width="66">
+<p>NOTE&nbsp;4</p>
+</td>
+<td width="95">
+<p>All except GMM-DEREGISTERED</p>
+</td>
+<td width="189">
+<p>In A/Gb mode, when entering STANDBY state</p>
+<p>In Iu mode, when entering PMM-IDLE mode.</p>
+</td>
+<td width="113">
+<p>PTP PDU received</p>
+</td>
+<td width="113">
+<p>Network dependent but typically paging is halted on 1st expiry if the MS is not attached for emergency bearer services.</p>
+<p>&nbsp;</p>
+<p>Implicitly detach the MS which is attached for the emergency bearer services.</p>
+<p>&nbsp;</p>
+<p>Start implicit detach timer if ISR is activated.</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>implicit detach timer</p>
+</td>
+<td width="66">
+<p>NOTE&nbsp;5</p>
+</td>
+<td width="95">
+<p>All except GMM-DEREGISTERED</p>
+</td>
+<td width="189">
+<p>The mobile reachable timer expires while the network is in PMM-IDLE mode or STANDBY state.</p>
+</td>
+<td width="113">
+<p>PTP PDU received</p>
+</td>
+<td width="113">
+<p>Implicitly detach the MS on 1st expiry</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>active timer</p>
+</td>
+<td width="66">
+<p>NOTE&nbsp;6</p>
+</td>
+<td width="95">
+<p>All except</p>
+<p>GMM-DEREGISTERED</p>
+</td>
+<td width="189">
+<p>In A/Gb mode, when entering STANDBY state.</p>
+<p>In Iu mode, when entering PMM-IDLE mode.</p>
+<p>&nbsp;</p>
+</td>
+<td width="113">
+<p>PTP PDU received</p>
+</td>
+<td width="113">
+<p>Network dependent but typically paging is halted on 1st expiry</p>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td colspan="6" width="643">
+<p>NOTE&nbsp;1:&nbsp;&nbsp; The value of this timer is network dependent.</p>
+<p>NOTE&nbsp;2:&nbsp;&nbsp; The default value of this timer is used if neither the MS nor the Network send another value, or if the Network sends this value, in a signalling procedure. The value of this timer should be slightly shorter in the network than in the MS, this is a network implementation issue.</p>
+<p>NOTE&nbsp;3:&nbsp;&nbsp; Typically, the procedures are aborted on the fifth expiry of the relevant timer. Exceptions are described in the corresponding procedure description.</p>
+<p>NOTE&nbsp;4:&nbsp;&nbsp; The default value of this timer is 4 minutes greater than T3312. If T3346 is larger than T3312 and the SGSN includes timer T3346 in the ROUTING AREA UPDATE REJECT message or the SERVICE REJECT message, the value of the mobile reachable timer and implicit detach timer is set such that the sum of the timer values is greater than T3346. If the MS is attached for emergency bearer services, the value of this timer is set equal to T3312.</p>
+<p>NOTE&nbsp;5:&nbsp;&nbsp; The value of this timer is network dependent. If ISR is activated, the default value of this timer is 4 minutes greater than T3323.</p>
+<p>NOTE&nbsp;6:&nbsp;&nbsp; If the network includes timer T3324 in the ATTACH ACCEPT message or ROUTING AREA UPDATE ACCEPT message and if the MS is not attached for emergency bearer services and has no PDN connection for emergency bearer services, the value of this timer is equal to the value of timer T3324.</p>
+<p>NOTE&nbsp;7:&nbsp;&nbsp; The value of this timer is smaller than the value of timer T3-RESPONSE (see 3GPP&nbsp;TS&nbsp;29.274&nbsp;[16D]).</p>
+<p>NOTE&nbsp;8:&nbsp;&nbsp; If the SGSN supports EC-GSM-IoT and if the MS is using EC-GSM-IoT, the timer value is calculated as described in subclause 4.7.2.12.</p>
+<p>NOTE&nbsp;9:&nbsp;&nbsp; If the SGSN supports EC-GSM-IoT and if the MS is using EC-GSM-IoT, then the timer value shall be calculated by using a multiplier which value is network dependent.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h3><a name="_Toc171525082"></a>11.2.3&nbsp;&nbsp;&nbsp;&nbsp; Timers of GPRS session management</h3>
+<p>Table 11.2c/3GPP TS 24.008: GPRS session management timers - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="66">
+<p>TIMER NUM.</p>
+</td>
+<td width="66">
+<p>TIMER VALUE</p>
+</td>
+<td width="95">
+<p>STATE</p>
+</td>
+<td width="189">
+<p>CAUSE OF START</p>
+</td>
+<td width="113">
+<p>NORMAL STOP</p>
+</td>
+<td width="113">
+<p>ON THE<br /> &nbsp;1st, 2nd, 3rd, 4th&nbsp;EXPIRY</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3380</p>
+</td>
+<td width="66">
+<p>30s<br /> NOTE&nbsp;3</p>
+</td>
+<td width="95">
+<p>PDP-<br /> ACTIVE-PEND or MBMS ACTIVE-PENDING</p>
+</td>
+<td width="189">
+<p>ACTIVATE PDP CONTEXT REQUEST, ACTIVATE SECONDARY PDP CONTEXT REQUEST or ACTIVATE MBMS CONTEXT REQUEST sent</p>
+</td>
+<td width="113">
+<p>ACTIVATE <br /> PDP CONTEXT ACCEPT, ACTIVATE <br /> SECONDARY PDP CONTEXT ACCEPT or ACTIVATE MBMS CONTEXT ACCEPT received</p>
+<p>ACTIVATE<br /> PDP CONTEXT REJECT, ACTIVATE<br /> SECONDARY PDP CONTEXT REJECT or ACTIVATE MBMS CONTEXT REJECT received</p>
+</td>
+<td width="113">
+<p>Retransmission of ACTIVATE PDP<br /> CONTEXT REQ, ACTIVATE SECONDARY PDP CONTEXT REQUEST or ACTIVATE MBMS CONTEXT REQUEST</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3381</p>
+</td>
+<td width="66">
+<p>8s<br /> NOTE&nbsp;3</p>
+</td>
+<td width="95">
+<p>PDP-MODIFY-PENDING</p>
+</td>
+<td width="189">
+<p>MODIFY PDP CONTEXT REQUEST sent</p>
+</td>
+<td width="113">
+<p>MODIFY PDP CONTEXT ACCEPT received</p>
+</td>
+<td width="113">
+<p>Retransmission of MODIFY PDP CONTEXT REQUEST</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3390</p>
+</td>
+<td width="66">
+<p>8s<br /> NOTE&nbsp;3</p>
+</td>
+<td width="95">
+<p>PDP-<br /> INACT-PEND</p>
+</td>
+<td width="189">
+<p>DEACTIVATE PDP CONTEXT REQUEST sent</p>
+</td>
+<td width="113">
+<p>DEACTIVATE PDP CONTEXT ACC<br /> received</p>
+</td>
+<td width="113">
+<p>Retransmission of DEACTIVATE<br /> PDP CONTEXT REQUEST</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3396</p>
+</td>
+<td width="66">
+<p>NOTE&nbsp;1</p>
+</td>
+<td width="95">
+<p>PDP-<br /> ACT-PEND or MBMS ACTIVE-PENDING</p>
+<p>PROCEDURE TRANSACTION PENDING (defined in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120])</p>
+<p>PROCEDURE TRANSACTION PENDING (defined in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167])</p>
+</td>
+<td width="189">
+<p>ACTIVATE PDP CONTEXT REJECT, ACTIVATE MBMS CONTEXT REJECT, ACTIVATE SECONDARY PDP CONTEXT REJECT, DEACTIVATE PDP CONTEXT REQUEST or modify PDP context reJECT received with SM cause #26 and with a timer value for T3396</p>
+<p>&nbsp;</p>
+<p>PDN CONNECTIVITY REJECT, BEARER RESOURCE MODIFICATION REJECT, BEARER RESOURCE ALLOCATION REJECT or DEACTIVATE EPS BEARER CONTEXT REQUEST (defined in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]) received with ESM cause #26 and with a timer value for T3396</p>
+<p>PDU SESSION ESTABLISHMENT REJECT, PDU SESSION MODIFICATION REJECT, or PDU SESSION RELEASE COMMAND (defined in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167]) received with 5GSM cause #26 and with a timer value for T3396</p>
+<p>&nbsp;</p>
+<p>PDU SESSION ESTABLISHMENT REQUEST, or PDU SESSION MODIFICATION REQUEST received in a DL NAS TRANSPORT message (defined in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167]) with 5GMM cause #22 and with a timer value for T3396</p>
+</td>
+<td width="113">
+<p>REQUEST PDP CONTEXT ACTIVATION or REQUEST SECONDARY PDP CONTEXT ACTIVATION or MODIFY PDP CONTEXT REQUEST or REQUEST MBMS CONTEXT ACTIVATION or ACTIVATE DEFAULT EPS BEARER CONTEXT REQUEST or ACTIVATE DEDICATED EPS BEARER CONTEXT REQUEST or MODIFY EPS BEARER CONTEXT REQUEST or ESM DATA TRANSPORT or DETACH REQUEST with the detach type "re-attach required" or paging for EPS services using IMSI or paging for GPRS services using IMSI &nbsp;&nbsp;or PDU SESSION RELEASE COMMAND or PDU SESSION MODIFICATION COMMAND or PDU SESSION AUTHENTICATION COMMAND or DEREGISTRATION REQUEST with the re-registration type "re-registration required" received.</p>
+</td>
+<td width="113">
+<p>None</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>Back-off timer</p>
+</td>
+<td width="66">
+<p>12 min</p>
+<p>NOTE&nbsp;2</p>
+</td>
+<td width="95">
+<p>PDP-<br /> ACT-PEND</p>
+<p>PROCEDURE TRANSACTION PENDING (defined in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120])</p>
+</td>
+<td width="189">
+<p>ACTIVATE PDP CONTEXT REJECT, ACTIVATE MBMS CONTEXT REJECT, ACTIVATE SECONDARY PDP CONTEXT REJECT, or modify PDP context reJECT received with SM cause value #8 "operator determined barring", #27 "missing or unknown APN", #32 "service option not supported", or #33 "requested service option not subscribed", or <br /> received with an SM cause different from #26 "insufficient resources" and with a back-off timer value as specified in subclauses&nbsp;6.1.3.1.3.3, 6.1.3.2.2.3, 6.1.3.3.3.3, and 6.1.3.8.2.3</p>
+<p>PDN CONNECTIVITY REJECT, BEARER RESOURCE MODIFICATION REJECT or BEARER RESOURCE ALLOCATION REJECT (defined in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]) received with ESM cause value #8 "operator determined barring", #27 "missing or unknown APN",&nbsp; #32 "service option not supported", or #33 "requested service option not subscribed", or received with an ESM cause different from #26 "insufficient resources" and with a back-off timer value as specified in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]</p>
+<p>PDU SESSION ESTABLISHMENT REJECT or PDU SESSION MODIFICATION REJECT (defined in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167]) received with 5GSM cause value #8 "operator determined barring", #27 "missing or unknown DNN", #32 "service option not supported", #33 "requested service option not subscribed" or #70 "missing or unknown DNN in a slice", or received with an 5GSM cause different from #26 "insufficient resources", #67 "insufficient resources for specific slice and DNN", or #69 "insufficient resources for specific slice" and with a back-off timer value as specified in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167]</p>
+<p>PDU SESSION RELEASE COMMAND (defined in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167]) received with 5GSM cause value #29 " user authentication or authorization failed " and with a back-off timer value as specified in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167].</p>
+</td>
+<td width="113">
+<p>None</p>
+</td>
+<td width="113">
+<p>None</p>
+</td>
+</tr>
+</tbody>
+<thead>
+<tr>
+<td colspan="6" width="643">
+<p>NOTE&nbsp;1:&nbsp;&nbsp; The value of this timer or the value of this timer unit can be provided by the network operator when:</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a request to activate a PDP context, a request to activate a MBMS context or a request to modify a PDP context is rejected by the network with a certain SM cause;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a request to deactivate a PDP context is received with a certain SM cause value;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a request to establish a PDN connection, a request to allocate bearer resources or a request to modify bearer resources (defined in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120]) is rejected by the network with a certain ESM cause;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a request to deactivate a EPS bearer context is received with a certain ESM cause value;</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a request to establish a PDU session or a request to modify a PDU session (defined in 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167]) is rejected by the network:</p>
+<p>1)&nbsp;&nbsp; with a certain 5GSM cause; or</p>
+<p>2)&nbsp;&nbsp; indication that the 5GSM message was not forwarded due to DNN based congestion control; or</p>
+<p>-&nbsp;&nbsp;&nbsp;&nbsp; a command to release a PDU session is received with a certain 5GSM cause value.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If the timer unit is not set to indicate that the timer is deactivated, the value of the timer when included with SM cause, ESM cause, 5GSM cause #26, or due to DNN based congestion control is zero or the timer value is taken randomly from an operator dependent range not greater than 70 hours. If the PDN CONNECTIVITY REJECT was sent together with an ATTACH REJECT message and the ATTACH REJECT message was not integrity protected, MS uses a random value from a default range of 10mins to 30mins.</p>
+<p>NOTE&nbsp;2:&nbsp;&nbsp; The default value of 12 minutes applies only for certain SM, ESM and 5GSM cause values as specified in subclauses&nbsp;6.1.3.1.3.3, 6.1.3.2.2.3, and 6.1.3.3.3.3 in 3GPP&nbsp;TS&nbsp;24.301&nbsp;[120] and 3GPP&nbsp;TS&nbsp;24.501&nbsp;[167].</p>
+<p>NOTE&nbsp;3:&nbsp;&nbsp; If the MS is using EC-GSM-IoT, the timer value shall be calculated as described in subclause 4.7.2.12.</p>
+</td>
+</tr>
+</thead>
+</table>
+<p>&nbsp;</p>
+<p>NOTE&nbsp;1:&nbsp; Typically, the procedures are aborted on the fifth expiry of the relevant timer. Exceptions are described in the corresponding procedure description.</p>
+<p>NOTE&nbsp;2:&nbsp; The back-off timer is used to describe a logical model of the required MS behaviour. This model does not imply any specific implementation, e.g. as a timer or timestamp.</p>
+<p>NOTE&nbsp;3:&nbsp; Reference to back-off timer in this section can either refer to use of timer T3396 or to use of a different packet system specific timer within the MS. Whether the MS uses T3396 as a back-off timer or it uses different packet system specific timers as back-off timers is left up to MS implementation.</p>
+<p>Table 11.2d/3GPP TS 24.008: GPRS session management timers - network side</p>
+<table>
+<tbody>
+<tr>
+<td width="66">
+<p>TIMER NUM.</p>
+</td>
+<td width="66">
+<p>TIMER VALUE</p>
+</td>
+<td width="95">
+<p>STATE</p>
+</td>
+<td width="189">
+<p>CAUSE OF START</p>
+</td>
+<td width="113">
+<p>NORMAL STOP</p>
+</td>
+<td width="113">
+<p>ON THE<br /> &nbsp;1st, 2nd, 3rd, 4th&nbsp;EXPIRY</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3385</p>
+</td>
+<td width="66">
+<p>8s<br /> NOTE&nbsp;1</p>
+</td>
+<td width="95">
+<p>PDP-<br /> ACT-PEND or MBMS ACTIVE-PENDING</p>
+</td>
+<td width="189">
+<p>REQUEST PDP CONTEXT ACTIVATION or <br /> REQUEST SECONDARY PDP CONTEXT ACTIVATION or REQUEST MBMS CONTEXT ACTIVATION sent</p>
+</td>
+<td width="113">
+<p>ACTIVATE PDP CONTEXT REQUEST or ACTIVATE SECONDARY PDP CONTEXT REQUEST or<br /> ACTIVATE MBMS CONTEXT REQUEST received</p>
+</td>
+<td width="113">
+<p>Retransmission of REQUEST PDP CONTEXT ACTIVATION or REQUEST SECONDARY PDP CONTEXT ACTIVATION or<br /> REQUEST MBMS CONTEXT ACTIVATION</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3386</p>
+</td>
+<td width="66">
+<p>8s<br /> NOTE&nbsp;1</p>
+</td>
+<td width="95">
+<p>PDP-<br /> MOD-PEND</p>
+</td>
+<td width="189">
+<p>MODIFY PDP CONTEXT REQUEST sent</p>
+</td>
+<td width="113">
+<p>MODIFY PDP CONTEXT ACC received</p>
+</td>
+<td width="113">
+<p>Retransmission of MODIFY PDP CONTEXT REQ</p>
+</td>
+</tr>
+<tr>
+<td width="66">
+<p>T3395</p>
+</td>
+<td width="66">
+<p>8s<br /> NOTE&nbsp;1</p>
+</td>
+<td width="95">
+<p>PDP-<br /> INACT-PEND or MBMS INACTIVE-PENDING</p>
+</td>
+<td width="189">
+<p>DEACTIVATE PDP CONTEXT REQUEST sent</p>
+</td>
+<td width="113">
+<p>DEACTIVATE PDP CONTEXT ACC received</p>
+</td>
+<td width="113">
+<p>Retransmission of DEACTIVATE PDP CONTEXT REQ</p>
+</td>
+</tr>
+<tr>
+<td colspan="6" width="643">
+<p>NOTE&nbsp;1: If the SGSN supports EC-GSM-IoT and if the MS is using EC-GSM-IoT, the timer value shall be calculated as described in subclause 4.7.2.12.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>NOTE&nbsp;4:&nbsp; Typically, the procedures are aborted on the fifth expiry of the relevant timer. Exceptions are described in the corresponding procedure description.</p>
+<p>&nbsp;</p>
+<h2><a name="_Toc171525083"></a>11.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Timers of circuit-switched call control</h2>
+<p>Table 11.3/3GPP TS 24.008: Call control timers - MS side</p>
+<table>
+<tbody>
+<tr>
+<td width="43">
+<p>TIM</p>
+<p>NUM.</p>
+</td>
+<td width="40">
+<p>TIM VAL</p>
+</td>
+<td width="78">
+<p>STATE OF CALL</p>
+</td>
+<td width="94">
+<p>CAUSE OF START</p>
+</td>
+<td width="96">
+<p>NORMAL STOP</p>
+</td>
+<td width="85">
+<p>AT FIRST EXPIRY</p>
+</td>
+<td width="104">
+<p>AT SECOND EXPIRY</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T303</p>
+</td>
+<td width="40">
+<p>30s</p>
+</td>
+<td width="78">
+<p>Call initiated</p>
+</td>
+<td width="94">
+<p>CM SER RQ sent</p>
+</td>
+<td width="96">
+<p>ALERT,CONN,CALL PROC, or REL COMP received</p>
+</td>
+<td width="85">
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T305</p>
+</td>
+<td width="40">
+<p>30s</p>
+</td>
+<td width="78">
+<p>Disconnect Request</p>
+</td>
+<td width="94">
+<p>DISC sent</p>
+</td>
+<td width="96">
+<p>REL or DISC received</p>
+</td>
+<td width="85">
+<p>REL sent.</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T308</p>
+</td>
+<td width="40">
+<p>30s</p>
+</td>
+<td width="78">
+<p>Release request</p>
+</td>
+<td width="94">
+<p>REL sent</p>
+</td>
+<td width="96">
+<p>REL COMP or REL received</p>
+</td>
+<td width="85">
+<p>Retrans. RELEASE restart T308</p>
+</td>
+<td width="104">
+<p>Call ref. release</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T310</p>
+<p>Note 1</p>
+</td>
+<td width="40">
+<p>30s</p>
+</td>
+<td width="78">
+<p>Outgoing call Proceeding</p>
+</td>
+<td width="94">
+<p>CALL PROC received</p>
+</td>
+<td width="96">
+<p>ALERT,CONN, DISC or PROG rec.</p>
+</td>
+<td width="85">
+<p>Send DISC</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T313</p>
+</td>
+<td width="40">
+<p>30s</p>
+</td>
+<td width="78">
+<p>Connect Request</p>
+</td>
+<td width="94">
+<p>CONN sent</p>
+</td>
+<td width="96">
+<p>CONNect ACKnowledge received</p>
+</td>
+<td width="85">
+<p>Send DISC</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T322</p>
+</td>
+<td width="40">
+<p>Note 2</p>
+</td>
+<td width="78">
+<p>All states</p>
+</td>
+<td width="94">
+<p>STATUS ENQUIRY sent</p>
+</td>
+<td width="96">
+<p>STATUS, REL, REL COMP or DISC received</p>
+</td>
+<td width="85">
+<p>Retrans. STATUS ENQUIRY</p>
+<p>or</p>
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Clear the call</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T323</p>
+</td>
+<td width="40">
+<p>30s</p>
+</td>
+<td width="78">
+<p>Modify Request</p>
+</td>
+<td width="94">
+<p>MOD sent</p>
+</td>
+<td width="96">
+<p>MOD COMP or MOD REJ received</p>
+</td>
+<td width="85">
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T324</p>
+</td>
+<td width="40">
+<p>15s</p>
+</td>
+<td width="78">
+<p>Modify request</p>
+</td>
+<td width="94">
+<p>MOD received</p>
+</td>
+<td width="96">
+<p>MOD COMP or MOD REJ sent</p>
+</td>
+<td width="85">
+<p>MOD REJ with old bearer capability</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T332</p>
+</td>
+<td width="40">
+<p>30s</p>
+</td>
+<td width="78">
+<p>Wait for network info</p>
+</td>
+<td width="94">
+<p>START_CC sent</p>
+</td>
+<td width="96">
+<p>CC-EST. received</p>
+</td>
+<td width="85">
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T335</p>
+</td>
+<td width="40">
+<p>30s</p>
+</td>
+<td width="78">
+<p>CC-Est. Confirmed</p>
+</td>
+<td width="94">
+<p>CC-EST CONF.sent</p>
+</td>
+<td width="96">
+<p>RECALL received</p>
+</td>
+<td width="85">
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T336</p>
+</td>
+<td width="40">
+<p>10s</p>
+</td>
+<td width="78">
+<p>&nbsp;</p>
+</td>
+<td width="94">
+<p>START DTMF sent</p>
+</td>
+<td width="96">
+<p>START DTMF ACK or START DTMF REJECT received</p>
+</td>
+<td width="85">
+<p>&nbsp;</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>&nbsp;</p>
+</td>
+<td width="40">
+<p>&nbsp;</p>
+</td>
+<td width="78">
+<p>&nbsp;</p>
+</td>
+<td width="94">
+<p>&nbsp;</p>
+</td>
+<td width="96">
+<p>&nbsp;</p>
+</td>
+<td width="85">
+<p>The MS considers the DTMF Procedure (for the digit) to be terminated</p>
+</td>
+<td width="104">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T337</p>
+</td>
+<td width="40">
+<p>10s</p>
+</td>
+<td width="78">
+<p>&nbsp;</p>
+</td>
+<td width="94">
+<p>STOP DTMF sent</p>
+</td>
+<td width="96">
+<p>STOP DTMF ACK received</p>
+</td>
+<td width="85">
+<p>The MS considers the DTMF procedure (for the current digit) to be terminated</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>NOTE 1:&nbsp; T310 is not started if progress indicator #1, #2, or #64 has been delivered in the CALL PROCEEDING message or in a previous PROGRESS message.</p>
+<p>NOTE&nbsp;2:&nbsp; The value of this timer is implementation dependent.</p>
+<p>&nbsp;</p>
+<p>Table 11.4/3GPP TS 24.008: Call control timers - network side</p>
+<table>
+<tbody>
+<tr>
+<td width="43">
+<p>TIM</p>
+<p>NUM.</p>
+</td>
+<td width="47">
+<p>DFT TIM VAL</p>
+</td>
+<td width="76">
+<p>STATE OF CALL</p>
+</td>
+<td width="89">
+<p>CAUSE FOR START</p>
+</td>
+<td width="96">
+<p>NORMAL STOP</p>
+</td>
+<td width="85">
+<p>AT FIRST EXPIRY</p>
+</td>
+<td width="104">
+<p>AT SECOND EXPIRY</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T301</p>
+<p>Note 1</p>
+</td>
+<td width="47">
+<p>Min180s</p>
+</td>
+<td width="76">
+<p>Call received</p>
+</td>
+<td width="89">
+<p>ALERT received</p>
+</td>
+<td width="96">
+<p>CONN received</p>
+</td>
+<td width="85">
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T303</p>
+</td>
+<td width="47">
+<p>Note 2</p>
+</td>
+<td width="76">
+<p>Call present</p>
+</td>
+<td width="89">
+<p>SETUP sent</p>
+</td>
+<td width="96">
+<p>CALL CONF or REL COMP received</p>
+</td>
+<td width="85">
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T305</p>
+</td>
+<td width="47">
+<p>30s</p>
+</td>
+<td width="76">
+<p>Disconnect Indication</p>
+</td>
+<td width="89">
+<p>DISC without progress indic. #8 sent or CCBS Possible</p>
+</td>
+<td width="96">
+<p>REL or DISC received</p>
+</td>
+<td width="85">
+<p>Network sends RELEASE</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T306</p>
+</td>
+<td width="47">
+<p>30s</p>
+</td>
+<td width="76">
+<p>Disconnect Indication</p>
+</td>
+<td width="89">
+<p>DISC with progress indic. #8 sent but no CCBS possible</p>
+</td>
+<td width="96">
+<p>REL or DISC received</p>
+</td>
+<td width="85">
+<p>Stop the tone/ announc. Send REL</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T308</p>
+</td>
+<td width="47">
+<p>Note 2</p>
+</td>
+<td width="76">
+<p>Release request</p>
+</td>
+<td width="89">
+<p>REL sent</p>
+</td>
+<td width="96">
+<p>REL COMP or REL received</p>
+</td>
+<td width="85">
+<p>Retrans. RELEASE restart T308</p>
+</td>
+<td width="104">
+<p>Release call reference</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T310</p>
+</td>
+<td width="47">
+<p>Note 2</p>
+</td>
+<td width="76">
+<p>Incoming call proceeding</p>
+</td>
+<td width="89">
+<p>CALL CONF received</p>
+</td>
+<td width="96">
+<p>ALERT, CONN or DISC received</p>
+</td>
+<td width="85">
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T313</p>
+</td>
+<td width="47">
+<p>Note 2</p>
+</td>
+<td width="76">
+<p>Connect Indication</p>
+</td>
+<td width="89">
+<p>CON sent</p>
+</td>
+<td width="96">
+<p>CON ACK received</p>
+</td>
+<td width="85">
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T322</p>
+</td>
+<td width="47">
+<p>Note 2</p>
+</td>
+<td width="76">
+<p>All states</p>
+</td>
+<td width="89">
+<p>STATUS ENQUIRY sent</p>
+</td>
+<td width="96">
+<p>STATUS, REL, REL COMP or DISC received</p>
+</td>
+<td width="85">
+<p>Retran. STATUS ENQUIRY</p>
+<p>or</p>
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Clear the call</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T323</p>
+</td>
+<td width="47">
+<p>30s</p>
+</td>
+<td width="76">
+<p>Modify request</p>
+</td>
+<td width="89">
+<p>MOD sent</p>
+</td>
+<td width="96">
+<p>MOD COMP or MOD REJ received</p>
+</td>
+<td width="85">
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T331</p>
+</td>
+<td width="47">
+<p>Note 2</p>
+</td>
+<td width="76">
+<p>CC Connec. Pending</p>
+</td>
+<td width="89">
+<p>CM-SERV PROMPT sent</p>
+</td>
+<td width="96">
+<p>START CC received</p>
+</td>
+<td width="85">
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T333</p>
+</td>
+<td width="47">
+<p>Note 2</p>
+</td>
+<td width="76">
+<p>CC-Est. Present</p>
+</td>
+<td width="89">
+<p>START CC received</p>
+</td>
+<td width="96">
+<p>CC-EST.CONF or REL COMP received</p>
+</td>
+<td width="85">
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T334</p>
+<p>Note 3</p>
+</td>
+<td width="47">
+<p>Min 15s</p>
+</td>
+<td width="76">
+<p>CC-Est. Confirmed</p>
+</td>
+<td width="89">
+<p>RECALL sent</p>
+</td>
+<td width="96">
+<p>SETUP received</p>
+</td>
+<td width="85">
+<p>Clear the call</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+<tr>
+<td width="43">
+<p>T338</p>
+</td>
+<td width="47">
+<p>Note 2</p>
+</td>
+<td width="76">
+<p>Disconnect indication</p>
+</td>
+<td width="89">
+<p>DISC with CCBS possible</p>
+</td>
+<td width="96">
+<p>REL or DISC received</p>
+</td>
+<td width="85">
+<p>stop any tone/ announc. Send REL</p>
+</td>
+<td width="104">
+<p>Timer is not restarted</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>NOTE 1:&nbsp; The network may already have applied an internal alerting supervision function; e.g. incorporated within call control. If such a function is known to be operating on the call, then timer T301 is not used.</p>
+<p>NOTE 2:&nbsp; These time values are set by the network operator.</p>
+<p>NOTE 3:&nbsp; When applied to the supplementary service CCBS, the timer T334 can either represent the recall timer T4 or the notification timer T10 (see 3GPP TS 23.093 [88a]). Thus the timer T334 can take two different values. 3GPP TS 23.093 [88a] defines the range of these values.</p>
+<p>&nbsp;</p>
+<p><a name="_Toc171525084"></a>Annex A (informative):<br /> Example of subaddress information element coding</p>
+<p>This annex gives an example of how the Called Party Subaddress IE is encoded to carry subaddress digits that use IA5 characters. This example is also applicable to the Calling Party Subaddress IE.</p>
+<p>&nbsp;</p>
+<table>
+<tbody>
+<tr>
+<td width="47">
+<p>8</p>
+</td>
+<td width="47">
+<p>7</p>
+</td>
+<td width="47">
+<p>6</p>
+</td>
+<td width="47">
+<p>5</p>
+</td>
+<td width="47">
+<p>4</p>
+</td>
+<td width="47">
+<p>3</p>
+</td>
+<td width="47">
+<p>2</p>
+</td>
+<td width="47">
+<p>1</p>
+</td>
+<td width="104">
+<p>octet</p>
+</td>
+</tr>
+<tr>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>1</p>
+</td>
+<td width="47">
+<p>1</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>1</p>
+</td>
+<td width="47">
+<p>1</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>1</p>
+</td>
+<td width="104">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1</p>
+</td>
+</tr>
+<tr>
+<td width="47">
+<p>&nbsp;</p>
+</td>
+<td colspan="7" width="331">
+<p>called party subaddress IEI</p>
+</td>
+<td width="104">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>1</p>
+</td>
+<td width="47">
+<p>1</p>
+</td>
+<td width="47">
+<p>1</p>
+</td>
+<td width="104">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2</p>
+</td>
+</tr>
+<tr>
+<td colspan="8" width="378">
+<p>Length</p>
+</td>
+<td width="104">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="47">
+<p>1</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>X</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="104">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3</p>
+</td>
+</tr>
+<tr>
+<td width="47">
+<p>not</p>
+<p>ext</p>
+</td>
+<td colspan="3" width="142">
+<p>NSAP</p>
+<p>(X.213/ISO 8348 AD2)</p>
+</td>
+<td width="47">
+<p>odd/ev</p>
+<p>note 1</p>
+</td>
+<td colspan="3" width="142">
+<p>&nbsp;</p>
+<p>note 2</p>
+</td>
+<td width="104">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>1</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>1</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="47">
+<p>0</p>
+</td>
+<td width="104">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4</p>
+</td>
+</tr>
+<tr>
+<td colspan="8" width="378">
+<p>AFI (note 3)</p>
+</td>
+<td width="104">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td colspan="8" width="378">
+<p>IA5 Character (note 4)</p>
+</td>
+<td width="104">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5</p>
+</td>
+</tr>
+<tr>
+<td colspan="8" width="378">
+<p>IA5 Character (note 4)</p>
+</td>
+<td width="104">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6</p>
+</td>
+</tr>
+<tr>
+<td colspan="8" width="378">
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</td>
+<td width="104">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td colspan="8" width="378">
+<p>IA5 Character (note 4)</p>
+</td>
+<td width="104">
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>NOTE 1:&nbsp; The value of this bit has no significance when the type of subaddress is "NSAP".</p>
+<p>NOTE 2:&nbsp; These bits are spare.</p>
+<p>NOTE 3:&nbsp; The Authority and Format Identifier code 50 (in BCD) indicates that the subaddress consists of IA5 characters (see ISO standard 8348 AD2).</p>
+<p>NOTE 4:&nbsp; IA5 character as defined in ITU-T Recommendation T.50&nbsp;[52]/ISO 646 and then encoded into two semi-octets according to the "preferred binary encoding" defined in X.213&nbsp;[144]/ISO 8348 AD2. (Each character is converted into a number in the range 32 to 127 using the ISO 646 encoding with zero parity and the parity bit in the most significant position. This number is then reduced by 32 to give a new number in the range 0 to 95. The new number is then treated as a pair of decimal digits with the value of each digit being encoded in a semi-octet.)</p>
+<p>NOTE 5:&nbsp; the number of IA5 characters in the subaddress may vary, subject to an upper limit of 19 IA5 characters.</p>
+<p>&nbsp;</p>
+<p><a name="_Toc171525085"></a>Annex B (normative):<br /> Compatibility checking</p>
